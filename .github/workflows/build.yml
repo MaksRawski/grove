@@ -100,7 +100,8 @@ jobs:
       #     (scripts/release.sh sets both before tagging).
       #   - workflow_dispatch on the default branch: RELEASE_TAG is v$VERSION
       #     (versionName). Re-dispatching without first bumping versionName
-      #     re-uses that tag and re-uploads assets to the existing release.
+      #     builds and tests only; it never replaces an existing release's
+      #     assets (see "Publish GitHub Release").
       - name: Compute version
         run: |
           set -euo pipefail
@@ -295,10 +296,12 @@ jobs:
       # CHANGELOG.md has a heading for this version (see "Read release notes
       # from CHANGELOG.md" above). RELEASE_TAG is the tag you pushed for a tag
       # release, or "v$VERSION" (versionName) for a dispatch; either way the
-      # tag lands on the commit that was built. Re-dispatching without a new
-      # version re-uses the tag and re-uploads assets to the existing
-      # release. Re-runs of the same commit/tag recompute the same
-      # RELEASE_TAG, so they safely re-upload assets instead of failing.
+      # tag lands on the commit that was built. Re-runs of a tag push rebuild
+      # the tagged commit, so they safely re-upload assets to its release.
+      # A dispatch never touches an existing release: main has usually moved
+      # past the tag by then, and clobbering the assets with a newer build
+      # breaks F-Droid's reproducible-build check for that version (this
+      # happened to v1.8.1). Cut a new version with scripts/release.sh instead.
       - name: Publish GitHub Release
         if: env.SHOULD_RELEASE == 'true' && env.HAS_RELEASE == 'true'
         env:
@@ -314,6 +317,10 @@ jobs:
           # without a separate local build.
           ASSETS=$(ls app/build/outputs/apk/debug/*.apk app/build/outputs/apk/release/*.apk app/build/outputs/bundle/release/*.aab)
           if gh release view "$TAG" >/dev/null 2>&1; then
+            if [ "$IS_TAG_RELEASE" != "true" ]; then
+              echo "::warning::Release $TAG already exists; a manual run never replaces its assets. Built and tested only."
+              exit 0
+            fi
             gh release upload "$TAG" $ASSETS --clobber
           else
             gh release create "$TAG" $ASSETS \
