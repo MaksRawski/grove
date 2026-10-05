@@ -57,6 +57,9 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+### Added
+- Outline's Move & indent bar can act on several headings at once: tap rows to add them to the selection.
+
 ## [1.11.0] - 2026-10-19
 
 ### Added
