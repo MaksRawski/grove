@@ -93,6 +93,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rrajath.grove.capture.FilenameValidation
+import com.rrajath.grove.settings.PinKind
+import com.rrajath.grove.settings.PinnedItem
 import com.rrajath.grove.sync.SyncState
 import com.rrajath.grove.ui.components.ChangeIconColorDialog
 import com.rrajath.grove.ui.components.GroveTopBar
@@ -298,6 +300,7 @@ fun NotebooksScreen(
                     // stable across an unrelated field change.
                     val showFileIcons = s.showFileIcons
                     val drillThreshold = s.drillThreshold
+                    val livePins = s.livePins
 
                     @Composable
                     fun fileRow(
@@ -323,6 +326,9 @@ fun NotebooksScreen(
                             onForceReload = { viewModel.forceReload(nb.fileName) },
                             onPin = { viewModel.pinNotebook(nb.fileName) },
                             onUnpin = { viewModel.unpinNotebook(nb.fileName) },
+                            pinIndex = livePins.indexOf(PinnedItem(PinKind.FILE, nb.fileName)),
+                            pinCount = livePins.size,
+                            onMovePin = { viewModel.movePin(PinnedItem(PinKind.FILE, nb.fileName), it) },
                         )
                     }
 
@@ -343,6 +349,9 @@ fun NotebooksScreen(
                             onClick = onClick,
                             onPin = { viewModel.pinFolder(node.dir) },
                             onUnpin = { viewModel.unpinFolder(node.dir) },
+                            pinIndex = livePins.indexOf(PinnedItem(PinKind.FOLDER, node.dir)),
+                            pinCount = livePins.size,
+                            onMovePin = { viewModel.movePin(PinnedItem(PinKind.FOLDER, node.dir), it) },
                             onRename = { folderRenameTarget = node.dir },
                             onChangeColor = { folderColorTarget = node.dir },
                             onDelete = { folderDeleteTarget = node.dir },
@@ -967,6 +976,10 @@ private fun FolderRow(
     onClick: () -> Unit,
     onPin: () -> Unit = {},
     onUnpin: () -> Unit = {},
+    /** Position among the live pins (-1 when not pinned) and their count, for Move up/down. */
+    pinIndex: Int = -1,
+    pinCount: Int = 0,
+    onMovePin: (delta: Int) -> Unit = {},
     onRename: () -> Unit = {},
     onChangeColor: () -> Unit = {},
     onDelete: () -> Unit = {},
@@ -1067,6 +1080,7 @@ private fun FolderRow(
                     text = { Text("Unpin", fontFamily = PlexSans, color = c.ink) },
                     onClick = { menuOpen = false; onUnpin() },
                 )
+                PinMoveItems(pinIndex, pinCount, onMovePin, onDone = { menuOpen = false })
             } else {
                 DropdownMenuItem(
                     text = { Text("Pin to top", fontFamily = PlexSans, color = c.ink) },
@@ -1090,6 +1104,25 @@ private fun FolderRow(
     }
 }
 
+/** The pinned-row Move up / Move down menu items, styled like the drawer's Favorites menu. */
+@Composable
+private fun PinMoveItems(pinIndex: Int, pinCount: Int, onMovePin: (delta: Int) -> Unit, onDone: () -> Unit) {
+    if (pinIndex < 0) return
+    val c = MaterialTheme.grove
+    val canMoveUp = pinIndex > 0
+    val canMoveDown = pinIndex < pinCount - 1
+    DropdownMenuItem(
+        text = { Text("Move up", fontFamily = PlexSans, color = if (canMoveUp) c.ink else c.ink3) },
+        enabled = canMoveUp,
+        onClick = { onDone(); onMovePin(-1) },
+    )
+    DropdownMenuItem(
+        text = { Text("Move down", fontFamily = PlexSans, color = if (canMoveDown) c.ink else c.ink3) },
+        enabled = canMoveDown,
+        onClick = { onDone(); onMovePin(1) },
+    )
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FileRow(
@@ -1109,6 +1142,10 @@ private fun FileRow(
     onForceReload: () -> Unit,
     onPin: () -> Unit,
     onUnpin: () -> Unit,
+    /** Position among the live pins (-1 when not pinned) and their count, for Move up/down. */
+    pinIndex: Int = -1,
+    pinCount: Int = 0,
+    onMovePin: (delta: Int) -> Unit = {},
 ) {
     val c = MaterialTheme.grove
     val letter = monogramLetter(notebook.displayName)
@@ -1181,6 +1218,7 @@ private fun FileRow(
                     text = { Text("Unpin", fontFamily = PlexSans, color = c.ink) },
                     onClick = { menuOpen = false; onUnpin() },
                 )
+                PinMoveItems(pinIndex, pinCount, onMovePin, onDone = { menuOpen = false })
             } else {
                 DropdownMenuItem(
                     text = { Text("Pin to top", fontFamily = PlexSans, color = c.ink) },

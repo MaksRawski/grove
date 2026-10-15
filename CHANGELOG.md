@@ -57,6 +57,9 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+### Added
+- Pinned notebooks and folders can be reordered with Move up and Move down in their long-press menu.
+
 ## [1.9.0] - 2026-10-04
 
 ### Added

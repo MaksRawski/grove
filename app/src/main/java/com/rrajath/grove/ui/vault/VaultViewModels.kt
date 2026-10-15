@@ -131,6 +131,11 @@ sealed class NotebooksUiState {
          * chronological pin order. Rendered as one block above the tree.
          */
         val pinnedStrip: ImmutableList<PinnedRow> = persistentListOf(),
+        /**
+         * The pins that resolve to something on screen, in strip order: what Move
+         * up/down steps through, so a stale pin never swallows a move.
+         */
+        val livePins: ImmutableList<PinnedItem> = persistentListOf(),
         /** The inline tree (variant 1a), flattened to display rows for the current expansion. */
         val rows: ImmutableList<NotebookTreeRow> = persistentListOf(),
         /** Pinned folders, pin order; a pinned folder is shown ONLY in the strip, not in [rows]. */
@@ -310,6 +315,12 @@ class NotebooksViewModel(
                 flat = true,
                 flatRows = flatNotebookRows(inputs.items, inputs.pinnedItems, inputs.sort),
                 flatPinned = flatPinnedRows(inputs.items, inputs.pinnedItems, inputs.sort),
+                livePins = inputs.pinnedItems.filter { pi ->
+                    when (pi.kind) {
+                        PinKind.FILE -> inputs.items.any { it.fileName == pi.path }
+                        PinKind.FOLDER -> inputs.items.any { it.dir == pi.path || it.dir.startsWith("${pi.path}/") }
+                    }
+                }.toImmutableList(),
                 folderColors = inputs.folderColors.toImmutableMap(),
                 hasFolders = false,
                 vaultDisplayName = inputs.vaultDisplayName,
@@ -365,7 +376,13 @@ class NotebooksViewModel(
                 notebooks = flat,
                 pinned = pinned,
                 pinnedStrip = pinnedStrip,
-                rows = buildNotebookTree(
+                livePins = pinnedStrip.map {
+                    when (it) {
+                        is PinnedRow.File -> PinnedItem(PinKind.FILE, it.item.fileName)
+                        is PinnedRow.Folder -> PinnedItem(PinKind.FOLDER, it.node.dir)
+                    }
+                }.toImmutableList(),
+                rows =buildNotebookTree(
                     treeItems, inputs.expandedFolders, inputs.folderColors, inputs.pinnedFolders, inputs.sort,
                     prebuiltNodes = treeNodes,
                 ),
@@ -535,6 +552,14 @@ class NotebooksViewModel(
 
     fun unpinFolder(dir: String) {
         viewModelScope.launch { settingsRepository.unpinFolder(dir) }
+    }
+
+    /** Swap [item] with its visible neighbour [delta] slots away in the Pinned strip (-1 up, +1 down). */
+    fun movePin(item: PinnedItem, delta: Int) {
+        val pins = (state.value as? NotebooksUiState.Loaded)?.livePins ?: return
+        val from = pins.indexOf(item)
+        val neighbor = if (from < 0) null else pins.getOrNull(from + delta)
+        if (neighbor != null) viewModelScope.launch { settingsRepository.swapPinnedItems(item, neighbor) }
     }
 
     fun setFolderColor(dir: String, colorKey: String) {

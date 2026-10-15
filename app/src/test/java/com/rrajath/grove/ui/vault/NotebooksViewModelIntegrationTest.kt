@@ -3,6 +3,8 @@ package com.rrajath.grove.ui.vault
 import androidx.lifecycle.viewModelScope
 import androidx.test.core.app.ApplicationProvider
 import com.rrajath.grove.data.GroveDatabase
+import com.rrajath.grove.settings.PinKind
+import com.rrajath.grove.settings.PinnedItem
 import com.rrajath.grove.settings.SettingsRepository
 import com.rrajath.grove.testing.FakeFileStore
 import com.rrajath.grove.testing.FakeSyncTrigger
@@ -16,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -218,5 +221,26 @@ class NotebooksViewModelIntegrationTest {
         settleUntil { store.exists("office/status.org") && store.exists("office/notes/standup.org") }
 
         assertFalse(store.exists("work/status.org"))
+    }
+
+    @Test
+    fun `movePin swaps with the visible neighbour and skips a stale pin`() = runTest {
+        val vm = seededVm()
+        val inbox = PinnedItem(PinKind.FILE, "inbox.org")
+        val stale = PinnedItem(PinKind.FILE, "gone.org")
+        val work = PinnedItem(PinKind.FOLDER, "work")
+        settingsRepository.pinNotebook("inbox.org")
+        settingsRepository.pinNotebook("gone.org")
+        settingsRepository.pinFolder("work")
+        settleUntil { (vm.state.value as? NotebooksUiState.Loaded)?.livePins == listOf(inbox, work) }
+
+        vm.movePin(work, -1)
+        settleUntil { settingsRepository.settings.first().pinnedItems == listOf(work, stale, inbox) }
+
+        // Already at the top: no-op.
+        settleUntil { (vm.state.value as? NotebooksUiState.Loaded)?.livePins == listOf(work, inbox) }
+        vm.movePin(work, -1)
+        advanceUntilIdle()
+        assertEquals(listOf(work, stale, inbox), settingsRepository.settings.first().pinnedItems)
     }
 }

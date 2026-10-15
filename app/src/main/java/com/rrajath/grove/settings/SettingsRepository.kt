@@ -996,6 +996,18 @@ class SettingsRepository(
         items.remove(PinnedItem(PinKind.FILE, fileName))
     }
 
+    /**
+     * Swap two pins' positions in the strip order. Callers pass visible neighbours,
+     * so stale pins (to a file or folder that no longer exists) keep their slots
+     * and never absorb a Move up/down. No-op if either isn't pinned.
+     */
+    suspend fun swapPinnedItems(a: PinnedItem, b: PinnedItem) = editPinnedItems { items ->
+        val i = items.indexOf(a)
+        val j = items.indexOf(b)
+        if (i < 0 || j < 0 || i == j) false
+        else { items[i] = b; items[j] = a; true }
+    }
+
     /** Keep the chosen monogram color and pin position attached to a notebook across renames. */
     suspend fun moveNotebookStyle(oldFileName: String, newFileName: String) {
         context.settingsDataStore.edit { prefs ->

@@ -42,6 +42,7 @@ Every notebook card displays:
 Long-pressing a notebook card opens a context menu with:
 
 - **Pin to top** / **Unpin**: keep frequently used notebooks at the top of the list, independent of alphabetical or recency order. Pinned notebooks and folders share one Pinned strip, listed in the order you pinned them
+- **Move up** / **Move down** (pinned notebooks only): reorder the Pinned strip one step at a time, the same way Favorites reorder in the sidebar
 - **Rename**
 - **Change icon color**: pick the tile color for this notebook's monogram from the theme palette
 - **Force reload**: re-parse this file from disk, bypassing the normal change-detection diff (useful if you suspect Grove's index is stale)
@@ -57,6 +58,7 @@ Android's Storage Access Framework has no system trash for files in a folder you
 Subfolders in your sync directory show up as folder rows in the list. Long-pressing one opens its own menu:
 
 - **Pin to top** / **Unpin**: a pinned folder moves out of the tree and into the Pinned strip at the top of the list, taking everything inside it along. It shares that strip with pinned notebooks, in the order things were pinned. Tap it to expand its contents in place; a folder big enough to open as its own screen drills in instead
+- **Move up** / **Move down** (pinned folders only): reorder the folder within the Pinned strip
 - **Rename**: renames the folder and moves every `.org` file inside it, keeping each file's icon color and pinned position. The old, now-empty folder is removed
 - **Change icon color**: pick the folder tile's color from the theme palette
 - **Delete**: after a confirmation prompt, permanently deletes every `.org` file inside the folder (the same permanent delete as a single notebook) and removes the emptied folder
