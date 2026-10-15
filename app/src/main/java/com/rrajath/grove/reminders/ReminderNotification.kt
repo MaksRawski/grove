@@ -14,7 +14,7 @@ import com.rrajath.grove.data.ReminderEntity
 import com.rrajath.grove.icon.NotificationAppearance
 import com.rrajath.grove.settings.ReminderLeadTime
 import com.rrajath.grove.ui.components.orgInlinePlainText
-import com.rrajath.grove.ui.nav.Routes
+import com.rrajath.grove.ui.nav.DeepLinks
 import com.rrajath.grove.ui.reminders.RescheduleActivity
 
 /**
@@ -96,7 +96,7 @@ object ReminderNotification {
 
         val contentIntent = PendingIntent.getActivity(
             context, DIGEST_NOTIFICATION_ID,
-            Intent(Intent.ACTION_VIEW, "grove://agenda".toUri()).setClass(context, MainActivity::class.java),
+            Intent(Intent.ACTION_VIEW, DeepLinks.agenda().toUri()).setClass(context, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
@@ -146,7 +146,5 @@ object ReminderNotification {
      * composite key into the heading's current line index.
      */
     private fun contentUri(reminder: ReminderEntity): android.net.Uri =
-        ("grove://reminder/${Routes.encode(reminder.fileName)}" +
-                "?headingPath=${Routes.encode(reminder.headingPath)}" +
-                "&level=${reminder.headingLevel}").toUri()
+        DeepLinks.reminder(reminder.fileName, reminder.headingPath, reminder.headingLevel).toUri()
 }

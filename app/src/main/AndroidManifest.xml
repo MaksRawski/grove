@@ -27,11 +27,14 @@
             android:theme="@style/Theme.Grove"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|keyboard|navigation|uiMode|density|fontScale|touchscreen|locale|layoutDirection|colorMode|fontWeightAdjustment|mcc|mnc">
-            <!-- grove:// deep links (widget, notification, note shortcuts) -->
+            <!-- bloom:// deep links (widget, notification, note shortcuts). grove:// is
+                 the pre-rename scheme, kept so old pinned shortcuts and automations
+                 keep working (ui/nav/DeepLinks.kt). -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="bloom" />
                 <data android:scheme="grove" />
             </intent-filter>
             <!--

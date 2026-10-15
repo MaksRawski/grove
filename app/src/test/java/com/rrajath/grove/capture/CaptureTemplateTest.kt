@@ -68,7 +68,7 @@ class CaptureTemplateTest {
     @Test
     fun `built-in ids are stable for launcher shortcuts`() {
         // ShortcutSyncer keys each dynamic launcher shortcut by template id and
-        // deep-links to grove://capture/<id>. Renaming a built-in id would silently
+        // deep-links to bloom://capture/<id>. Renaming a built-in id would silently
         // break the launcher long-press shortcuts, so pin them here.
         val ids = DefaultTemplates.all.map { it.id }.toSet()
         assertTrue("Journal shortcut target missing", "builtin-journal" in ids)

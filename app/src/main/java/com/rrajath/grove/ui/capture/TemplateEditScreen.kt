@@ -71,6 +71,7 @@ import com.rrajath.grove.ui.components.NotebookFileField
 import com.rrajath.grove.ui.components.SegmentedControl
 import com.rrajath.grove.ui.components.monogramLetter
 import com.rrajath.grove.ui.components.nameHashPaletteKey
+import com.rrajath.grove.ui.nav.DeepLinks
 import com.rrajath.grove.ui.newbadge.MarkNewFeatureSeen
 import com.rrajath.grove.ui.newbadge.NewAnchors
 import com.rrajath.grove.ui.newbadge.NewDot
@@ -444,7 +445,7 @@ fun TemplateEditScreen(
             } else {
                 val clipboard = LocalClipboard.current
                 val scope = rememberCoroutineScope()
-                val deepLink = "grove://capture/$slug"
+                val deepLink = DeepLinks.captureTemplate(slug)
                 Text(
                     deepLink,
                     fontFamily = PlexMono, fontSize = 13.sp, color = c.accent,
@@ -466,7 +467,7 @@ fun TemplateEditScreen(
                         .clip(RoundedCornerShape(10.dp))
                         .background(if (canSave) c.accentSoft else c.surface)
                         .clickable(enabled = canSave) {
-                            // The shortcut's grove://capture/{id} target only resolves once the
+                            // The shortcut's bloom://capture/{id} target only resolves once the
                             // template is actually persisted, so save whatever's on screen first --
                             // including a brand-new, not-yet-saved template.
                             val template = currentTemplate()

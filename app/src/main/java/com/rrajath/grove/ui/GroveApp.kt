@@ -53,6 +53,7 @@ import com.rrajath.grove.ui.editor.UnsavedNoteDialog
 import com.rrajath.grove.ui.capture.CapturePickerSheet
 import com.rrajath.grove.ui.capture.TemplateEditScreen
 import com.rrajath.grove.ui.components.GroveActionSnackbar
+import com.rrajath.grove.ui.nav.DeepLinks
 import com.rrajath.grove.ui.nav.Routes
 import com.rrajath.grove.ui.newbadge.LocalNewBadges
 import com.rrajath.grove.ui.newbadge.NewBadges
@@ -222,7 +223,7 @@ private fun GroveNavigation(
 ) {
     val navController = rememberNavController()
     val activity = androidx.activity.compose.LocalActivity.current
-    // Set when a grove://capture or grove://note deep link (widget, notification,
+    // Set when a bloom://capture or bloom://note deep link (widget, notification,
     // shortcut) arrives with no real prior navigation on the back stack -- see
     // the "hasNoRealBackStack" check below. CAPTURE's onDismiss, CAPTURE_TEMPLATE's
     // onClose/onSaved, and NOTE's leaveNote read this to close by finishing the
@@ -249,7 +250,7 @@ private fun GroveNavigation(
     }
 
     // Launcher shortcuts, the capture widget, and the persistent capture
-    // notification all launch grove:// VIEW intents; NavHost doesn't consume
+    // notification all launch bloom:// VIEW intents; NavHost doesn't consume
     // the hosting Activity's intent on its own, so route it through here on
     // both cold start and a warm-start onNewIntent (see MainActivity).
     val consumeDeepLink by rememberUpdatedState(onDeepLinkConsumed)
@@ -259,7 +260,7 @@ private fun GroveNavigation(
         try {
             val action = intent.action
             if (uri == null) return@LaunchedEffect
-            if (action == android.content.Intent.ACTION_VIEW && uri.scheme == "grove") {
+            if (action == android.content.Intent.ACTION_VIEW && DeepLinks.isAppScheme(uri.scheme)) {
                 // deepLinkIsColdStart (true process cold start) turned out not to
                 // track what actually matters: Grove's singleTask launchMode means
                 // a widget/notification tap almost always redelivers onto an
@@ -278,7 +279,7 @@ private fun GroveNavigation(
                 if (hasNoRealBackStack && (uri.host == "capture" || uri.host == "note")) {
                     closeActivityOnExit = true
                 }
-                // A grove://capture/{templateId} arrival is a launcher shortcut
+                // A bloom://capture/{templateId} arrival is a launcher shortcut
                 // tap; tell the system so it can rank that shortcut by usage.
                 if (uri.host == "capture") {
                     uri.pathSegments.firstOrNull()?.let { ShortcutSyncer.reportShortcutUsed(app, it) }
@@ -288,7 +289,7 @@ private fun GroveNavigation(
             }
             // A .org file opened from outside Grove (file manager, "Open with",
             // or Grove set as its default handler; see the file-open intent-filter
-            // on MainActivity in the manifest). This isn't one of the grove://
+            // on MainActivity in the manifest). This isn't one of the bloom://
             // NavDeepLinks above -- there's no route pattern an arbitrary
             // content:// / file:// URI could match -- so it's resolved by hand:
             // match the tapped file's name against a notebook already indexed in
@@ -632,9 +633,7 @@ private fun GroveNavigation(
             }
             composable(
                 Routes.NOTE,
-                deepLinks = listOf(
-                    androidx.navigation.navDeepLink { uriPattern = "grove://note/{noteId}?mode={mode}&isNew={isNew}" },
-                ),
+                deepLinks = DeepLinks.navDeepLinks(Routes.NOTE),
             ) { entry ->
                 val noteId = entry.arguments?.getString("noteId").orEmpty()
                 val isNew = entry.arguments?.getString("isNew") == "true"
@@ -642,7 +641,7 @@ private fun GroveNavigation(
                 if (ref == null) {
                     navController.popBackStack()
                 } else {
-                    // A grove://note/{id} deep link opened straight from a widget
+                    // A bloom://note/{id} deep link opened straight from a widget
                     // tap or notification, with no real prior navigation on the
                     // back stack (see "hasNoRealBackStack" above), puts this
                     // Activity's back stack under this entry to NOTEBOOKS --
@@ -827,11 +826,7 @@ private fun GroveNavigation(
             }
             composable(
                 Routes.REMINDER,
-                deepLinks = listOf(
-                    androidx.navigation.navDeepLink {
-                        uriPattern = "grove://reminder/{fileName}?headingPath={headingPath}&level={level}"
-                    },
-                ),
+                deepLinks = DeepLinks.navDeepLinks(Routes.REMINDER),
             ) { entry ->
                 ReminderResolveScreen(
                     fileName = entry.arguments?.getString("fileName").orEmpty(),
@@ -851,7 +846,7 @@ private fun GroveNavigation(
             }
             composable(
                 Routes.CAPTURE,
-                deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "grove://capture" }),
+                deepLinks = DeepLinks.navDeepLinks(Routes.CAPTURE),
             ) { entry ->
                 CapturePickerSheet(
                     // A quick double back-press used to pop twice: once from the
@@ -884,10 +879,8 @@ private fun GroveNavigation(
             composable(
                 Routes.CAPTURE_TEMPLATE,
                 // Launcher shortcuts (and any caller) can jump straight into a
-                // specific template's editor: grove://capture/builtin-journal etc.
-                deepLinks = listOf(
-                    androidx.navigation.navDeepLink { uriPattern = "grove://capture/{templateId}" },
-                ),
+                // specific template's editor: bloom://capture/builtin-journal etc.
+                deepLinks = DeepLinks.navDeepLinks(Routes.CAPTURE_TEMPLATE),
             ) { entry ->
                 // Any way of leaving this screen consumes the flag, so it never
                 // survives to affect an unrelated, later capture.
@@ -930,7 +923,7 @@ private fun GroveNavigation(
             }
             composable(
                 Routes.AGENDA,
-                deepLinks = listOf(androidx.navigation.navDeepLink { uriPattern = "grove://agenda" }),
+                deepLinks = DeepLinks.navDeepLinks(Routes.AGENDA),
             ) {
                 AgendaScreen(
                     onBack = { navController.popBackStack() },

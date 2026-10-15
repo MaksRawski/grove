@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
  * shortcut per capture template, keyed by template id.
  *
  * A non-launcher app can't read a shortcut's intent URI, so the deep-link
- * wiring (grove://capture/<id> -> Routes.capture(id) and the stable built-in
+ * wiring (bloom://capture/<id> -> Routes.capture(id) and the stable built-in
  * template ids) is covered by the JVM RoutesTest / CaptureTemplateTest.
  */
 @RunWith(AndroidJUnit4::class)

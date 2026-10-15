@@ -18,7 +18,7 @@ import com.rrajath.grove.debug.DebugTestVault
 import com.rrajath.grove.ui.GroveApp
 
 class MainActivity : ComponentActivity() {
-    // grove:// deep links (shortcuts, widget, notification) arrive as the
+    // bloom:// deep links (shortcuts, widget, notification) arrive as the
     // launch Intent on a cold start or via onNewIntent on a warm one
     // (singleTask launchMode). Navigation Compose does not consume the
     // hosting Activity's Intent on its own, so it's threaded through as
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     // GroveApp calls back into onDeepLinkConsumed() to clear it. Without that,
     // any later Activity recreation (process death, or a configuration change
     // not covered by android:configChanges) re-reads getIntent() and
-    // re-dispatches the original grove:// target -- e.g. the capture sheet the
+    // re-dispatches the original bloom:// target -- e.g. the capture sheet the
     // user already cancelled would reappear.
     private var deepLinkIntent by mutableStateOf<Intent?>(null)
 

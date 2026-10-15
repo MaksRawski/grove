@@ -185,7 +185,7 @@ fun CaptureEditorScreen(
     val templates by viewModel.templates.collectAsStateWithLifecycle()
     val saveState by viewModel.saveState.collectAsStateWithLifecycle()
     val clipboard = LocalClipboard.current
-    // Deep links (launcher shortcuts, widget, or a hand-typed grove://capture/x
+    // Deep links (launcher shortcuts, widget, or a hand-typed bloom://capture/x
     // URL) pass the template's opaque id, but a manually-typed link is more
     // likely to use the visible name (e.g. "TODO") or the dash-separated slug
     // shown on the template editor's capture-link section, so fall back to a

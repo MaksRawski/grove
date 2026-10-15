@@ -13,6 +13,7 @@ import androidx.core.net.toUri
 import com.rrajath.grove.MainActivity
 import com.rrajath.grove.R
 import com.rrajath.grove.icon.NotificationAppearance
+import com.rrajath.grove.ui.nav.DeepLinks
 
 /**
  * Optional persistent "Capture" notification (PRD §8): a low-priority,
@@ -35,7 +36,7 @@ object CaptureNotification {
                 NotificationChannel(CHANNEL_ID, "Capture shortcut", NotificationManager.IMPORTANCE_MIN)
             )
         }
-        val intent = Intent(Intent.ACTION_VIEW, "grove://capture".toUri())
+        val intent = Intent(Intent.ACTION_VIEW, DeepLinks.capture().toUri())
             .setClass(context, MainActivity::class.java)
         val pending = PendingIntent.getActivity(
             context, 1, intent,

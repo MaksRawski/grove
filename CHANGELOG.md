@@ -57,6 +57,9 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+### Added
+- `bloom://` deep links; existing `grove://` links and pinned shortcuts keep working.
+
 ### Changed
 - Grove is now called Bloom. Same app, same notes, same settings; nothing to migrate.
 

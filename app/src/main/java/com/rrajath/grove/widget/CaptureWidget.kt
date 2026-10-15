@@ -32,17 +32,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rrajath.grove.MainActivity
 import com.rrajath.grove.R
+import com.rrajath.grove.ui.nav.DeepLinks
 
 /**
  * Home-screen "Capture" widget (PRD §8): one tap opens the capture picker
- * via the grove://capture deep link.
+ * via the bloom://capture deep link.
  */
 class CaptureWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             GlanceTheme {
-                val intent = Intent(Intent.ACTION_VIEW, "grove://capture".toUri())
+                val intent = Intent(Intent.ACTION_VIEW, DeepLinks.capture().toUri())
                     .setClass(context, MainActivity::class.java)
                 // The mark is drawn from a vector (ic_brand_asterisk), not a "✱"
                 // text glyph: U+2731 is absent from many device system fonts, so

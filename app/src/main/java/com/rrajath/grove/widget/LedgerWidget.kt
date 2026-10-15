@@ -62,6 +62,7 @@ import com.rrajath.grove.ui.agenda.hasDoneAffordance
 import com.rrajath.grove.ui.agenda.metaColor
 import com.rrajath.grove.ui.agenda.repeaterKind
 import com.rrajath.grove.ui.components.orgInlinePlainText
+import com.rrajath.grove.ui.nav.DeepLinks
 import com.rrajath.grove.ui.nav.Routes
 import com.rrajath.grove.ui.theme.GroveColors
 import com.rrajath.grove.ui.theme.groveColorsFor
@@ -114,7 +115,7 @@ private const val TAG = "GroveWidget"
  */
 private const val MAX_ROWS_PER_SECTION = 20
 
-private val AGENDA_URI = "grove://agenda".toUri()
+private val AGENDA_URI = DeepLinks.agenda().toUri()
 
 /**
  * Projection of [GroveSettings] onto just the fields this widget's composition
@@ -525,7 +526,7 @@ private fun stateChipColors(colors: GroveColors, keyword: String) = when (keywor
 
 private fun noteUri(row: AgendaRow) = run {
     val noteId = Routes.encode(NoteRef(row.fileName, row.lineIndex).encode())
-    "grove://note/$noteId?mode=read&isNew=false".toUri()
+    DeepLinks.note(noteId, mode = "read", isNew = false).toUri()
 }
 
 private val FILE_NAME_KEY = ActionParameters.Key<String>("fileName")

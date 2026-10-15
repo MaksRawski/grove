@@ -14,6 +14,7 @@ import androidx.core.net.toUri
 import com.rrajath.grove.icon.AppIconManager
 import com.rrajath.grove.settings.ThemePreference
 import com.rrajath.grove.ui.components.monogramLetter
+import com.rrajath.grove.ui.nav.DeepLinks
 import com.rrajath.grove.ui.theme.GroveLightColors
 import com.rrajath.grove.ui.theme.groveColorsFor
 
@@ -53,7 +54,7 @@ object ShortcutSyncer {
     /**
      * Tells the launcher that [templateId]'s capture shortcut was just
      * invoked, so it can rank frequently-used capture shortcuts higher.
-     * Called from the grove://capture/{id} deep-link handler.
+     * Called from the bloom://capture/{id} deep-link handler.
      */
     fun reportShortcutUsed(context: Context, templateId: String) {
         ShortcutManagerCompat.reportShortcutUsed(context, templateId)
@@ -83,7 +84,7 @@ object ShortcutSyncer {
         fg: Int,
         ownerAlias: android.content.ComponentName,
     ): ShortcutInfoCompat {
-        val intent = Intent(Intent.ACTION_VIEW, "grove://capture/${template.id}".toUri())
+        val intent = Intent(Intent.ACTION_VIEW, DeepLinks.captureTemplate(template.id).toUri())
             .setClassName(context.packageName, "com.rrajath.grove.MainActivity")
         return ShortcutInfoCompat.Builder(context, template.id)
             .setShortLabel(template.name)
