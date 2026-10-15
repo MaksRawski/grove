@@ -57,6 +57,8 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-10-15
+
 ### Added
 - Pinned notebooks and folders can be reordered with Move up and Move down in their long-press menu.
 - Agenda: swipe left or right on empty space to switch between Today and Upcoming.
