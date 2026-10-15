@@ -64,6 +64,8 @@ re-uploads the APKs to the existing release instead of failing.
 
 ### Changed
 - The Agenda widget's quick-add shows its target as a label instead of a file menu.
+- Marking a task done now logs the state change at the top of its LOGBOOK.
+- Read mode shows a heading's CLOSED date as a muted check chip.
 
 ## [1.9.0] - 2026-10-04
 

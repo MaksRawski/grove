@@ -34,6 +34,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material3.Icon
@@ -771,13 +772,13 @@ private fun NoteContent(
                             }
                         }
 
-                        // Planning line (SCHEDULED/DEADLINE) is immediately after the
+                        // Planning line (SCHEDULED/DEADLINE/CLOSED) is immediately after the
                         // heading in the raw org file, before any drawers, so it
                         // renders first here too, matching edit mode's line order.
                         // Both chips share a row and wrap to a second line only if
                         // they don't fit side by side.
                         if (headline.planning.scheduled != null || headline.planning.deadline != null ||
-                            headline.dedicatedActiveTimestamps.isNotEmpty()
+                            headline.planning.closed != null || headline.dedicatedActiveTimestamps.isNotEmpty()
                         ) {
                             Spacer(Modifier.height(6.dp))
                             FlowRow(
@@ -801,6 +802,10 @@ private fun NoteContent(
                                         bg = c.violetSoft,
                                         iconSize = 8.dp,
                                     )
+                                }
+                                // CLOSED: muted, since it's history rather than an upcoming date.
+                                headline.planning.closed?.let {
+                                    PlanningChip(remember(it) { it.formatHuman() }, icon = Icons.Filled.Check, fg = c.ink3, bg = c.surface2)
                                 }
                             }
                         }
@@ -1162,7 +1167,7 @@ internal fun LinkActionMenuItems(target: String, onDismiss: () -> Unit) {
 
 /**
  * A planning date shown as a soft-tinted chip (SCHEDULED blue calendar,
- * DEADLINE red flag). [text] is the human form (`OrgTimestamp.formatHuman`),
+ * DEADLINE red flag, CLOSED muted ink3 check). [text] is the human form (`OrgTimestamp.formatHuman`),
  * not the raw org stamp: Read mode is prose, Edit mode is where the literal
  * `<2026-07-30 Thu>` belongs.
  */

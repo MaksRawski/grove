@@ -177,7 +177,9 @@ object OrgMutations {
     /**
      * Mark done per org rules: a repeating SCHEDULED/DEADLINE advances its date
      * and the keyword stays active; otherwise the keyword becomes [doneKeyword]
-     * and a CLOSED stamp is added.
+     * and a CLOSED stamp is added. Leaving a todo-type keyword (or none) also
+     * logs a `- State` entry at the top of the LOGBOOK drawer; a done-to-done
+     * change (DONE to CANCELLED) only refreshes CLOSED.
      */
     fun markDone(
         doc: OrgDocument,
@@ -206,19 +208,16 @@ object OrgMutations {
             val h2 = doc2.headlines.first { it.lineIndex == h.lineIndex }
             upsertProperty(doc2, h2, "LAST_REPEAT", stamp.format())
         } else {
-            val withClosed = writePlanning(
-                doc, h,
-                h.planning.copy(
-                    closed = OrgTimestamp(
-                        today,
-                        time = now.toLocalTime().withSecond(0).withNano(0),
-                        active = false,
-                    )
-                ),
-            )
+            val stamp = OrgTimestamp(today, time = now.toLocalTime().withSecond(0).withNano(0), active = false)
+            val withClosed = writePlanning(doc, h, h.planning.copy(closed = stamp))
             val redoc = OrgParser.parse(withClosed, doc.keywords)
             val again = redoc.headlines.first { it.lineIndex == h.lineIndex }
-            setKeyword(redoc, again, doneKeyword)
+            val withKeyword = setKeyword(redoc, again, doneKeyword)
+            val wasDone = h.keyword != null && doc.keywords.isDone(h.keyword)
+            if (wasDone) return withKeyword
+            val doc2 = OrgParser.parse(withKeyword, doc.keywords)
+            val h2 = doc2.headlines.first { it.lineIndex == h.lineIndex }
+            appendLogbookEntry(doc2, h2, logStateChangeLine(doneKeyword, h.keyword ?: "", stamp))
         }
     }
 

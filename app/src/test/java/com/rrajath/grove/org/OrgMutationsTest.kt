@@ -286,6 +286,66 @@ class OrgMutationsTest {
     }
 
     @Test
+    fun `markDone from a todo keyword logs the state change at the top of LOGBOOK`() {
+        val withLog = OrgParser.parse(
+            """
+            * TODO Task
+            :PROPERTIES:
+            :ID: x
+            :END:
+            :LOGBOOK:
+            - State "DONE"       from "TODO"       [2026-10-01 Thu 08:00]
+            :END:
+            body
+            """.trimIndent() + "\n"
+        )
+        val result = OrgMutations.changeKeyword(
+            withLog, withLog.headlines.first(), "DONE", withLog.keywords, LocalDateTime.of(2026, 10, 15, 9, 5),
+        )
+        assertEquals(
+            """
+            * DONE Task
+            CLOSED: [2026-10-15 Thu 09:05]
+            :PROPERTIES:
+            :ID: x
+            :END:
+            :LOGBOOK:
+            - State "DONE"       from "TODO"       [2026-10-15 Thu 09:05]
+            - State "DONE"       from "TODO"       [2026-10-01 Thu 08:00]
+            :END:
+            body
+            """.trimIndent() + "\n",
+            result,
+        )
+    }
+
+    @Test
+    fun `markDone from no keyword creates the LOGBOOK with an empty from state`() {
+        val plain = OrgParser.parse("* Task\nbody\n")
+        val result = OrgMutations.changeKeyword(
+            plain, plain.headlines.first(), "DONE", plain.keywords, LocalDateTime.of(2026, 10, 15, 9, 5),
+        )
+        assertEquals(
+            "* DONE Task\nCLOSED: [2026-10-15 Thu 09:05]\n:LOGBOOK:\n" +
+                "- State \"DONE\"       from \"\"           [2026-10-15 Thu 09:05]\n:END:\nbody\n",
+            result,
+        )
+    }
+
+    @Test
+    fun `done to done refreshes CLOSED without a LOGBOOK entry`() {
+        val result = OrgParser.parse(
+            OrgMutations.changeKeyword(
+                doneDoc, doneDoc.headlines.first(), "CANCELLED", doneDoc.keywords, LocalDateTime.of(2026, 10, 15, 9, 5),
+            )
+        )
+        val after = result.headlines.first()
+        assertEquals("CANCELLED", after.keyword)
+        assertEquals("[2026-10-15 Thu 09:05]", after.planning.closed!!.format())
+        assertTrue(after.logbook.isEmpty())
+    }
+
+    @Test
     fun `changeKeyword between two open keywords is a plain rewrite`() {
         val result = OrgParser.parse(
             OrgMutations.changeKeyword(doc, h("Last"), "IN-PROGRESS", doc.keywords, LocalDateTime.now())

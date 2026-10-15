@@ -9,7 +9,7 @@ The metadata sheet is a structured, tap-driven alternative to hand-editing a hea
 
 ## Sections
 
-- **State**: tap any configured TODO keyword (none, TODO, IN-PROGRESS, DONE, KILL, or your own custom set from Settings → Notes) to cycle the heading's state
+- **State**: tap any configured TODO keyword (none, TODO, IN-PROGRESS, DONE, KILL, or your own custom set from Settings → Notes) to cycle the heading's state. Moving from a todo keyword (or none) to a done keyword stamps `CLOSED: [date time]` and adds a `- State "DONE" from "TODO" [date time]` entry at the top of the `:LOGBOOK:` drawer, the way Emacs does with `org-log-done`. The same applies to marking done from Outline, Search, Agenda, the widget, and reminder notifications
 - **Priority**: none, `#A`, `#B`, `#C`
 - **Tags**: free-text field, space-separated; suggestion chips surface tags already used elsewhere in your vault as you type
 - **Dates**: a single pill summarizing SCHEDULED, DEADLINE, and any bare active `<date>` events together; tap it to open [Planning Dates](/features/planning-dates), which lands on whichever tab makes sense for what is already set
