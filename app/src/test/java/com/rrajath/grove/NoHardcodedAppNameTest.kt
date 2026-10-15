@@ -66,6 +66,19 @@ class NoHardcodedAppNameTest {
     }
 
     @Test
+    fun `no string literal points at the old repo or docs site`() {
+        val oldUrl = Regex("""github\.com/rrajath/grove\b|grove\.rrajath\.com""")
+        val hits = sourceSets().flatMap { dir ->
+            dir.walkTopDown().filter { it.isFile && it.extension == "kt" }.flatMap { file ->
+                kotlinStringLiterals(file.readText())
+                    .filter { (_, text) -> oldUrl.containsMatchIn(text) }
+                    .map { (line, text) -> "${file.relativeTo(appDir)}:$line: \"$text\"" }
+            }.toList()
+        }
+        assertTrue("Old repo/docs URLs; use rrajath/bloom or bloom.rrajath.com:\n" + hits.joinToString("\n"), hits.isEmpty())
+    }
+
+    @Test
     fun `manifest labels never spell out the app name`() {
         val manifest = File(appDir, "src/main/AndroidManifest.xml").readText()
         val literal = Regex("""android:label="[^"@]*\b(Grove|Bloom)\b[^"]*"""").findAll(manifest).map { it.value }.toList()

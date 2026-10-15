@@ -97,7 +97,7 @@ private data class DeviceInfo(
     val locale: String,
 )
 
-private const val GITHUB_ISSUE_URL = "https://github.com/rrajath/grove/issues/new"
+private const val GITHUB_ISSUE_URL = "https://github.com/rrajath/bloom/issues/new"
 
 /**
  * Settings § Help → Report a bug (design/Grove.dc.html lines 1811-1881). Both
