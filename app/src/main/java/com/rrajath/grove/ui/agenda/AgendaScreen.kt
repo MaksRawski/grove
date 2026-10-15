@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +49,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -104,6 +107,9 @@ private data class DatePickerRequest(
  * today" is the bulk equivalent, and the swipe underlay would break the card's
  * fill.
  */
+/** How far a swipe on the agenda list's empty space must travel to switch tabs. */
+private val TAB_SWIPE_THRESHOLD = 56.dp
+
 @Composable
 fun AgendaScreen(
     onBack: () -> Unit,
@@ -159,7 +165,31 @@ fun AgendaScreen(
                 )
             }
 
-            Box(Modifier.weight(1f).fillMaxWidth()) {
+            // A horizontal swipe on the list's empty space flips Today ↔ Upcoming. Swipeable
+            // rows claim their own drags first (their draggable consumes past touch slop,
+            // which cancels this detector), and a vertical scroll cancels it the same way.
+            val currentTab by rememberUpdatedState(state.tab)
+            Box(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .pointerInput(Unit) {
+                        val threshold = TAB_SWIPE_THRESHOLD.toPx()
+                        var total = 0f
+                        detectHorizontalDragGestures(
+                            onDragStart = { total = 0f },
+                            onHorizontalDrag = { change, dx -> change.consume(); total += dx },
+                            onDragEnd = {
+                                val next = when {
+                                    total <= -threshold && currentTab == AgendaTab.TODAY -> AgendaTab.UPCOMING
+                                    total >= threshold && currentTab == AgendaTab.UPCOMING -> AgendaTab.TODAY
+                                    else -> null
+                                }
+                                next?.let(viewModel::setTab)
+                            },
+                        )
+                    },
+            ) {
                 AgendaList(
                     listState = listState,
                     state = state,
