@@ -57,6 +57,9 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+### Changed
+- Grove is now called Bloom. Same app, same notes, same settings; nothing to migrate.
+
 ## [1.10.0] - 2026-10-15
 
 ### Added

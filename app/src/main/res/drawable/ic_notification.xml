@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Grove mark sized for the status bar: the same five rounded-cap spokes as
+<!-- Bloom mark sized for the status bar: the same five rounded-cap spokes as
      ic_launcher_foreground, but drawn to fill a 24dp notification canvas
      instead of sitting inside a 108dp adaptive-icon safe zone (where the mark
      spans only ~30/108 and renders as a speck in the status bar).

@@ -62,6 +62,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.PlatformTextStyle
@@ -76,6 +77,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.rrajath.grove.R
 import com.rrajath.grove.ui.components.GroveTopBar
 import com.rrajath.grove.ui.newbadge.MarkNewFeatureSeen
 import com.rrajath.grove.ui.newbadge.NewAnchors
@@ -105,7 +107,8 @@ import com.rrajath.grove.ui.util.StringSetSaver
 @Composable
 fun SettingsTipsScreen(onBack: () -> Unit) {
     val c = MaterialTheme.grove
-    val groups = remember { tipGroups() }
+    val appName = stringResource(R.string.app_name)
+    val groups = remember(appName) { tipGroups(appName) }
     val allIds = remember(groups) { groups.flatMap { g -> g.tips.map { it.id } }.toSet() }
     var openIds by rememberSaveable(stateSaver = StringSetSaver) { mutableStateOf(emptySet()) }
     val allExpanded = allIds.isNotEmpty() && openIds.containsAll(allIds)
@@ -400,9 +403,10 @@ private data class TipGroup(val id: String, val label: String, val tips: List<Ti
 /**
  * Tip content, reworded from the author's notes in design/Grove.dc.html
  * `tipVals()` (lines 3835-3868); the "Links" group is new to the app and has no
- * prototype entry. `{{…}}` markers become inline keycaps.
+ * prototype entry. `{{…}}` markers become inline keycaps. [appName] is
+ * `R.string.app_name`, so the copy never hardcodes the app's name.
  */
-private fun tipGroups(): List<TipGroup> = listOf(
+private fun tipGroups(appName: String): List<TipGroup> = listOf(
     TipGroup(
         "sync-saving",
         "Sync & saving",
@@ -514,7 +518,7 @@ private fun tipGroups(): List<TipGroup> = listOf(
             ),
             Tip(
                 "link-id", Icons.Default.Tag, "Link by ID so it survives moves",
-                "When a file or heading you pick has an ID (or CUSTOM_ID), Grove offers to link by that instead of by name. " +
+                "When a file or heading you pick has an ID (or CUSTOM_ID), $appName offers to link by that instead of by name. " +
                         "Choose it: an ID link keeps working after the target is renamed, moved, or refiled into " +
                         "another file. To put an ID on every new heading automatically, turn on Settings › Notes › " +
                         "Add ID to new notes.",
@@ -543,7 +547,7 @@ private fun tipGroups(): List<TipGroup> = listOf(
         listOf(
             Tip(
                 "launcher", Icons.Default.Apps, "Capture from the home-screen icon",
-                "Long-press Grove's home-screen icon to open a capture template without going through the app first.",
+                "Long-press $appName's home-screen icon to open a capture template without going through the app first.",
             ),
             Tip(
                 "archive", Icons.Default.Archive, "Auto-archive tasks when they're done",

@@ -48,6 +48,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.rrajath.grove.GroveApplication
 import com.rrajath.grove.MainActivity
+import com.rrajath.grove.R
 import com.rrajath.grove.data.toNoteMeta
 import com.rrajath.grove.icon.AppIconManager
 import com.rrajath.grove.org.OrgMutations
@@ -281,7 +282,7 @@ private fun HeaderRow(
         ) {
             Image(
                 provider = ImageProvider(iconRes),
-                contentDescription = "Open Grove",
+                contentDescription = "Open ${context.getString(R.string.app_name)}",
                 modifier = GlanceModifier
                     .size(22.dp)
                     .cornerRadius(7.dp)

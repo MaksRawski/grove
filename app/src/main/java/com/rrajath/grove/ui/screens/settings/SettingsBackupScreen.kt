@@ -59,7 +59,7 @@ fun SettingsBackupScreen(
                 BackupSecondaryButton(
                     label = "Export settings",
                     modifier = Modifier.weight(1f),
-                    onClick = { settingsExporter.launch("grove-settings.json") },
+                    onClick = { settingsExporter.launch("bloom-settings.json") },
                 )
                 Spacer(Modifier.width(10.dp))
                 BackupSecondaryButton(

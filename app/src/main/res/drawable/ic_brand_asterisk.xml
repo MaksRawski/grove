@@ -1,5 +1,5 @@
 <!--
-  The Grove org-asterisk mark: five rounded spokes radiating from center at
+  The Bloom org-asterisk mark: five rounded spokes radiating from center at
   36/108/180/252/324 degrees, matching ui/components/BrandMark.kt's drawAsterisk
   (design/Grove.dc.html spokeSet). White fill so callers tint it at draw time.
   Each spoke is a vertical stadium 5.25 wide by 12 tall, rooted at the center.
