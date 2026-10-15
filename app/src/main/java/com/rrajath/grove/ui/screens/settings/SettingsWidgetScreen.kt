@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -24,6 +25,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rrajath.grove.settings.FontSizePreference
@@ -31,9 +33,11 @@ import com.rrajath.grove.settings.GroveSettings
 import com.rrajath.grove.ui.components.SegmentedControl
 import com.rrajath.grove.ui.newbadge.MarkNewFeatureSeen
 import com.rrajath.grove.ui.newbadge.NewAnchors
+import com.rrajath.grove.ui.newbadge.NewDot
 import com.rrajath.grove.ui.theme.PlexMono
 import com.rrajath.grove.ui.theme.PlexSans
 import com.rrajath.grove.ui.theme.grove
+import com.rrajath.grove.widget.QuickAddTarget
 import kotlin.math.roundToInt
 
 /** Settings § Widget: every lever for the home-screen Agenda ledger widget, plus a live preview. */
@@ -47,12 +51,14 @@ fun SettingsWidgetScreen(
     onSetAgendaWidgetShowTags: (Boolean) -> Unit,
     onSetAgendaWidgetShowPriority: (Boolean) -> Unit,
     onSetAgendaWidgetFontSize: (FontSizePreference) -> Unit,
+    onOpenQuickAddTargetPicker: () -> Unit,
 ) {
     val c = MaterialTheme.grove
     SettingsPageScaffold(title = "Widget", onBack = onBack) {
         // Leaving this screen retires the Widget page's NEW dot from its whole
         // trail (menu glyph, drawer, Settings hub row, the page itself).
         MarkNewFeatureSeen(NewAnchors.SETTINGS_WIDGET_PAGE)
+        MarkNewFeatureSeen(NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET)
 
         // Local, not the committed setting: Slider's onValueChange fires on every
         // drag tick, and writing to the settings DataStore that often made both
@@ -132,6 +138,24 @@ fun SettingsWidgetScreen(
                 description = "The A/B/C priority badge on each item",
                 onToggle = onSetAgendaWidgetShowPriority,
             )
+            RowDivider()
+            SettingsRow(
+                label = "Quick add target",
+                description = if (settings.quickAddTargetFile == null) {
+                    "Where the widget's + saves tasks. Follows the share target until you pick one"
+                } else {
+                    "Where the widget's + saves tasks: a file, or a heading in one"
+                },
+                labelBadge = { NewDot(NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET) },
+                onClick = onOpenQuickAddTargetPicker,
+            ) {
+                Text(
+                    QuickAddTarget.from(settings).label,
+                    fontFamily = PlexMono, fontSize = 12.sp, color = c.accent,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.widthIn(max = 150.dp),
+                )
+            }
             RowDivider()
             Column(Modifier.padding(horizontal = 15.dp, vertical = 12.dp)) {
                 Text(

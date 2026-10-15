@@ -189,15 +189,21 @@ Agenda ledger, or the reverse).
   `windowSoftInputMode="adjustResize"` doesn't reliably resize the window, the
   activity instead calls `WindowCompat.setDecorFitsSystemWindows(window, false)`
   and the sheet rides the IME inset itself via `Modifier.imePadding()`. The
-  notebook chip's default is Settings § Sharing's "Shared content target"
-  (`GroveSettings.shareTargetFile`), resolved the same way
-  `AppViewModel.consumeSharedContent` resolves it for a shared link — not any
-  capture template's target file, since the composer never touches the
-  template system. Sending appends a plain top-level heading to the bottom of
-  the chosen notebook via `CaptureInserter.insert` +
-  `OrgMutations.setPriority`/`setScheduled` — the same on-disk formatting path
-  every other capture surface writes through, just without template
-  placeholders/datetree targets, which this composer has no UI for.
+  target is fixed, not picked per capture: `QuickAddTarget.from(settings)`
+  reads Settings § Widget's "Quick add target" (`quickAddTargetFile` +
+  '/'-separated `quickAddHeadingPath`, set through the same `RefileSheet`
+  drill-down as the archive location; `AppViewModel`'s location picker carries
+  a `LocationPickerPurpose` to know which setting a pick saves to). While
+  `quickAddTargetFile` is null it falls back to Settings § Sharing's "Shared
+  content target", resolved like `AppViewModel.consumeSharedContent` does, so
+  updating never moves anyone's tasks. The composer shows the target as a
+  plain label (a per-capture file menu didn't scale to vaults with hundreds of
+  files). Sending inserts via `CaptureInserter.insertUnderPath` (last child of
+  the heading, or bottom of the file for an empty path) +
+  `OrgMutations.setPriority`/`setScheduled`, the same on-disk formatting path
+  every other capture surface writes through. A heading path that no longer
+  resolves falls back to the bottom of the file and a long toast says so,
+  rather than creating headings or dropping the typed task.
 
 ## Reminders (`reminders/`)
 

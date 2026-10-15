@@ -44,13 +44,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.glance.appwidget.updateAll
 import com.rrajath.grove.GroveApplication
 import com.rrajath.grove.capture.CaptureInserter
-import com.rrajath.grove.capture.TargetLocation
 import com.rrajath.grove.org.DateShorthandParser
 import com.rrajath.grove.org.OrgKeywords
 import com.rrajath.grove.org.OrgMutations
@@ -121,16 +121,14 @@ private fun QuickAddSheet(onDismiss: () -> Unit) {
     val app = context.applicationContext as GroveApplication
 
     var keywords by remember { mutableStateOf(listOf("TODO")) }
-    var notebooks by remember { mutableStateOf(emptyList<String>()) }
-    var defaultNotebook by remember { mutableStateOf(GroveSettings.DEFAULT_SHARE_TARGET) }
+    // Fixed by Settings § Widget's "Quick add target" (a file, or a heading in
+    // one), not picked here: a vault with hundreds of files made a per-capture
+    // file menu more hindrance than help.
+    var target by remember { mutableStateOf<QuickAddTarget?>(null) }
     LaunchedEffect(Unit) {
         val settings = app.settingsRepository.settings.first()
         keywords = app.keywords.first().active.ifEmpty { listOf("TODO") }
-        // Read file names from the Room index rather than vault.notebooks(), which
-        // would re-read and re-parse every .org file just to count headlines —
-        // costly on a cold-started widget process before the sheet is usable.
-        notebooks = app.database.indexDao().notebooks().map { it.fileName }.sorted()
-        defaultNotebook = resolveShareTargetFile(settings)
+        target = QuickAddTarget.from(settings)
     }
 
     var text by remember { mutableStateOf("") }
@@ -145,12 +143,6 @@ private fun QuickAddSheet(onDismiss: () -> Unit) {
     var customDate by remember { mutableStateOf<OrgTimestamp?>(null) }
     var dateMenuOpen by remember { mutableStateOf(false) }
     var customDateOpen by remember { mutableStateOf(false) }
-    var notebook by remember(defaultNotebook) { mutableStateOf(defaultNotebook) }
-    var notebookMenuOpen by remember { mutableStateOf(false) }
-    // The Settings-configured share target is the default even when it isn't an
-    // existing notebook yet (it gets created on send, same as sharing does); the
-    // notebook chip's pop-out still needs it in its list even before that happens.
-    val notebookChoices = remember(notebooks, defaultNotebook) { (listOf(defaultNotebook) + notebooks).distinct() }
 
     // Resolved lazily on every recomposition (not eagerly at pick time) so a
     // preset like "Today" still reflects the actual date whenever it's read,
@@ -235,23 +227,18 @@ private fun QuickAddSheet(onDismiss: () -> Unit) {
                     priority = PRIORITIES.next(priority)
                 }
                 Spacer(Modifier.width(7.dp))
-                Box {
-                    ComposerChip(notebook, active = false) { notebookMenuOpen = true }
-                    DropdownMenu(
-                        expanded = notebookMenuOpen,
-                        onDismissRequest = { notebookMenuOpen = false },
-                        containerColor = MaterialTheme.grove.surface,
-                    ) {
-                        notebookChoices.forEach { nb ->
-                            DropdownMenuItem(
-                                text = { Text(nb, fontFamily = PlexSans, color = MaterialTheme.grove.ink) },
-                                onClick = { notebook = nb; notebookMenuOpen = false },
-                            )
-                        }
-                    }
-                }
-                Spacer(Modifier.weight(1f))
-                val canSend = text.isNotBlank()
+                // Plain label, not a chip: the target is changed in Settings § Widget.
+                Text(
+                    target?.label.orEmpty(),
+                    color = MaterialTheme.grove.ink3,
+                    fontSize = 11.5.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = PlexSans,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
+                )
+                val canSend = text.isNotBlank() && target != null
                 Box(
                     Modifier
                         .size(34.dp)
@@ -262,11 +249,21 @@ private fun QuickAddSheet(onDismiss: () -> Unit) {
                             val savedKeyword = keyword
                             val savedPriority = priority
                             val savedDate = selectedDate
-                            val savedNotebook = notebook
+                            val savedTarget = target ?: return@clickable
                             app.appScope.launch {
-                                submitQuickAdd(app, savedNotebook, savedKeyword, savedPriority, savedText, savedDate)
+                                val headingFound = submitQuickAdd(app, savedTarget, savedKeyword, savedPriority, savedText, savedDate)
+                                // The toast waits for the write so a missing heading can be
+                                // reported; the app context outlives this finished activity.
+                                val message = if (headingFound) {
+                                    "Added to ${savedTarget.label}"
+                                } else {
+                                    "Heading \"${savedTarget.headingPath.last()}\" not found. " +
+                                        "Added to the bottom of ${savedTarget.fileName.removeSuffix(".org")}"
+                                }
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(app, message, if (headingFound) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+                                }
                             }
-                            Toast.makeText(context, "Added to ${savedNotebook.removeSuffix(".org")}", Toast.LENGTH_SHORT).show()
                             onDismiss()
                         },
                     contentAlignment = Alignment.Center,
@@ -336,49 +333,41 @@ private fun ComposerChip(label: String, active: Boolean, onClick: () -> Unit) {
     }
 }
 
-/**
- * The composer's default target file: Settings § Sharing's "Shared content target"
- * (`GroveSettings.shareTargetFile`), resolved exactly like [com.rrajath.grove.ui.AppViewModel.consumeSharedContent]
- * does for a shared link/text, not the first capture template's target — this composer
- * bypasses the template system entirely, so a template's target was never the right default.
- */
-private fun resolveShareTargetFile(settings: GroveSettings): String {
-    val target = settings.shareTargetFile.trim().ifBlank { GroveSettings.DEFAULT_SHARE_TARGET }
-    return if (target.endsWith(".org")) target else "$target.org"
-}
-
 private fun <T> List<T>.next(current: T): T {
     val i = indexOf(current)
     return if (i == -1 || isEmpty()) current else this[(i + 1) % size]
 }
 
 /**
- * Appends a plain top-level heading to the bottom of [notebook] (creating it if
- * needed), then applies priority/scheduled the same way every other mutation
- * surface does ([OrgMutations.setPriority]/[OrgMutations.setScheduled]) so the
- * on-disk formatting is identical to a heading edited from the Outline or Agenda.
+ * Adds the task as the last child of [target]'s heading, or as a top-level heading
+ * at the bottom of its file when it names no heading (creating the file if
+ * needed). A heading that no longer exists (renamed, deleted, or not synced yet)
+ * falls back to the bottom of the file so the typed task is never lost; returns
+ * false in that case so the caller can say so. Priority/scheduled are applied the
+ * same way every other mutation surface does ([OrgMutations.setPriority]/
+ * [OrgMutations.setScheduled]) so the on-disk formatting is identical to a
+ * heading edited from the Outline or Agenda.
  */
 private suspend fun submitQuickAdd(
     app: GroveApplication,
-    notebook: String,
+    target: QuickAddTarget,
     keyword: String,
     priority: Char?,
     title: String,
     date: OrgTimestamp?,
-) {
-    if (title.isBlank()) return
+): Boolean {
+    if (title.isBlank()) return true
+    val notebook = target.fileName
     val vault = app.vault.filterNotNull().first()
     if (vault.open(notebook) == null) vault.createNotebook(notebook)
     val orgKeywords = OrgKeywords.parse(app.settingsRepository.settings.first().todoKeywords)
+    var headingFound = true
     val text = withContext(Dispatchers.Default) {
         val baseText = vault.open(notebook)?.text ?: ""
-        val insertion = CaptureInserter.insert(
-            docText = baseText,
-            location = TargetLocation.BottomOfFile,
-            entry = "$keyword $title",
-            today = LocalDate.now(),
-            keywords = orgKeywords,
-        )
+        val entry = "$keyword $title"
+        val insertion = CaptureInserter.insertUnderPath(baseText, target.headingPath, entry, orgKeywords)
+            ?: CaptureInserter.insertUnderPath(baseText, emptyList(), entry, orgKeywords)!!
+                .also { headingFound = false }
         var text = insertion.newText
         var doc = OrgParser.parse(text, orgKeywords)
         var headline = doc.headlineAtLine(insertion.insertedAtLine)
@@ -396,4 +385,5 @@ private suspend fun submitQuickAdd(
     app.reindexNow(notebook, text)
     app.syncManager.requestReindex(notebook, text, "widget quick add")
     LedgerWidget().updateAll(app)
+    return headingFound
 }

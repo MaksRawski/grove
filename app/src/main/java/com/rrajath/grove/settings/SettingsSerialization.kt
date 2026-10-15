@@ -105,6 +105,8 @@ data class SettingsExport(
     val agendaWidgetShowTags: Boolean = true,
     val agendaWidgetShowPriority: Boolean = true,
     val agendaWidgetFontSize: String = FontSizePreference.MEDIUM.storageKey,
+    val quickAddTargetFile: String? = null,
+    val quickAddHeadingPath: String = "",
     val autoArchiveDoneItems: Boolean = false,
     val autoArchiveFile: String? = null,
     val autoArchiveHeadingPath: String = "",
@@ -178,6 +180,8 @@ data class SettingsExport(
         agendaWidgetShowTags = agendaWidgetShowTags,
         agendaWidgetShowPriority = agendaWidgetShowPriority,
         agendaWidgetFontSize = FontSizePreference.fromStorage(agendaWidgetFontSize),
+        quickAddTargetFile = quickAddTargetFile,
+        quickAddHeadingPath = quickAddHeadingPath,
         autoArchiveDoneItems = autoArchiveDoneItems,
         autoArchiveFile = autoArchiveFile,
         autoArchiveHeadingPath = autoArchiveHeadingPath,
@@ -212,7 +216,10 @@ data class SettingsExport(
         // v9: added the Dailies fields (dailiesDirectory/dailiesFilenamePattern/
         // dailiesHeaderTemplate). Additive — older exports omit them and import
         // at their defaults (vault root, %<%Y-%m-%d>.org, the ID+title template).
-        const val CURRENT_VERSION = 9
+        // v10: added the widget quick-add target (quickAddTargetFile/
+        // quickAddHeadingPath). Additive: older exports omit them and import as
+        // null/empty, which keeps quick-add following the share target.
+        const val CURRENT_VERSION = 10
 
         fun fromSettings(s: GroveSettings): SettingsExport = SettingsExport(
             theme = s.theme.storageKey,
@@ -269,6 +276,8 @@ data class SettingsExport(
             agendaWidgetShowTags = s.agendaWidgetShowTags,
             agendaWidgetShowPriority = s.agendaWidgetShowPriority,
             agendaWidgetFontSize = s.agendaWidgetFontSize.storageKey,
+            quickAddTargetFile = s.quickAddTargetFile,
+            quickAddHeadingPath = s.quickAddHeadingPath,
             autoArchiveDoneItems = s.autoArchiveDoneItems,
             autoArchiveFile = s.autoArchiveFile,
             autoArchiveHeadingPath = s.autoArchiveHeadingPath,

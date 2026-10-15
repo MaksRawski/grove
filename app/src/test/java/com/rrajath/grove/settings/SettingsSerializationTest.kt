@@ -67,6 +67,8 @@ class SettingsSerializationTest {
         autoArchiveDoneItems = true,
         autoArchiveFile = "archive.org",
         autoArchiveHeadingPath = "Done/2026",
+        quickAddTargetFile = "tasks.org",
+        quickAddHeadingPath = "Work/Inbox",
         lastRefileFile = "projects.org",
         lastRefileHeadingPath = "Active/Grove",
         roamFeaturesEnabled = true,
@@ -139,6 +141,8 @@ class SettingsSerializationTest {
         assertEquals(sample.autoArchiveDoneItems, restored.autoArchiveDoneItems)
         assertEquals(sample.autoArchiveFile, restored.autoArchiveFile)
         assertEquals(sample.autoArchiveHeadingPath, restored.autoArchiveHeadingPath)
+        assertEquals(sample.quickAddTargetFile, restored.quickAddTargetFile)
+        assertEquals(sample.quickAddHeadingPath, restored.quickAddHeadingPath)
         assertEquals(sample.lastRefileFile, restored.lastRefileFile)
         assertEquals(sample.lastRefileHeadingPath, restored.lastRefileHeadingPath)
         assertEquals(sample.roamFeaturesEnabled, restored.roamFeaturesEnabled)

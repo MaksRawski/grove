@@ -435,4 +435,27 @@ class CaptureInserterTest {
         assertTrue(current.contains("14:00 Draft one updated"))
         assertTrue(!current.contains("14:00 Draft one\n"))
     }
+
+    // --- under heading path (widget quick-add target) ---
+
+    @Test
+    fun `heading path appends as last child of the nested heading`() {
+        val doc = "* Work\n** Inbox\n*** TODO old\n** Later\n* Inbox\n"
+        val result = CaptureInserter.insertUnderPath(doc, listOf("Work", "Inbox"), "TODO new")!!
+        assertEquals("* Work\n** Inbox\n*** TODO old\n*** TODO new\n** Later\n* Inbox\n", result.newText)
+        assertEquals(3, result.insertedAtLine)
+    }
+
+    @Test
+    fun `empty heading path appends a top-level heading at the bottom`() {
+        val result = CaptureInserter.insertUnderPath("* First\nbody\n", emptyList(), "TODO new")!!
+        assertEquals("* First\nbody\n* TODO new\n", result.newText)
+    }
+
+    @Test
+    fun `missing heading path returns null`() {
+        val doc = "* Work\n** Inbox\n"
+        assertEquals(null, CaptureInserter.insertUnderPath(doc, listOf("Work", "Someday"), "TODO new"))
+        assertEquals(null, CaptureInserter.insertUnderPath(doc, listOf("Inbox"), "TODO new"))
+    }
 }

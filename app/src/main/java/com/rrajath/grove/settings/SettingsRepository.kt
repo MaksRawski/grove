@@ -241,6 +241,14 @@ data class GroveSettings(
     val agendaWidgetShowPriority: Boolean = true,
     val agendaWidgetFontSize: FontSizePreference = FontSizePreference.MEDIUM,
     /**
+     * Where the widget's quick-add composer saves a task. null = follow
+     * [shareTargetFile], which is what the composer always used before this
+     * lever existed, so an update never moves anyone's tasks on its own.
+     */
+    val quickAddTargetFile: String? = null,
+    /** '/'-separated heading path within [quickAddTargetFile]; empty = bottom of the file. */
+    val quickAddHeadingPath: String = "",
+    /**
      * Notebooks screen: directory paths whose folder rows are expanded in the
      * inline tree. Device-specific view state, like [onboardingDone] — deliberately
      * left out of [com.rrajath.grove.settings.SettingsSerialization] and
@@ -392,6 +400,8 @@ class SettingsRepository(
         val agendaWidgetShowTags = booleanPreferencesKey("agenda_widget_show_tags")
         val agendaWidgetShowPriority = booleanPreferencesKey("agenda_widget_show_priority")
         val agendaWidgetFontSize = stringPreferencesKey("agenda_widget_font_size")
+        val quickAddTargetFile = stringPreferencesKey("quick_add_target_file")
+        val quickAddHeadingPath = stringPreferencesKey("quick_add_heading_path")
         val expandedFolders = stringPreferencesKey("expanded_folders")
         val notebooksTreeDefaultsApplied = booleanPreferencesKey("notebooks_tree_defaults_applied")
         val roamFeaturesEnabled = booleanPreferencesKey("roam_features_enabled")
@@ -486,6 +496,8 @@ class SettingsRepository(
             agendaWidgetShowTags = prefs[Keys.agendaWidgetShowTags] ?: true,
             agendaWidgetShowPriority = prefs[Keys.agendaWidgetShowPriority] ?: true,
             agendaWidgetFontSize = FontSizePreference.fromStorage(prefs[Keys.agendaWidgetFontSize]),
+            quickAddTargetFile = prefs[Keys.quickAddTargetFile],
+            quickAddHeadingPath = prefs[Keys.quickAddHeadingPath] ?: "",
             expandedFolders = decodeFolderSet(prefs[Keys.expandedFolders]),
             notebooksTreeDefaultsApplied = prefs[Keys.notebooksTreeDefaultsApplied] ?: false,
             // Roam Features are debug-only for now: a release build reads the master
@@ -617,6 +629,9 @@ class SettingsRepository(
             p[Keys.agendaWidgetShowTags] = s.agendaWidgetShowTags
             p[Keys.agendaWidgetShowPriority] = s.agendaWidgetShowPriority
             p[Keys.agendaWidgetFontSize] = s.agendaWidgetFontSize.storageKey
+            if (s.quickAddTargetFile == null) p.remove(Keys.quickAddTargetFile)
+            else p[Keys.quickAddTargetFile] = s.quickAddTargetFile
+            p[Keys.quickAddHeadingPath] = s.quickAddHeadingPath
             p[Keys.autoArchiveDoneItems] = s.autoArchiveDoneItems
             if (s.autoArchiveFile == null) p.remove(Keys.autoArchiveFile)
             else p[Keys.autoArchiveFile] = s.autoArchiveFile
@@ -909,6 +924,13 @@ class SettingsRepository(
 
     suspend fun setAgendaWidgetFontSize(fontSize: FontSizePreference) {
         context.settingsDataStore.edit { it[Keys.agendaWidgetFontSize] = fontSize.storageKey }
+    }
+
+    suspend fun setQuickAddTarget(fileName: String, headingPath: List<String>) {
+        context.settingsDataStore.edit { prefs ->
+            prefs[Keys.quickAddTargetFile] = fileName
+            prefs[Keys.quickAddHeadingPath] = headingPath.joinToString("/")
+        }
     }
 
     /** Replace the whole expanded-folder set (expand-all / collapse-all). */

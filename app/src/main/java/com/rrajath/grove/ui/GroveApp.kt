@@ -1024,17 +1024,17 @@ private fun GroveNavigation(
                     onSetAutoArchiveDoneItems = viewModel::setAutoArchiveDoneItems,
                     onOpenArchiveLocationPicker = viewModel::startArchiveLocationPick,
                 )
-                val archiveLocationPicker by viewModel.archiveLocationPicker.collectAsStateWithLifecycle()
-                archiveLocationPicker?.let { picker ->
+                val locationPicker by viewModel.locationPicker.collectAsStateWithLifecycle()
+                locationPicker?.let { picker ->
                     RefileSheet(
                         state = picker,
                         currentFileName = null,
                         currentDoc = null,
-                        onPickNotebook = viewModel::archiveLocationPickNotebook,
-                        onDrillInto = viewModel::archiveLocationDrillInto,
-                        onBack = viewModel::archiveLocationBack,
-                        onCancel = viewModel::archiveLocationCancel,
-                        onConfirm = viewModel::archiveLocationConfirm,
+                        onPickNotebook = viewModel::locationPickNotebook,
+                        onDrillInto = viewModel::locationDrillInto,
+                        onBack = viewModel::locationBack,
+                        onCancel = viewModel::locationCancel,
+                        onConfirm = viewModel::locationConfirm,
                         onArchive = {},
                         onPickLastUsed = {},
                         headerTitle = "Set archive location",
@@ -1060,7 +1060,26 @@ private fun GroveNavigation(
                     onSetAgendaWidgetShowTags = viewModel::setAgendaWidgetShowTags,
                     onSetAgendaWidgetShowPriority = viewModel::setAgendaWidgetShowPriority,
                     onSetAgendaWidgetFontSize = viewModel::setAgendaWidgetFontSize,
+                    onOpenQuickAddTargetPicker = viewModel::startQuickAddTargetPick,
                 )
+                val locationPicker by viewModel.locationPicker.collectAsStateWithLifecycle()
+                locationPicker?.let { picker ->
+                    RefileSheet(
+                        state = picker,
+                        currentFileName = null,
+                        currentDoc = null,
+                        onPickNotebook = viewModel::locationPickNotebook,
+                        onDrillInto = viewModel::locationDrillInto,
+                        onBack = viewModel::locationBack,
+                        onCancel = viewModel::locationCancel,
+                        onConfirm = viewModel::locationConfirm,
+                        onArchive = {},
+                        onPickLastUsed = {},
+                        headerTitle = "Set quick add target",
+                        confirmLabel = "Add tasks under this heading",
+                        topLevelConfirmLabel = "Add tasks to this file",
+                    )
+                }
             }
             composable(Routes.SETTINGS_REMINDERS) {
                 SettingsRemindersScreen(

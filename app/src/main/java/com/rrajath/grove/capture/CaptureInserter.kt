@@ -67,6 +67,31 @@ object CaptureInserter {
     class CaptureTargetNotFound(message: String) : Exception(message)
 
     /**
+     * Inserts [entry] as the last child of the heading at [headingPath] (exact
+     * titles, outermost first, matched like the archive location's path). An
+     * empty [headingPath] means the bottom of the file. Returns null when any
+     * heading along the path is missing, so the caller can choose a fallback
+     * instead of silently creating headings.
+     */
+    fun insertUnderPath(
+        docText: String,
+        headingPath: List<String>,
+        entry: String,
+        keywords: OrgKeywords = OrgKeywords.DEFAULT,
+    ): Insertion? {
+        if (headingPath.isEmpty()) return spliceEntry(docText, endOfFileLine(docText), normalizeEntry(entry, 1))
+        val doc = OrgParser.parse(docText, keywords)
+        var target: OrgHeadline? = null
+        for (title in headingPath) {
+            val siblings = target?.let { doc.directChildren(it) }
+                ?: doc.headlines.filter { doc.parent(it) == null }
+            target = siblings.firstOrNull { it.title == title } ?: return null
+        }
+        val heading = target ?: return null
+        return spliceEntry(docText, subtreeEnd(doc, heading), normalizeEntry(entry, heading.level + 1))
+    }
+
+    /**
      * The heading an [TargetLocation.UnderHeading] capture lands under. One id
      * field matches either property, so legacy templates that saved a
      * CUSTOM_ID keep resolving after the switch to ID; the exact title is the

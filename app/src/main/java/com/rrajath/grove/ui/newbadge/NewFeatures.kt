@@ -71,6 +71,9 @@ object NewAnchors {
     /** The Widget settings page itself (home-screen Agenda ledger widget). */
     const val SETTINGS_WIDGET_PAGE = "settings.widget.page"
 
+    /** The "Quick add target" row inside Settings § Widget. */
+    const val SETTINGS_WIDGET_QUICK_ADD_TARGET = "settings.widget.quickAddTarget"
+
     /** The note editor's metadata FAB (the "☰" button, bottom-right of the Read
      *  and Edit note screens). A feature reached through it lists this so the
      *  button carries a corner dot until the feature is seen. */
@@ -372,5 +375,20 @@ val NEW_FEATURES: List<NewFeature> = listOf(
             NewAnchors.SETTINGS_SHARING_FETCH_TITLES,
         ),
         destination = NewAnchors.SETTINGS_SHARING_FETCH_TITLES,
+    ),
+    NewFeature(
+        // Settings § Widget gained a "Quick add target" row: the widget's + now
+        // saves to its own file or heading instead of the share target.
+        // `since` is the versionCode of the release that ships it: bump it to
+        // match `gradle.properties` versionName when cutting the release.
+        id = "widget-quick-add-target",
+        since = 11000,
+        anchors = setOf(
+            NewAnchors.TOPBAR_MENU,
+            NewAnchors.DRAWER_SETTINGS,
+            NewAnchors.SETTINGS_WIDGET,
+            NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET,
+        ),
+        destination = NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET,
     ),
 )

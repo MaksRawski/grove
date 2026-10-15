@@ -392,14 +392,24 @@ class AppViewModel(
     fun setDailiesHeaderTemplate(template: String) =
         viewModelScope.launch { settingsRepository.setDailiesHeaderTemplate(template) }
 
-    // --- archive location picker (Settings § Notes): same drill-down flow as RefileSheet,
-    // just picking a default destination instead of moving an actual note. ---
+    // --- location picker (Settings § Notes' archive location, Settings § Widget's
+    // quick-add target): same drill-down flow as RefileSheet, just picking a
+    // default destination instead of moving an actual note. ---
 
-    private val _archiveLocationPicker = MutableStateFlow<RefileUiState?>(null)
-    val archiveLocationPicker: StateFlow<RefileUiState?> = _archiveLocationPicker
+    /** Which setting a confirmed [locationPicker] pick is saved to. */
+    enum class LocationPickerPurpose { ARCHIVE, QUICK_ADD }
 
-    fun startArchiveLocationPick() {
-        _archiveLocationPicker.value = RefileUiState(sourceLine = -1)
+    private val _locationPicker = MutableStateFlow<RefileUiState?>(null)
+    val locationPicker: StateFlow<RefileUiState?> = _locationPicker
+    private var locationPickerPurpose = LocationPickerPurpose.ARCHIVE
+
+    fun startArchiveLocationPick() = startLocationPick(LocationPickerPurpose.ARCHIVE)
+
+    fun startQuickAddTargetPick() = startLocationPick(LocationPickerPurpose.QUICK_ADD)
+
+    private fun startLocationPick(purpose: LocationPickerPurpose) {
+        locationPickerPurpose = purpose
+        _locationPicker.value = RefileUiState(sourceLine = -1)
         viewModelScope.launch {
             // From the Room index, not vault.notebooks() (which re-parses every
             // .org file); fileName + noteCount are columns on NotebookEntity.
@@ -407,44 +417,49 @@ class AppViewModel(
                 .sortedBy { it.fileName }
                 .map { RefileNotebook(it.fileName, it.noteCount) }
                 .toImmutableList()
-            _archiveLocationPicker.value = _archiveLocationPicker.value?.copy(notebooks = notebooks)
+            _locationPicker.value = _locationPicker.value?.copy(notebooks = notebooks)
         }
     }
 
-    fun archiveLocationPickNotebook(fileName: String) {
+    fun locationPickNotebook(fileName: String) {
         viewModelScope.launch {
             val doc = vaultFlow.value?.open(fileName)
             if (doc == null) {
                 toast("Couldn't open ${fileName.removeSuffix(".org")}")
                 return@launch
             }
-            _archiveLocationPicker.value =
-                _archiveLocationPicker.value?.copy(pickedFile = fileName, pickedDoc = doc, path = persistentListOf())
+            _locationPicker.value =
+                _locationPicker.value?.copy(pickedFile = fileName, pickedDoc = doc, path = persistentListOf())
         }
     }
 
-    fun archiveLocationDrillInto(line: Int) {
-        _archiveLocationPicker.value =
-            _archiveLocationPicker.value?.let { it.copy(path = (it.path + line).toImmutableList()) }
+    fun locationDrillInto(line: Int) {
+        _locationPicker.value =
+            _locationPicker.value?.let { it.copy(path = (it.path + line).toImmutableList()) }
     }
 
-    fun archiveLocationBack() {
-        _archiveLocationPicker.value = _archiveLocationPicker.value?.let {
+    fun locationBack() {
+        _locationPicker.value = _locationPicker.value?.let {
             if (it.path.isNotEmpty()) it.copy(path = it.path.dropLast(1).toImmutableList())
             else it.copy(pickedFile = null, pickedDoc = null)
         }
     }
 
-    fun archiveLocationCancel() {
-        _archiveLocationPicker.value = null
+    fun locationCancel() {
+        _locationPicker.value = null
     }
 
-    fun archiveLocationConfirm() {
-        val picker = _archiveLocationPicker.value ?: return
+    fun locationConfirm() {
+        val picker = _locationPicker.value ?: return
         val fileName = picker.pickedFile ?: return
         val headingPath = picker.path.mapNotNull { picker.pickedDoc?.headlineAtLine(it)?.title }
-        _archiveLocationPicker.value = null
-        viewModelScope.launch { settingsRepository.setAutoArchiveLocation(fileName, headingPath) }
+        _locationPicker.value = null
+        viewModelScope.launch {
+            when (locationPickerPurpose) {
+                LocationPickerPurpose.ARCHIVE -> settingsRepository.setAutoArchiveLocation(fileName, headingPath)
+                LocationPickerPurpose.QUICK_ADD -> settingsRepository.setQuickAddTarget(fileName, headingPath)
+            }
+        }
     }
 
     fun setRemindersEnabled(enabled: Boolean) =
