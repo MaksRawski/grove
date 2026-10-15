@@ -1,4 +1,4 @@
-# Maestro workspace config for Grove (test-suite milestone M5).
+# Maestro workspace config for Bloom (test-suite milestone M5).
 #
 # Flows run against the DEBUG build (com.rrajath.grove.debug) so the debug-only
 # test-vault hook is available: `--ez grove_test_direct_vault true` points the

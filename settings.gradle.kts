@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Grove"
+rootProject.name = "Bloom"
 include(":app")
 include(":macrobenchmark")
  

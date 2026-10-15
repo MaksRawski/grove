@@ -243,7 +243,7 @@ there.
 - `MAESTRO_DRIVER_STARTUP_TIMEOUT=180000` for slow runner emulators.
 - Each level uploads its JUnit report plus `--test-output-dir` and
   `--debug-output` (failure screenshots, per-command JSON).
-- Flow 05's L22 `mailto:` step accepts either outcome: Grove's "Couldn't open"
+- Flow 05's L22 `mailto:` step accepts either outcome: Bloom's "Couldn't open"
   toast (no handler, newer images) or the OS fallback "Unsupported action"
   dialog (`com.android.fallback`, older images such as API 24).
 - To reproduce locally, use an AOSP `default` image AVD with the `pixel_6`
