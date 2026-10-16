@@ -1,20 +1,20 @@
-# Grove launch site
+# Bloom launch site
 
-The marketing landing page and documentation site for **Grove**, a native Android app for notes and tasks on top of plain `.org` files.
+The marketing landing page and documentation site for **Bloom**, a native Android app for notes and tasks on top of plain `.org` files.
 
 ## Purpose
 
-Grove needs a public-facing site before its first public release: a landing page that makes the pitch ("your vault is a folder of `.org` files") and a full documentation section covering every implemented feature, so early adopters and contributors have somewhere to land.
+Bloom needs a public-facing site before its first public release: a landing page that makes the pitch ("your vault is a folder of `.org` files") and a full documentation section covering every implemented feature, so early adopters and contributors have somewhere to land.
 
 ## The problem it solves
 
-Grove's actual product surface — the Android app — has no web presence yet. This site gives it one: a single scrolling landing page styled as an org-mode buffer ("The Buffer" design direction), and a feature-complete docs section built from the team's existing `.mdx` source content, so documentation doesn't have to be re-authored for the web.
+Bloom's actual product surface — the Android app — has no web presence yet. This site gives it one: a single scrolling landing page styled as an org-mode buffer ("The Buffer" design direction), and a feature-complete docs section built from the team's existing `.mdx` source content, so documentation doesn't have to be re-authored for the web.
 
 ## Features
 
-- **Landing page** — hero, "what you wrote / what Grove shows" source-vs-rendered comparison, a filetags band (`:plaintext:` `:offline:` `:yours:`), five foldable feature sections (Capture, Agenda, Search, Sync & conflicts, Rendered-not-dumped), and a closing CTA band. Built to match `design/reference/Grove Landing 1a.dc.html` pixel-for-pixel.
+- **Landing page** — hero, "what you wrote / what Bloom shows" source-vs-rendered comparison, a filetags band (`:plaintext:` `:offline:` `:yours:`), five foldable feature sections (Capture, Agenda, Search, Sync & conflicts, Rendered-not-dumped), and a closing CTA band. Built to match `design/reference/Grove Landing 1a.dc.html` pixel-for-pixel.
 - **Docs section** (`/features/`) — every feature doc lives in `src/content/docs/features/`, built on [Starlight](https://starlight.astro.build) with a full visual reskin (fonts, color tokens, an org `:PROPERTIES:` drawer rendering each page's frontmatter) so it reads as the same product as the landing page, not a generic docs template.
-- **Shared light/dark theme** — one toggle, one `localStorage` key, used by both the landing page's `M-x grove-<label>-theme` pill and its equivalent in the docs header. No flash of the wrong theme on load.
+- **Shared light/dark theme** — one toggle, one `localStorage` key, used by both the landing page's `M-x bloom-<label>-theme` pill and its equivalent in the docs header. No flash of the wrong theme on load.
 - **Keyboard-accessible folding** — the landing page's five feature sections are real `<button>`s with `aria-expanded`/`aria-controls`; `TAB` toggles a focused headline, `Shift+TAB` cycles global fold state, mirroring org-mode's own `TAB` behavior.
 - **Progressive enhancement** — all landing-page sections render open in the HTML; JavaScript only makes them collapsible. The page is fully readable with JavaScript disabled.
 
@@ -51,7 +51,7 @@ See `docs/ARCHITECTURE.md` for the reasoning behind the routing split, theming a
 
 ## Deployment
 
-This site lives inside the main Grove repo (`docs-site/`) but deploys separately, as a Cloudflare Worker with static assets (see `wrangler.jsonc`):
+This site lives inside the main Bloom repo (`docs-site/`) but deploys separately, as a Cloudflare Worker with static assets (see `wrangler.jsonc`):
 
 ```sh
 npm run deploy    # astro build && wrangler deploy

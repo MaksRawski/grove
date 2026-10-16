@@ -1,6 +1,6 @@
 ---
-name: Grove Launch Site
-description: The marketing landing page and docs for Grove, a native Android org-mode note app — the site written as an org-mode buffer.
+name: Bloom Launch Site
+description: The marketing landing page and docs for Bloom, a native Android org-mode note app — the site written as an org-mode buffer.
 colors:
   warm-paper: "#faf6ee"
   aged-paper: "#f3ecdf"
@@ -91,7 +91,7 @@ components:
     padding: "4px 10px"
 ---
 
-# Design System: Grove Launch Site
+# Design System: Bloom Launch Site
 
 ## Overview
 
@@ -99,9 +99,9 @@ components:
 
 The site's organizing conceit, set by the design handoff and carried through the implementation without deviation: *the website is itself an org file.* `#+TITLE:` and `#+SUBTITLE:` keyword lines open the hero, `* Features` and `** Capture` are real section headings, `:tags:` sit in a right-hand margin column, feature sections fold and unfold on `TAB` exactly like org headlines do in Emacs, and the page closes on a literal `#+END`. Nothing is a decorative reference to org-mode — the syntax is the layout vocabulary itself.
 
-The mood is warm, editorial, and plaintext-nerd affectionate: a page that reads like a well-kept personal notes file, not a SaaS product tour. Warm paper backgrounds instead of clinical white or dark-tech black, a serif voice for anything meant to be read rather than scanned, and a monospace voice for anything that is structurally "org." The explicit anti-reference is the generic cold, minimalist tech-startup landing page — gradients, glassy cards, big rounded hero illustrations, marketing-speak. Grove's site earns trust by looking like a tool built by someone who actually lives in plain text, not by looking impressive.
+The mood is warm, editorial, and plaintext-nerd affectionate: a page that reads like a well-kept personal notes file, not a SaaS product tour. Warm paper backgrounds instead of clinical white or dark-tech black, a serif voice for anything meant to be read rather than scanned, and a monospace voice for anything that is structurally "org." The explicit anti-reference is the generic cold, minimalist tech-startup landing page — gradients, glassy cards, big rounded hero illustrations, marketing-speak. Bloom's site earns trust by looking like a tool built by someone who actually lives in plain text, not by looking impressive.
 
-Light is the default theme (friendlier to first-time visitors), even though the Grove Android app itself ships dark by default. Both themes are derived from the app's own palette so the site and the app read as the same product.
+Light is the default theme (friendlier to first-time visitors), even though the Bloom Android app itself ships dark by default. Both themes are derived from the app's own palette so the site and the app read as the same product.
 
 **Key Characteristics:**
 - Org-mode syntax as literal, load-bearing UI language, not visual flavor
@@ -109,7 +109,7 @@ Light is the default theme (friendlier to first-time visitors), even though the 
 - Serif for reading, monospace for structure — a strict two-voice split
 - Flat by default; the one shadow token exists solely to lift screenshot cards
 - Hairline borders (`1px var(--line)`) as the only structural divider, everywhere
-- No illustration, no icon set; the only mark is the Grove app icon (favicon, landing buffer-bar wordmark, and Starlight docs-header logo), a squircle tile carrying the five-spoke org asterisk
+- No illustration, no icon set; the only mark is the Bloom app icon (favicon, landing buffer-bar wordmark, and Starlight docs-header logo), a squircle tile carrying the five-spoke org asterisk
 
 ## Colors
 
@@ -151,11 +151,11 @@ A warm, paper-and-ink palette carrying a small set of muted org-syntax accent hu
 **Character:** A strict two-voice split, not a blend. JetBrains Mono is the entire org-mode theme — every heading, every piece of metadata, every button label is typed in it, so it must never be substituted casually or swapped for a generic UI sans "for readability." Source Serif 4 is reserved for prose meant to be read at length; it is the site's one warm, human voice against the mono scaffold.
 
 ### Hierarchy
-- **Display** (700, 52px / 36px below 700px, line-height 1.1, `letter-spacing: -.02em`, mono): the hero title (`Grove`) only.
+- **Display** (700, 52px / 36px below 700px, line-height 1.1, `letter-spacing: -.02em`, mono): the hero title (`Bloom`) only.
 - **Headline** (700, 26px, mono): top-level section headings (`* Features`).
 - **Title** (500, 21px, mono): feature row headlines (`** Capture`).
 - **Body** (400, serif, line-height 1.55–1.6, `text-wrap: pretty`): hero prose at 22px (max-width 52ch), feature prose at 19px, CTA prose at 20px (max-width 60ch). Same voice, three sizes by context — never introduce a fourth without a reason.
-- **Label** (400 unless noted, mono): org source/metadata lines at 15px, feature bullet lists at 13px (line-height 2), tag column/comments at 12–12.5px, filetag copy at 14.5px, code blocks at 12.5px (line-height 1.85). Button labels use this same face at 14px/500 — buttons are structurally a "label," not a "title." Two smaller one-off contexts also belong to this role: the hero/feature-row org-headline stars (`*`, `**`) at 18px, and the hero's uppercase "what you wrote"/"what Grove shows" column labels at 11px.
+- **Label** (400 unless noted, mono): org source/metadata lines at 15px, feature bullet lists at 13px (line-height 2), tag column/comments at 12–12.5px, filetag copy at 14.5px, code blocks at 12.5px (line-height 1.85). Button labels use this same face at 14px/500 — buttons are structurally a "label," not a "title." Two smaller one-off contexts also belong to this role: the hero/feature-row org-headline stars (`*`, `**`) at 18px, and the hero's uppercase "what you wrote"/"what Bloom shows" column labels at 11px.
 
 ### Named Rules
 **The No-Substitution Rule.** If a piece of copy is org syntax, metadata, or UI chrome, it is JetBrains Mono — full stop. If it is prose meant to be read, it is Source Serif 4. A new component that blends the two within a single text run breaks the buffer conceit.
@@ -175,7 +175,7 @@ Section padding is `56px` horizontal everywhere, `64px` top on the hero specific
 Flat by default. Every panel, card, chip, and band is separated from its neighbors by a `1px solid var(--line)` hairline, never a shadow — this matches a plaintext buffer, which has no depth.
 
 ### Shadow Vocabulary
-- **`--shadow`** (light: `0 1px 2px rgba(60,45,25,.05), 0 12px 32px -12px rgba(60,45,25,.16)`; dark: `0 1px 2px rgba(0,0,0,.4), 0 16px 40px -14px rgba(0,0,0,.6)`): reserved for the hero's "what Grove shows" screenshot card only. It is the single deliberate exception to flatness — the rendered screenshot is meant to lift off the page like a physical photo next to the flat "what you wrote" source buffer beside it. The generic feature-row screenshot mount (`.shot-card`) does not use this token; it relies on its dark background + padding treatment instead.
+- **`--shadow`** (light: `0 1px 2px rgba(60,45,25,.05), 0 12px 32px -12px rgba(60,45,25,.16)`; dark: `0 1px 2px rgba(0,0,0,.4), 0 16px 40px -14px rgba(0,0,0,.6)`): reserved for the hero's "what Bloom shows" screenshot card only. It is the single deliberate exception to flatness — the rendered screenshot is meant to lift off the page like a physical photo next to the flat "what you wrote" source buffer beside it. The generic feature-row screenshot mount (`.shot-card`) does not use this token; it relies on its dark background + padding treatment instead.
 
 ### Named Rules
 **The One Shadow Rule.** `var(--shadow)` has exactly one job: lifting the hero's rendered-screenshot card. Do not reach for it to add "polish" to a new card or panel — a new elevated surface should first ask whether it's actually a photographic screenshot moment, because if not, it should stay flat.
@@ -203,7 +203,7 @@ Every component reads as precise and typewriter-restrained: small mono labels, s
 - There is no tertiary/ghost variant; the system only ever needs one CTA pairing per section (e.g. "★ Star on GitHub" + "Read the docs →").
 
 ### Chips
-- **Theme-toggle pill** (`.grove-theme-pill`, shared verbatim between the landing buffer bar and the Starlight docs header): Toasted Paper background, `1px solid var(--line)` border, `4px` radius, `4px 10px` padding, Org Amber text for the `M-x` prefix, Ink Black for the current-theme label. Hover: border shifts to Org Amber. This exact component must never be restyled independently in one surface without updating the other — they are required to look identical.
+- **Theme-toggle pill** (`.bloom-theme-pill`, shared verbatim between the landing buffer bar and the Starlight docs header): Toasted Paper background, `1px solid var(--line)` border, `4px` radius, `4px 10px` padding, Org Amber text for the `M-x` prefix, Ink Black for the current-theme label. Hover: border shifts to Org Amber. This exact component must never be restyled independently in one surface without updating the other — they are required to look identical.
 - **Filetag cells** (the three-column `:plaintext:`/`:offline:`/`:yours:` band): not a chip shape at all — a full-width three-column band on an Aged Paper background, each cell separated by a `1px solid var(--line)` rule (border-bottom on mobile). The tag itself is Moss Olive mono 12px; body copy below it is 14.5px serif-adjacent sans at Warm Umber.
 
 ### Cards / Containers
@@ -214,8 +214,8 @@ Every component reads as precise and typewriter-restrained: small mono labels, s
 - **Internal padding:** `8px` on the generic screenshot mount.
 
 ### Navigation
-- **Buffer bar** (top strip, `Aged Paper` background, `1px solid var(--line)` bottom border, `14px 28px` padding): wordmark (`grove.org` preceded by the 18px Grove app icon — `grove-icon-light.svg` / `grove-icon-dark.svg`, swapped by `[data-theme]`) left, nav links + theme pill right. Nav links are Warm Umber, no visible active state (the site is a single scroll, not a multi-page nav). Below `700px`, the inline nav collapses behind a `☰` toggle into an absolutely-positioned dropdown panel (`6px` radius, `Aged Paper` background, same hairline border).
-- **Starlight docs sidebar:** inherits Grove's tokens via `starlight-overrides.css` remapping `--sl-color-*`/`--sl-font*` onto Grove's own variables — it is not a bespoke component, it is Starlight's stock sidebar re-skinned to the same palette/type system.
+- **Buffer bar** (top strip, `Aged Paper` background, `1px solid var(--line)` bottom border, `14px 28px` padding): wordmark (`bloom.org` preceded by the 18px Bloom app icon — `bloom-icon-light.svg` / `bloom-icon-dark.svg`, swapped by `[data-theme]`) left, nav links + theme pill right. Nav links are Warm Umber, no visible active state (the site is a single scroll, not a multi-page nav). Below `700px`, the inline nav collapses behind a `☰` toggle into an absolutely-positioned dropdown panel (`6px` radius, `Aged Paper` background, same hairline border).
+- **Starlight docs sidebar:** inherits Bloom's tokens via `starlight-overrides.css` remapping `--sl-color-*`/`--sl-font*` onto Bloom's own variables — it is not a bespoke component, it is Starlight's stock sidebar re-skinned to the same palette/type system.
 
 ### Feature Row (signature component)
 The five foldable feature sections are the site's signature interactive pattern and its clearest expression of "the website is an org file." Each row is a real `<button>` headline (`▾`/`▸` arrow, `**` stars in Moss Olive, mono title, right-aligned `:tags:` column) controlling an `aria-expanded`/`aria-controls` panel with **no fold/unfold transition** — it snaps open and closed instantly, matching real org-mode's own `TAB` behavior, not a smooth accordion animation. Plain `TAB` on a focused headline toggles that headline; `Shift+TAB` cycles every row's fold state globally (open → closed → open). All rows render open by default in the raw HTML; JavaScript is what makes them collapsible, so the page is fully readable with JavaScript disabled.
@@ -234,6 +234,6 @@ The five foldable feature sections are the site's signature interactive pattern 
 - **Don't** lighten Org Amber, Moss Olive, Warm Umber, or Faded Umber back toward the Android app's brighter in-product values — the light-mode versions were deliberately darkened during design review specifically to clear WCAG AA (4.5:1).
 - **Don't** reach for `var(--shadow)` to add polish to a new card or panel; it exists solely to lift the hero's rendered-screenshot card off the page ("The One Shadow Rule").
 - **Don't** treat Moss Olive, Terracotta Red, Slate Blue, or Dusty Plum as general-purpose accent colors — each one is reserved org-syntax semantics (headline stars/tags, priority/deadline, scheduled timestamps, template placeholders), not a decorative palette to pick from ("The One Amber Rule").
-- **Don't** add SVG illustrations or any logo/icon beyond the Grove app icon (favicon, buffer-bar wordmark mark, and Starlight docs-header logo). The original handoff said "`✳` glyph only"; the app icon replaced it site-wide. Anything further is a separate design task.
+- **Don't** add SVG illustrations or any logo/icon beyond the Bloom app icon (favicon, buffer-bar wordmark mark, and Starlight docs-header logo). The original handoff said "`✳` glyph only"; the app icon replaced it site-wide. Anything further is a separate design task.
 - **Don't** introduce a component library or UI framework; every component here is intentionally hand-authored `.astro` + scoped CSS, to preserve 1:1 fidelity with the reference prototype.
 - **Don't** treat the hero comparison card's `18px` radius / borderless-then-1px-edge-border treatment as a second valid card language — it's a flagged, temporary divergence pending reconciliation back to the standard `10px`/`5px` screenshot-card treatment.

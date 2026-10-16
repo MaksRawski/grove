@@ -19,7 +19,7 @@ Read mode is the default view when you open a note from [Outline View](/features
 
 ## What's rendered
 
-Grove parses the note's org markup and renders it through a custom `AnnotatedString`-based renderer; there is no WebView involved. Supported inline styles:
+Bloom parses the note's org markup and renders it through a custom `AnnotatedString`-based renderer; there is no WebView involved. Supported inline styles:
 
 - **Bold**, *italic*, underline, `code`
 - Links (`[[target][description]]`)
@@ -45,7 +45,7 @@ Tap a `[[target][description]]` link to jump to what it points at:
 - A whole-file link opens that file's [Outline View](/features/outline-view). This includes an `[[id:...]]` link whose id matches a file-level `:ID:` (one in the property drawer above the first heading), not a heading.
 - An external link (`https:`, `mailto:`, `tel:`, ...) is handed to the system.
 
-Id and custom-id links resolve across the whole vault from the rebuildable index, so they keep working after the target file is renamed or moved. If nothing matches, Grove shows a brief "Couldn't find" message instead of navigating.
+Id and custom-id links resolve across the whole vault from the rebuildable index, so they keep working after the target file is renamed or moved. If nothing matches, Bloom shows a brief "Couldn't find" message instead of navigating.
 
 ## Breadcrumbs
 

@@ -3,9 +3,11 @@
 // across the whole site and there is never a flash of the wrong theme.
 // Precedence: localStorage > OS preference (prefers-color-scheme) > light.
 export const THEME_BOOT_SCRIPT = `(function () {
-  var KEY = 'grove-theme';
+  var KEY = 'bloom-theme';
+  // Pre-rename key: read it until the visitor's first toggle writes KEY.
+  var LEGACY_KEY = 'grove-theme';
   var stored = null;
-  try { stored = localStorage.getItem(KEY); } catch (e) {}
+  try { stored = localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY); } catch (e) {}
   var theme = stored === 'dark' || stored === 'light'
     ? stored
     : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

@@ -22,14 +22,14 @@ Starlight only claims routes that exist inside its content collection (`src/cont
 - imported directly by `src/layouts/LandingLayout.astro` for the landing page, and
 - passed into Starlight via `customCss` in `astro.config.mjs` for the docs section.
 
-`src/styles/starlight-overrides.css` (also in `customCss`) remaps Starlight's own `--sl-color-*`, `--sl-font`, and `--sl-font-mono` custom properties onto Grove's tokens (verified against Starlight's `packages/starlight/style/props.css`, not guessed). Because those tokens are themselves theme-reactive, one mapping block is enough — light/dark follows automatically.
+`src/styles/starlight-overrides.css` (also in `customCss`) remaps Starlight's own `--sl-color-*`, `--sl-font`, and `--sl-font-mono` custom properties onto Bloom's tokens (verified against Starlight's `packages/starlight/style/props.css`, not guessed). Because those tokens are themselves theme-reactive, one mapping block is enough — light/dark follows automatically.
 
 ## Shared theme state
 
-Both sections read/write the same `localStorage` key (`grove-theme`) and the same `data-theme` attribute on `<html>`, via:
+Both sections read/write the same `localStorage` key (`bloom-theme`) and the same `data-theme` attribute on `<html>`, via:
 
 - `src/scripts/theme-boot.js` — a blocking inline script (precedence: localStorage → OS `prefers-color-scheme` → light), inlined into `<head>` on both the landing page (`LandingLayout.astro`) and the docs section (`src/components/starlight-overrides/ThemeProvider.astro`, a **full replacement** of Starlight's default `ThemeProvider`, not an extension of it).
-- `src/scripts/theme-toggle.js` — `getGroveTheme`/`setGroveTheme`/`toggleGroveTheme`, plus `wireThemeTogglePills()` which wires up every `[data-grove-theme-toggle]` button on the page. Used by both `BufferBar.astro` (landing) and `src/components/starlight-overrides/ThemeSelect.astro` (docs — also a full replacement of Starlight's default 3-way select, since Grove's toggle is a 2-state pill, not a dark/light/auto picker).
+- `src/scripts/theme-toggle.js` — `getBloomTheme`/`setBloomTheme`/`toggleBloomTheme`, plus `wireThemeTogglePills()` which wires up every `[data-bloom-theme-toggle]` button on the page. Used by both `BufferBar.astro` (landing) and `src/components/starlight-overrides/ThemeSelect.astro` (docs — also a full replacement of Starlight's default 3-way select, since Bloom's toggle is a 2-state pill, not a dark/light/auto picker).
 
 **Known gap:** Starlight's own `Page.astro` (its top-level page orchestrator, not exposed as an overridable component) hardcodes `data-theme="dark"` as its server-rendered fallback, independent of the `ThemeProvider` override. The shared boot script corrects this client-side before paint, so it's invisible to any JS-enabled visitor. A visitor with JavaScript fully disabled will see the docs section render in dark mode initially — inconsistent with the landing page's light default in that same scenario. Fixing this would require overriding Starlight's entire `Page` component, which Starlight's own docs describe as high-complexity and "a last resort." Left as a disclosed, low-impact gap.
 

@@ -19,7 +19,7 @@ Edit mode shows the note's subtree as plain org-mode text: stars, TODO keywords,
 
 ## Syntax highlighting
 
-Grove tokenizes each line and applies color per syntax element as you type:
+Bloom tokenizes each line and applies color per syntax element as you type:
 
 - Heading stars (`*`, `**`, `***`): colored by nesting depth, cycling through the same star-color sequence used in Outline View
 - TODO/DONE keywords
@@ -57,7 +57,7 @@ A toolbar pinned above the keyboard gives one-tap access to common org markup:
 - Typing filters live across every file and heading in the vault; a file icon marks a file, `✳` marks a heading, and each heading result shows its breadcrumb path.
 - Without typing, tap a notebook to drill into its headings, then its sub-headings. Tapping a heading with no sub-headings links it immediately; only a heading with sub-headings drills in further.
 - At a notebook's top level, **Link to this file** writes `[[file:other.org]]` (just `[[file:name.org]]` for a link into the note you're editing). **Link to this heading** writes `[[*Heading]]` for a heading in the note you're editing, or `[[file:other.org::*Heading]]` for one in another file.
-- If the picked file has a file-level `ID`, or the picked heading has an `ID` or `CUSTOM_ID`, Grove asks whether to use that instead — an id link keeps working after the target is renamed or moved.
+- If the picked file has a file-level `ID`, or the picked heading has an `ID` or `CUSTOM_ID`, Bloom asks whether to use that instead — an id link keeps working after the target is renamed or moved.
 
 Text you have selected when you long-press is kept as the link's description. With nothing selected, the link is named after its target — the heading title, or the file's `#+TITLE:` (falling back to its file name).
 
@@ -99,11 +99,11 @@ Edit mode saves automatically:
 
 ## Stale-file protection
 
-Before saving, Grove checks the file's on-disk revision. If something else changed the file since you opened it (another device via sync, an external editor), you're prompted to **Overwrite** or **Reload** rather than silently clobbering the other change.
+Before saving, Bloom checks the file's on-disk revision. If something else changed the file since you opened it (another device via sync, an external editor), you're prompted to **Overwrite** or **Reload** rather than silently clobbering the other change.
 
 ## Discarding a blank note
 
-If you open a brand-new, still-empty note and try to leave without adding content, Grove asks for confirmation before discarding it, so an accidental capture doesn't quietly vanish, but an accidental tap also doesn't leave an empty heading behind.
+If you open a brand-new, still-empty note and try to leave without adding content, Bloom asks for confirmation before discarding it, so an accidental capture doesn't quietly vanish, but an accidental tap also doesn't leave an empty heading behind.
 
 ## Related
 

@@ -1,5 +1,5 @@
 /*
-  Grove design tokens — single source of truth for both the custom landing
+  Bloom design tokens — single source of truth for both the custom landing
   page and the Starlight docs reskin. Values copied verbatim from
   design/README.md and cross-checked against design/reference/Grove Landing 1a.dc.html.
   Light is the default theme; [data-theme="dark"] overrides.
@@ -51,7 +51,7 @@
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -14px rgba(0, 0, 0, 0.6);
 }
 
-@keyframes grove-blink {
+@keyframes bloom-blink {
   0%,
   49% {
     opacity: 1;

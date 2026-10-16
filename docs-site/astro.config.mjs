@@ -16,17 +16,17 @@ export default defineConfig({
 
   integrations: [
     starlight({
-      title: 'Grove',
-      description: 'Feature documentation for Grove, a native Android org-mode note-taking app.',
-      // Theme-aware app-icon mark beside the "Grove" wordmark (replacesTitle stays
+      title: 'Bloom',
+      description: 'Feature documentation for Bloom, a native Android org-mode note-taking app.',
+      // Theme-aware app-icon mark beside the "Bloom" wordmark (replacesTitle stays
       // off). Same squircle asterisk as the landing page's buffer bar; the source
-      // SVGs are shared with public/grove-icon-*.svg (which the landing <img> tags
+      // SVGs are shared with public/bloom-icon-*.svg (which the landing <img> tags
       // load directly — Starlight's logo needs a src/ path for Astro asset handling).
       logo: {
-        light: './src/assets/grove-icon-light.svg',
-        dark: './src/assets/grove-icon-dark.svg',
+        light: './src/assets/bloom-icon-light.svg',
+        dark: './src/assets/bloom-icon-dark.svg',
       },
-      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/rrajath/grove' }],
+      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/rrajath/bloom' }],
       customCss: ['./src/styles/tokens.css', './src/styles/starlight-overrides.css'],
       head: [
         { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },

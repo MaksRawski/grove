@@ -9,7 +9,7 @@ import notebooksDark from '../assets/dark/notebooks.png';
 import navDrawerLight from '../assets/light/nav-drawer.png';
 import navDrawerDark from '../assets/dark/nav-drawer.png';
 
-Notebooks is Grove's home screen. Every `.org` file in your configured sync folder shows up here as a notebook card; there's no separate "import" step, no database to seed. If a `.org` file exists in the folder, it's a notebook.
+Notebooks is Bloom's home screen. Every `.org` file in your configured sync folder shows up here as a notebook card; there's no separate "import" step, no database to seed. If a `.org` file exists in the folder, it's a notebook.
 
 <ThemeShot
   light={notebooksLight}
@@ -45,13 +45,13 @@ Long-pressing a notebook card opens a context menu with:
 - **Move up** / **Move down** (pinned notebooks only): reorder the Pinned strip one step at a time, the same way Favorites reorder in the sidebar
 - **Rename**
 - **Change icon color**: pick the tile color for this notebook's monogram from the theme palette
-- **Force reload**: re-parse this file from disk, bypassing the normal change-detection diff (useful if you suspect Grove's index is stale)
+- **Force reload**: re-parse this file from disk, bypassing the normal change-detection diff (useful if you suspect Bloom's index is stale)
 - **Resolve conflict**: jumps straight to the [conflict resolution](/features/conflict-resolution) screen when a Syncthing conflict copy exists for this file
 - **Delete**: see below
 
 ### Deleting a notebook is permanent
 
-Android's Storage Access Framework has no system trash for files in a folder you granted, so Grove deletes the file outright after a confirmation prompt. If your vault syncs with Syncthing and you have its file versioning turned on, the previous copy is kept on the peer and you can restore it from there. Otherwise the file is gone.
+Android's Storage Access Framework has no system trash for files in a folder you granted, so Bloom deletes the file outright after a confirmation prompt. If your vault syncs with Syncthing and you have its file versioning turned on, the previous copy is kept on the peer and you can restore it from there. Otherwise the file is gone.
 
 ### Folder rows
 
@@ -69,7 +69,7 @@ Subfolders in your sync directory show up as folder rows in the list. Long-press
 
 ## Creating a notebook
 
-Tap **+** and give the new file a name. Grove creates an empty `.org` file in your sync folder immediately (the `.org` extension is added for you if you leave it off).
+Tap **+** and give the new file a name. Bloom creates an empty `.org` file in your sync folder immediately (the `.org` extension is added for you if you leave it off).
 
 Use a slash to put the notebook inside folders that don't exist yet: `work/ideas.org` creates a `work` folder with `ideas.org` in it, and `work/2026/log.org` nests two levels deep. A name that ends in a slash, or contains `\ : * ? " < > |`, is rejected and the **Create** button stays disabled.
 
@@ -90,14 +90,14 @@ Tap the hamburger icon (☰) to open the drawer:
 <ThemeShot
   light={navDrawerLight}
   dark={navDrawerDark}
-  alt="Navigation drawer showing the Grove brand header with vault path, Search, Notebooks (highlighted), Saved Searches (Scheduled Today, All TODO, This Week), Agenda, and Settings links"
+  alt="Navigation drawer showing the Bloom brand header with vault path, Search, Notebooks (highlighted), Saved Searches (Scheduled Today, All TODO, This Week), Agenda, and Settings links"
   widths={[340, 680]}
   sizes="340px"
 />
 
 The drawer shows:
 
-- **Vault path**: the folder Grove is currently synced to, under the app name
+- **Vault path**: the folder Bloom is currently synced to, under the app name
 - **Search**: jumps to the [Search](/features/search) screen
 - **Notebooks**: the current screen, highlighted
 - **Saved Searches**: your starred searches for one-tap access (see [Search](/features/search))
@@ -106,12 +106,14 @@ The drawer shows:
 
 ## Deep links
 
-Grove registers `grove://` deep links so widgets, notifications, and shortcuts can jump straight into the app:
+Bloom registers `bloom://` deep links so widgets, notifications, and shortcuts can jump straight into the app:
 
-- `grove://note/{id}`: opens a specific note
-- `grove://capture`: opens the capture picker
-- `grove://agenda`: opens Agenda
-- `grove://reminder/...`: used internally by reminder notifications
+- `bloom://note/{id}`: opens a specific note
+- `bloom://capture`: opens the capture picker
+- `bloom://agenda`: opens Agenda
+- `bloom://reminder/...`: used internally by reminder notifications
+
+Links and shortcuts made before the app was renamed from Grove keep working: every `grove://` link opens the same place as its `bloom://` version.
 
 ## Related
 

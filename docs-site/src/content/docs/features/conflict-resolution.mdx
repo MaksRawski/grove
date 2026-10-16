@@ -1,13 +1,13 @@
 ---
 title: Conflict Resolution
-description: What happens when Syncthing leaves behind a .sync-conflict-* copy, and how to resolve it inside Grove.
+description: What happens when Syncthing leaves behind a .sync-conflict-* copy, and how to resolve it inside Bloom.
 ---
 
 import ThemeShot from '../../../components/ThemeShot.astro';
 import syncConflictLight from '../assets/light/sync-conflict.png';
 import syncConflictDark from '../assets/dark/sync-conflict.png';
 
-When two devices edit the same `.org` file while disconnected, Syncthing resolves the collision by keeping both copies: your device's version, plus a `.sync-conflict-*` file holding the other side's changes. Grove detects these copies during its normal sync pass and surfaces them for resolution rather than silently picking one.
+When two devices edit the same `.org` file while disconnected, Syncthing resolves the collision by keeping both copies: your device's version, plus a `.sync-conflict-*` file holding the other side's changes. Bloom detects these copies during its normal sync pass and surfaces them for resolution rather than silently picking one.
 
 ## The conflict screen
 

@@ -1,8 +1,8 @@
-# Handoff: Grove Launch Site — "The Buffer" (variant 1a)
+# Handoff: Bloom Launch Site — "The Buffer" (variant 1a)
 
 ## Overview
 
-Grove is a native Android app for note-taking and task management on top of plain `.org`
+Bloom is a native Android app for note-taking and task management on top of plain `.org`
 files stored locally on device. This handoff covers its **launch website**: a marketing
 landing page plus a documentation section.
 
@@ -59,7 +59,7 @@ Two caveats where judgment is expected:
 Implement as CSS custom properties on `:root`, with a `[data-theme="dark"]` override block.
 This is exactly how the prototype does it and it should carry over unchanged.
 
-Both themes are derived from the Grove Android app's own light and dark themes, so the
+Both themes are derived from the Bloom Android app's own light and dark themes, so the
 site and the app read as the same product. **Light is the default** — it is friendlier to
 first-time visitors, even though the app itself ships dark.
 
@@ -136,7 +136,7 @@ Type scale as used (all sizes px):
 
 | Role | Family | Size | Weight | Line-height | Notes |
 |---|---|---|---|---|---|
-| Hero title (`Grove`) | JetBrains Mono | 52 | 700 | 1.1 | `letter-spacing: -.02em` |
+| Hero title (`Bloom`) | JetBrains Mono | 52 | 700 | 1.1 | `letter-spacing: -.02em` |
 | Hero prose | Source Serif 4 | 22 | 400 | 1.55 | `max-width: 52ch` |
 | Section heading (`* Features`) | JetBrains Mono | 26 | 700 | — | |
 | Headline (`** Capture`) | JetBrains Mono | 21 | 500 | — | |
@@ -173,12 +173,12 @@ Single scrolling page. Max content width `1240px`, centered. Nine bands top to b
 Full-width strip, `padding: 14px 28px`, `background: var(--bg2)`,
 `border-bottom: 1px solid var(--line)`, all text JetBrains Mono 13px.
 
-- **Left:** a green `✳` glyph (15px, `var(--green)`), then `grove.org` in `var(--ink)`
+- **Left:** a green `✳` glyph (15px, `var(--green)`), then `bloom.org` in `var(--ink)`
   weight 500, then `— 1 of 1 buffers` in `var(--ink3)`.
 - **Right:** nav links `features`, `docs`, `source` (`var(--ink2)`, 20px gap), then the
   **theme toggle**, styled as an Emacs minibuffer command: a bordered pill
   (`var(--bg3)` fill, `4px 10px`, radius 4) reading `M-x ` in `var(--accent)` followed by
-  `grove-dark-theme` in `var(--ink)`. The word `dark`/`light` is *the theme you will switch
+  `bloom-dark-theme` in `var(--ink)`. The word `dark`/`light` is *the theme you will switch
   to*, not the current one. Border turns `var(--accent)` on hover.
 
 #### 2. Hero — split source/rendered
@@ -191,7 +191,7 @@ Two columns: `minmax(0,1fr)` and `420px`, `gap: 56px`, `padding: 64px 56px 56px`
 Four org keyword lines, JetBrains Mono 15px, keywords in `var(--ink3)`:
 
 ```
-#+TITLE:    Grove                          ← value is 52px/700, the actual page H1
+#+TITLE:    Bloom                          ← value is 52px/700, the actual page H1
 #+SUBTITLE: notes and tasks in org-mode, on Android    ← var(--ink2)
 #+STARTUP:  overview                       ← var(--ink2)
 #+FILETAGS: :plaintext:offline:yours:       ← var(--green)
@@ -202,7 +202,7 @@ Four org keyword lines, JetBrains Mono 15px, keywords in `var(--ink3)`:
 Then hero prose (Source Serif 4, 22px, `var(--ink2)`, `max-width: 52ch`), with `.org`
 inline in mono at `var(--ink)` weight 600:
 
-> Your vault is a folder of `.org` files. Grove reads it, renders it properly, and writes
+> Your vault is a folder of `.org` files. Bloom reads it, renders it properly, and writes
 > back plain text. No Lisp interpreter in your pocket required — though nobody's stopping you.
 
 Then the CTA row (`flex`, `gap: 12px`, `flex-wrap: wrap`):
@@ -221,7 +221,7 @@ Closing note, mono 12px `var(--ink3)`:
 
 **Right column** — the product argument in one image. Two stacked cards under a pair of
 11px uppercase labels (`var(--ink3)`, `letter-spacing: .1em`) reading **what you wrote**
-(left) and **what Grove shows** (right), justified to opposite ends.
+(left) and **what Bloom shows** (right), justified to opposite ends.
 
 - **Top card:** a fake org buffer. `var(--bg2)` fill, `1px` border, radius 8,
   `padding: 18px 20px`, mono 12.5px, `line-height: 1.85`. Content, with each token in its
@@ -245,7 +245,7 @@ Closing note, mono 12px `var(--ink3)`:
   The trailing `▌` is a blinking cursor: `var(--accent)`,
   `animation: blink 1.1s step-end infinite` with `@keyframes blink {0%,49%{opacity:1} 50%,100%{opacity:0}}`.
 
-- **Bottom card:** `assets/read-mode.png` — the same note as Grove actually renders it.
+- **Bottom card:** `assets/read-mode.png` — the same note as Bloom actually renders it.
   Wrapped in a `#12100e` card, `10px` padding, radius 8, `var(--shadow)`, image radius 4.
 
 The pairing is the point: identical content, raw on top, rendered below. Preserve it.
@@ -260,7 +260,7 @@ Each cell: a mono 12px tag in `var(--green)`, then 14.5px body in `var(--ink2)`.
 |---|---|
 | `:plaintext:` | Files on disk, not rows in a database. The index rebuilds from them. |
 | `:offline:` | No account, no server, no telemetry. Pair it with Syncthing and forget about it. |
-| `:yours:` | Open source. Delete Grove tomorrow and every note still opens in Emacs. |
+| `:yours:` | Open source. Delete Bloom tomorrow and every note still opens in Emacs. |
 
 These three tags are the same ones listed in the hero's `#+FILETAGS:` line. That echo is
 deliberate — if copy changes, change both.
@@ -302,7 +302,7 @@ Screenshots sit in `#12100e` cards, `8px` padding, radius 10, inner image radius
 Full copy for each is in the reference HTML; a few details worth calling out because they
 carry specific colors:
 
-- **Capture** bullets include `grove://capture` in `var(--accent)` and `%^{prompt}` in
+- **Capture** bullets include `bloom://capture` in `var(--accent)` and `%^{prompt}` in
   `var(--violet)`.
 - **Agenda** prose sets `SCHEDULED` in `var(--blue)` and `DEADLINE` in `var(--red)`, both
   in mono 15px inline within serif prose.
@@ -314,7 +314,7 @@ carry specific colors:
 `padding: 56px`, `background: var(--bg2)`, `border-top: 1px solid var(--line)`,
 left-aligned (`align-items: flex-start`), `gap: 22px`.
 
-Mono 26px/700 `* Get Grove` (star green). Then Source Serif 4 20px `var(--ink2)`,
+Mono 26px/700 `* Get Bloom` (star green). Then Source Serif 4 20px `var(--ink2)`,
 `max-width: 60ch`:
 
 > Not released yet. The code is open, the builds are coming, and the mailing list is one
@@ -360,7 +360,7 @@ The five feature rows fold and unfold on click, mimicking org-mode's `TAB`.
 
 ### 2. Theme toggle
 
-Clicking the `M-x grove-…-theme` pill in the buffer bar flips light ⇄ dark.
+Clicking the `M-x bloom-…-theme` pill in the buffer bar flips light ⇄ dark.
 
 - Implemented by setting `data-theme="dark"` on the page root; every color resolves
   through custom properties, so nothing else needs to change.
@@ -387,7 +387,7 @@ Recommended, in the spirit of the design:
 - **Below ~700px:** the three-column filetags band stacks; `border-right` becomes
   `border-bottom`. Reduce section padding `56px → 24px`. Reduce hero title `52px → 36px`.
   Feature body indent `40px → 16px` (keep some indent — it is the org metaphor).
-- **Buffer bar:** on narrow screens keep `grove.org` and the theme toggle; collapse the
+- **Buffer bar:** on narrow screens keep `bloom.org` and the theme toggle; collapse the
   nav links into a menu. Drop `— 1 of 1 buffers` first, it is pure flavor.
 - Never let the fake org buffer in the hero wrap — it is preformatted text and wrapping
   destroys the illusion. Allow horizontal scroll or scale it down instead.
@@ -413,7 +413,7 @@ a `classList` toggle plus an `aria-expanded` flip, and theming is one attribute 
 
 ## Assets
 
-Ten PNG screenshots in `reference/assets/`, all captured from the Grove Android app:
+Ten PNG screenshots in `reference/assets/`, all captured from the Bloom Android app:
 
 `agenda-overdue.png`, `capture-editor-datetree.png`, `capture-picker.png`, `edit-mode.png`,
 `notebooks-list.png`, `outline-view.png`, `read-mode.png`, `search-filters.png`,

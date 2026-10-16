@@ -1,6 +1,6 @@
 ---
 title: Sync
-description: How Grove keeps its index in step with your .org files on disk, and why it pairs with an external tool like Syncthing.
+description: How Bloom keeps its index in step with your .org files on disk, and why it pairs with an external tool like Syncthing.
 ---
 
 import ThemeShot from '../../../components/ThemeShot.astro';
@@ -9,19 +9,19 @@ import settingsSyncDark from '../assets/dark/settings-sync.png';
 import settingsSyncLogLight from '../assets/light/settings-sync-log.png';
 import settingsSyncLogDark from '../assets/dark/settings-sync-log.png';
 
-Grove's "sync" is really two separate things: getting `.org` files onto your device in the first place (which Grove doesn't do itself), and keeping Grove's in-app index in step with whatever's currently on disk (which Grove does continuously).
+Bloom's "sync" is really two separate things: getting `.org` files onto your device in the first place (which Bloom doesn't do itself), and keeping Bloom's in-app index in step with whatever's currently on disk (which Bloom does continuously).
 
 ## The file-first model
 
-Your `.org` files are the single source of truth, always. Grove points at one folder on the device (chosen via the Android system folder picker, SAF) and treats everything in it as the vault. There's no proprietary format and no database you could lose data by deleting: the SQLite index (Room + FTS5) is entirely rebuildable from the files themselves.
+Your `.org` files are the single source of truth, always. Bloom points at one folder on the device (chosen via the Android system folder picker, SAF) and treats everything in it as the vault. There's no proprietary format and no database you could lose data by deleting: the SQLite index (Room + FTS5) is entirely rebuildable from the files themselves.
 
 ## Getting files onto the device
 
-Grove does not implement its own cloud sync. The recommended approach is **Syncthing** paired with **Local Directory** mode: Syncthing keeps the folder in sync across your devices peer-to-peer (no account limits, no vendor lock-in), and Grove just watches whatever ends up in that folder.
+Bloom does not implement its own cloud sync. The recommended approach is **Syncthing** paired with **Local Directory** mode: Syncthing keeps the folder in sync across your devices peer-to-peer (no account limits, no vendor lock-in), and Bloom just watches whatever ends up in that folder.
 
-## What Grove's sync engine actually does
+## What Bloom's sync engine actually does
 
-Given a folder, Grove:
+Given a folder, Bloom:
 
 1. Diffs file revisions (`mtime:size`) against its last known state
 2. Re-reads and re-indexes anything changed
@@ -37,7 +37,7 @@ This runs on:
 
 ## Status indicators
 
-Notebook cards on the home screen show a pill for synced / modified / syncing state, so you can see at a glance whether Grove's index matches disk.
+Notebook cards on the home screen show a pill for synced / modified / syncing state, so you can see at a glance whether Bloom's index matches disk.
 
 ## Sync log
 

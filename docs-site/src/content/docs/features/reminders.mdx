@@ -9,7 +9,7 @@ import settingsRemindersDark from '../assets/dark/settings-reminders.png';
 import settingsRemindersExactLight from '../assets/light/settings-reminders-exact-timing.png';
 import settingsRemindersExactDark from '../assets/dark/settings-reminders-exact-timing.png';
 
-Grove can notify you when a heading's SCHEDULED or DEADLINE timestamp arrives, without you needing to have the app open or even check Agenda proactively.
+Bloom can notify you when a heading's SCHEDULED or DEADLINE timestamp arrives, without you needing to have the app open or even check Agenda proactively.
 
 <ThemeShot
   light={settingsRemindersLight}
@@ -21,7 +21,7 @@ Grove can notify you when a heading's SCHEDULED or DEADLINE timestamp arrives, w
 
 ## Reminder notifications
 
-When a heading's planning date arrives, Grove fires a system notification. Whether it reads as a task or an event, and which actions it carries, depends only on whether the heading carries a TODO keyword — not on which timestamp field (SCHEDULED, DEADLINE, or a bare active `<date>`) triggered it.
+When a heading's planning date arrives, Bloom fires a system notification. Whether it reads as a task or an event, and which actions it carries, depends only on whether the heading carries a TODO keyword — not on which timestamp field (SCHEDULED, DEADLINE, or a bare active `<date>`) triggered it.
 
 ### Task reminders
 
@@ -38,11 +38,11 @@ Tapping the notification body itself deep-links into the note in Read mode.
 
 ## Reschedule without opening the app
 
-The Reschedule action opens Planning Dates inside its own transparent, taskless activity, not the main app. That means rescheduling from a notification never actually navigates into Grove; you set the new date and land right back wherever you were (home screen, another app, the lock screen).
+The Reschedule action opens Planning Dates inside its own transparent, taskless activity, not the main app. That means rescheduling from a notification never actually navigates into Bloom; you set the new date and land right back wherever you were (home screen, another app, the lock screen).
 
 ## Daily digest
 
-If enabled, Grove sends one daily notification ("You have X tasks due today") covering overdue items plus anything due today, including any date-only events on today's date. It fires at your configured default reminder time and deep-links straight to Agenda. If the count would be zero, the digest is suppressed rather than sending an empty notification.
+If enabled, Bloom sends one daily notification ("You have X tasks due today") covering overdue items plus anything due today, including any date-only events on today's date. It fires at your configured default reminder time and deep-links straight to Agenda. If the count would be zero, the digest is suppressed rather than sending an empty notification.
 
 ## Notify for tasks without a time
 
@@ -50,7 +50,7 @@ By default, a SCHEDULED, DEADLINE, or active timestamp that lands on a day with 
 
 ## Permissions
 
-Reminders depend on two kinds of access, and Grove asks for neither before you've turned reminders on:
+Reminders depend on two kinds of access, and Bloom asks for neither before you've turned reminders on:
 
 - **Notifications.** Without them no reminder can appear. If a reminder is waiting on this permission, a banner on the Notebooks screen offers to grant it.
 - **Alarms & reminders (exact timing).** Android 12 and later gate exact alarms behind this setting, and Android 14 and later leave it off for new installs. Without it, reminders still fire, but Android may delay them by up to an hour.
@@ -65,7 +65,7 @@ While reminders are on and access is missing, Settings → Reminders shows a row
   sizes="340px"
 />
 
-If reminders are on, notifications are allowed, and exact timing is off, Grove asks once with a **Get reminders on time** dialog. **Allow** opens the Alarms & reminders screen; **Not now** dismisses it for good and points you to Settings → Reminders → Exact timing for later.
+If reminders are on, notifications are allowed, and exact timing is off, Bloom asks once with a **Get reminders on time** dialog. **Allow** opens the Alarms & reminders screen; **Not now** dismisses it for good and points you to Settings → Reminders → Exact timing for later.
 
 ## Surviving a reboot
 

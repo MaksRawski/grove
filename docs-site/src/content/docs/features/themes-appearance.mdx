@@ -7,7 +7,7 @@ import ThemeShot from '../../../components/ThemeShot.astro';
 import settingsAppearanceLight from '../assets/light/settings-appearance.png';
 import settingsAppearanceDark from '../assets/dark/settings-appearance.png';
 
-Settings → Look and Feel is where Grove's visual presentation is configured, separate from note *content* settings like TODO keywords (see [Notes Behavior](/features/notes-behavior)) and the [Notebooks](/features/notebooks#settings) list options, which have their own page.
+Settings → Look and Feel is where Bloom's visual presentation is configured, separate from note *content* settings like TODO keywords (see [Notes Behavior](/features/notes-behavior)) and the [Notebooks](/features/notebooks#settings) list options, which have their own page.
 
 <ThemeShot
   light={settingsAppearanceLight}
@@ -19,7 +19,7 @@ Settings → Look and Feel is where Grove's visual presentation is configured, s
 
 ## Themes
 
-Grove ships 11 built-in palettes, picked from a dropdown:
+Bloom ships 11 built-in palettes, picked from a dropdown:
 
 **Light themes:** Grove Light, Tokyo Day, Catppuccin Latte, Rosé Pine Dawn
 **Dark themes:** Grove Dark, Tokyo Night, Synthwave, Dracula, Catppuccin Mocha, Nord, Rosé Pine Moon
@@ -28,11 +28,11 @@ There's no "follow system" auto option; theme selection is always explicit. Each
 
 ## Launcher icon theming
 
-The **Sync App Icon with Theme** toggle swaps the app's launcher icon (and the brand mark in the nav drawer) to match the active theme, using Android's `activity-alias` mechanism. Because of how icon aliasing works on Android, this requires the app to background and restart to take effect; it won't update the icon instantly while Grove is in the foreground. Note: the notification-shade icon can't follow the theme on Android 16+, a platform limitation rather than something Grove controls.
+The **Sync App Icon with Theme** toggle swaps the app's launcher icon (and the brand mark in the nav drawer) to match the active theme, using Android's `activity-alias` mechanism. Because of how icon aliasing works on Android, this requires the app to background and restart to take effect; it won't update the icon instantly while Bloom is in the foreground. Note: the notification-shade icon can't follow the theme on Android 16+, a platform limitation rather than something Bloom controls.
 
 ## Text size
 
-**Text size** (Small / Medium / Large, Medium is the default) is the app-wide baseline: it scales every piece of text in Grove from one lever, including menus, the drawer, the notebooks list, the outline, bottom sheets, dialogs, and onboarding.
+**Text size** (Small / Medium / Large, Medium is the default) is the app-wide baseline: it scales every piece of text in Bloom from one lever, including menus, the drawer, the notebooks list, the outline, bottom sheets, dialogs, and onboarding.
 
 The read mode and edit mode [font-size levers](/features/notes-behavior#font-size) on the Notes page compound on top of this for note content only. For example, Text size **Large** plus read mode **Large** stacks both scale factors, so the rendered note grows more than either lever alone. Home-screen widgets are not affected.
 

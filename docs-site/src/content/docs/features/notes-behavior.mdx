@@ -7,7 +7,7 @@ import ThemeShot from '../../../components/ThemeShot.astro';
 import settingsNotesLight from '../assets/light/settings-notes.png';
 import settingsNotesDark from '../assets/dark/settings-notes.png';
 
-Settings → Notes controls how Grove treats note *content* (the org-mode semantics) as opposed to visual theming (see [Themes & Appearance](/features/themes-appearance)).
+Settings → Notes controls how Bloom treats note *content* (the org-mode semantics) as opposed to visual theming (see [Themes & Appearance](/features/themes-appearance)).
 
 <ThemeShot
   light={settingsNotesLight}
@@ -19,7 +19,7 @@ Settings → Notes controls how Grove treats note *content* (the org-mode semant
 
 ## Custom TODO keyword sets
 
-Grove's default keyword set is `TODO IN-PROGRESS | DONE CANCELLED`, using standard org-mode syntax: keywords before the `|` are "not done" states, keywords after are "done" states. You can redefine the whole set in this syntax (for example `TODO NEXT WAITING | DONE KILL`) and it propagates everywhere keyword chips are shown (Outline View, Read/Edit mode, the metadata sheet's State picker, Agenda's Show filter).
+Bloom's default keyword set is `TODO IN-PROGRESS | DONE CANCELLED`, using standard org-mode syntax: keywords before the `|` are "not done" states, keywords after are "done" states. You can redefine the whole set in this syntax (for example `TODO NEXT WAITING | DONE KILL`) and it propagates everywhere keyword chips are shown (Outline View, Read/Edit mode, the metadata sheet's State picker, Agenda's Show filter).
 
 ## Default priority
 
@@ -57,7 +57,7 @@ The destination is looked up in this order, first match wins:
 2. An `:ARCHIVE:` in the file's top `:PROPERTIES:` drawer, then a `#+ARCHIVE:` line
 3. The archive location set in Settings, only while **Auto-archive done items** is on
 
-A location looks like `file::* Heading/Subheading`. `%s` stands for the current file, so `%s_archive::` archives `agenda.org` into `agenda.org_archive`, just like Emacs. A file name with its own extension is used exactly as written. Only a bare name like `archive` becomes `archive.org`. Missing files and headings are created. Files that don't end in `.org` stay out of Grove's notebook list, search, and agenda.
+A location looks like `file::* Heading/Subheading`. `%s` stands for the current file, so `%s_archive::` archives `agenda.org` into `agenda.org_archive`, just like Emacs. A file name with its own extension is used exactly as written. Only a bare name like `archive` becomes `archive.org`. Missing files and headings are created. Files that don't end in `.org` stay out of Bloom's notebook list, search, and agenda.
 
 ### Archive properties
 
@@ -67,7 +67,7 @@ Every archive, manual or automatic, adds Emacs's context properties to the headi
 :PROPERTIES:
 :ARCHIVE_TIME: 2026-09-26 Sat 14:05
 :ARCHIVE_FILE: /storage/emulated/0/Documents/org/work/tasks.org
-:ARCHIVE_OLPATH: Projects/Grove
+:ARCHIVE_OLPATH: Projects/Bloom
 :ARCHIVE_CATEGORY: tasks
 :ARCHIVE_TODO: DONE
 :END:

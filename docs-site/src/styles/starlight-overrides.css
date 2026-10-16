@@ -1,11 +1,11 @@
 /*
-  Remaps Starlight's own CSS custom properties onto Grove's design tokens
+  Remaps Starlight's own CSS custom properties onto Bloom's design tokens
   (src/styles/tokens.css), so the built-in sidebar / table of contents /
-  search / prev-next controls read as Grove rather than generic Starlight.
+  search / prev-next controls read as Bloom rather than generic Starlight.
 */
 /* --bg, --ink2, etc. are themselves theme-reactive (see tokens.css's own
    :root vs [data-theme="dark"] blocks), so one mapping here is enough — the
-   sl-color-* values follow Grove's tokens through light/dark automatically. */
+   sl-color-* values follow Bloom's tokens through light/dark automatically. */
 :root {
   --sl-color-bg: var(--bg);
   --sl-color-bg-nav: var(--bg2);
@@ -35,7 +35,7 @@
   --sl-font: var(--font-sans);
   --sl-font-mono: var(--font-mono);
 
-  /* Flat by design (see DESIGN.md's "One Shadow Rule") — Grove's one shadow
+  /* Flat by design (see DESIGN.md's "One Shadow Rule") — Bloom's one shadow
      token is reserved for the hero's screenshot comparison card only, so
      Starlight's own elevation defaults (e.g. the prev/next footer cards)
      must not leak through. */

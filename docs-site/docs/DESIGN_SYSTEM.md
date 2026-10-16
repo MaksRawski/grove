@@ -1,4 +1,4 @@
-# Grove Design System
+# Bloom Design System
 
 Generated from the implemented code (`src/styles/`, `src/components/`) after the initial site build. This is the reference for any future task that adds, modifies, or styles a UI element — don't invent colors, spacing, or components outside what's documented here; extend this file when the design changes.
 
@@ -68,7 +68,7 @@ Apply `text-wrap: pretty` to prose blocks (already done on `.hero__prose`, `.fea
 
 ### Motion
 
-- `grove-blink` keyframe (defined once in `tokens.css`, reused by the hero's cursor `▌`): `1.1s step-end infinite`.
+- `bloom-blink` keyframe (defined once in `tokens.css`, reused by the hero's cursor `▌`): `1.1s step-end infinite`.
 - Folding has no transition (instant, matching real org-mode) — if ever added, keep under 150ms per the original design intent.
 
 ## Reusable CSS utilities (`src/styles/global.css`)
@@ -81,7 +81,7 @@ Landing-page-only (not loaded into Starlight — docs use `starlight-overrides.c
 - **`.shot-card`** — the dark (`#12100e`) screenshot mount, `10px` radius, `8px` padding, inner `img` gets `5px` radius.
 - **`.button` / `.button--primary` / `.button--secondary`** — the two button styles used everywhere (`★ Star on GitHub`, `Read the docs →`). Primary = accent fill; secondary = bordered, border turns accent on hover.
 
-`src/styles/theme-pill.css` — the `.grove-theme-pill` / `.grove-theme-pill__label` toggle button, shared verbatim between the landing buffer bar and the Starlight docs header override. Don't restyle one without the other; they must look identical.
+`src/styles/theme-pill.css` — the `.bloom-theme-pill` / `.bloom-theme-pill__label` toggle button, shared verbatim between the landing buffer bar and the Starlight docs header override. Don't restyle one without the other; they must look identical.
 
 ## Components (`src/components/landing/`)
 
@@ -104,13 +104,13 @@ Unlike the table above, `ThemeShot.astro` lives outside `landing/` and isn't lan
 
 Full replacements (not extensions) of three Starlight components, registered in `astro.config.mjs`'s `components` option:
 
-- **`PageTitle.astro`** — wraps Starlight's built-in title, adds the `:PROPERTIES:` drawer (`.grove-drawer`, `--ink4`, mono 13px) rendering the page's `description` frontmatter.
+- **`PageTitle.astro`** — wraps Starlight's built-in title, adds the `:PROPERTIES:` drawer (`.bloom-drawer`, `--ink4`, mono 13px) rendering the page's `description` frontmatter.
 - **`ThemeProvider.astro`** — runs the shared boot script (`src/scripts/theme-boot.js`) instead of Starlight's own theme init, so state is shared with the landing page.
-- **`ThemeSelect.astro`** — the same `.grove-theme-pill` used on the landing page, instead of Starlight's default 3-way select.
+- **`ThemeSelect.astro`** — the same `.bloom-theme-pill` used on the landing page, instead of Starlight's default 3-way select.
 
-The header logo is not an override — it's the stock Starlight `SiteTitle`, fed a light/dark logo pair via `astro.config.mjs`'s `logo` option (`src/assets/grove-icon-{light,dark}.svg`). `replacesTitle` stays off, so the "Grove" wordmark still renders beside the mark.
+The header logo is not an override — it's the stock Starlight `SiteTitle`, fed a light/dark logo pair via `astro.config.mjs`'s `logo` option (`src/assets/bloom-icon-{light,dark}.svg`). `replacesTitle` stays off, so the "Bloom" wordmark still renders beside the mark.
 
-`src/styles/starlight-overrides.css` remaps Starlight's own `--sl-color-*`/`--sl-font*` variables onto Grove's tokens and applies the type scale to `.sl-markdown-content`. It also caps any plain markdown `<img>` (feature screenshots in `src/content/docs/assets/` are full device-resolution captures, 1280px+ wide, with no per-image sizing in the `.mdx`) at a fixed `340px` max-width plus the same border/radius/shadow treatment as `.shot-card`, so legacy single-theme screenshots (no light/dark pair captured yet) still read consistently with the ones mounted via `<ThemeShot>`. The rule excludes `.shot-card__img` (`:not(.shot-card__img)`) so `ThemeShot`'s own card isn't double-bordered.
+`src/styles/starlight-overrides.css` remaps Starlight's own `--sl-color-*`/`--sl-font*` variables onto Bloom's tokens and applies the type scale to `.sl-markdown-content`. It also caps any plain markdown `<img>` (feature screenshots in `src/content/docs/assets/` are full device-resolution captures, 1280px+ wide, with no per-image sizing in the `.mdx`) at a fixed `340px` max-width plus the same border/radius/shadow treatment as `.shot-card`, so legacy single-theme screenshots (no light/dark pair captured yet) still read consistently with the ones mounted via `<ThemeShot>`. The rule excludes `.shot-card__img` (`:not(.shot-card__img)`) so `ThemeShot`'s own card isn't double-bordered.
 
 ## Responsive breakpoints
 
@@ -124,5 +124,5 @@ When adding a new section, reuse these two breakpoints rather than introducing a
 ## What's deliberately *not* in this system
 
 - No SVG illustrations anywhere (matches the design handoff's explicit "by design" note).
-- One icon only: the Grove app icon. It appears as the browser favicon (`public/favicon.svg`, `public/favicon.ico`), as the buffer-bar wordmark mark on the landing page (`public/grove-icon-light.svg` / `public/grove-icon-dark.svg`, an 18px superellipse "squircle" tile carrying the five-spoke org asterisk, swapped by `[data-theme]`), and as the Starlight docs-section header logo beside the "Grove" wordmark (`src/assets/grove-icon-light.svg` / `src/assets/grove-icon-dark.svg` — same artwork, kept as a `src/` copy because Starlight's `logo` config needs an Astro-processed asset path; sized to the nav-bar height and swapped by theme). This supersedes the original handoff's "`✳` glyph only, no logo" note. No other logo, icon set, or illustration — treat any further icon work as a separate design task.
+- One icon only: the Bloom app icon. It appears as the browser favicon (`public/favicon.svg`, `public/favicon.ico`), as the buffer-bar wordmark mark on the landing page (`public/bloom-icon-light.svg` / `public/bloom-icon-dark.svg`, an 18px superellipse "squircle" tile carrying the five-spoke org asterisk, swapped by `[data-theme]`), and as the Starlight docs-section header logo beside the "Bloom" wordmark (`src/assets/bloom-icon-light.svg` / `src/assets/bloom-icon-dark.svg` — same artwork, kept as a `src/` copy because Starlight's `logo` config needs an Astro-processed asset path; sized to the nav-bar height and swapped by theme). This supersedes the original handoff's "`✳` glyph only, no logo" note. No other logo, icon set, or illustration — treat any further icon work as a separate design task.
 - No component library / UI framework — everything is hand-authored `.astro` + scoped CSS, intentionally, to keep 1:1 fidelity with the reference HTML.
