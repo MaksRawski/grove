@@ -1,11 +1,11 @@
-Grove is a native Android Org-mode note-taking app, built as a first-class mobile companion for Emacs org-mode users.
+Bloom is a native Android Org-mode note-taking app, built as a first-class mobile companion for Emacs org-mode users.
 
-Grove edits plain .org files in a folder you choose. There is no account, no proprietary database, and no export step: the files on disk are your notes, byte-for-byte, and they sync to your other machines with whatever tool you already trust (Syncthing is the recommended pairing). If you stop using Grove tomorrow, your notes are exactly where they always were.
+Bloom edits plain .org files in a folder you choose. There is no account, no proprietary database, and no export step: the files on disk are your notes, byte-for-byte, and they sync to your other machines with whatever tool you already trust (Syncthing is the recommended pairing). If you stop using Bloom tomorrow, your notes are exactly where they always were.
 
 Features:
 
-* File-first: .org files in a synced folder are the sole source of truth. Grove's internal database is only a rebuildable search index.
-* Lossless org engine: a custom parser models documents as a thin view over the raw text, so parsing and writing a file back out is byte-identical by construction. Grove never reformats a file it didn't deliberately edit.
+* File-first: .org files in a synced folder are the sole source of truth. Bloom's internal database is only a rebuildable search index.
+* Lossless org engine: a custom parser models documents as a thin view over the raw text, so parsing and writing a file back out is byte-identical by construction. Bloom never reformats a file it didn't deliberately edit.
 * Zero-friction capture: org-capture style templates with placeholders for the current time, a prompt, and cursor position. Targets include the top or bottom of a file, under a heading (by name or CUSTOM_ID), and year/month/day datetrees. Reachable from a home-screen widget, the share sheet, an optional persistent notification, and deep links.
 * Home-screen widgets: a one-tap Capture widget, and an Agenda ledger widget showing overdue and upcoming tasks with mark-done and quick-add, without opening the app.
 * Real editor: raw org subtree editing with syntax highlighting, a formatting toolbar, list continuation on Enter, a metadata sheet for TODO state, priority, and tags, SCHEDULED/DEADLINE editing, repeater advancement on DONE, and autosave with a stale-file guard.
@@ -16,4 +16,6 @@ Features:
 * Sync that respects your tools: change detection by file revision, Syncthing conflict-file detection with a keep-local, keep-remote, or keep-both picker, manual and continuous sync modes, and .orgzlyignore support.
 * A dark-mode-first design with IBM Plex Sans/Serif/Mono and org syntax highlighting colored the way an Emacs theme would.
 
-Grove has no server-side component. Its only network request is fetching a page title when you share a link into Grove, to use as the note heading. Sites that hide the title behind a script are loaded in a hidden WebView with JavaScript enabled. Turn this off in Settings, Sharing, Fetch link titles, and Grove makes no network request at all; a shared link is then labeled with the title the sharing app provided, if any, or the URL.
+Bloom has no server-side component. Its only network request is fetching a page title when you share a link into Bloom, to use as the note heading. Sites that hide the title behind a script are loaded in a hidden WebView with JavaScript enabled. Turn this off in Settings, Sharing, Fetch link titles, and Bloom makes no network request at all; a shared link is then labeled with the title the sharing app provided, if any, or the URL.
+
+Bloom was formerly known as Grove.
