@@ -1,6 +1,6 @@
 # Tasks and Events
 
-How Grove decides whether a heading is a task or an event, how SCHEDULED, DEADLINE, and bare active timestamps behave with and without a repeater, and which surfaces (Agenda screen, home-screen widget, notification) offer a Complete/Done affordance for each combination.
+How Bloom decides whether a heading is a task or an event, how SCHEDULED, DEADLINE, and bare active timestamps behave with and without a repeater, and which surfaces (Agenda screen, home-screen widget, notification) offer a Complete/Done affordance for each combination.
 
 ## Task vs. event
 
@@ -22,7 +22,7 @@ This is independent of which timestamp fields are set. A keyword-less heading wi
 A bare active timestamp comes in two flavors that matter for repeaters:
 
 - **Dedicated**: sits alone on the managed line right after the planning line (or right after the heading if there's no planning line). This is the line `OrgMutations.setActiveTimestamps` rewrites, and the only one a Complete/Done action can advance.
-- **Inline in prose**: a `<date>` typed anywhere else in the body text. Grove reads and displays it but never rewrites it, so a repeater on an inline stamp gets no button anywhere.
+- **Inline in prose**: a `<date>` typed anywhere else in the body text. Bloom reads and displays it but never rewrites it, so a repeater on an inline stamp gets no button anywhere.
 
 A heading can carry any combination of the three fields at once (e.g. both SCHEDULED and DEADLINE), and each is tracked independently.
 
@@ -34,7 +34,7 @@ A repeater is a `+1w` / `++1w` / `.+1w`-style suffix written *inside* a timestam
 - `++N` (**CATCH_UP**): shift by intervals until the date lands in the future.
 - `.+N` (**FUTURE**): shift one interval from today, regardless of the old date.
 
-Completing a repeating timestamp always advances its date to the next occurrence instead of closing or marking anything done. A repeater only earns a Complete/Done affordance when it sits on a field Grove actually manages: SCHEDULED, DEADLINE, or the dedicated active-timestamp line. A repeater typed inline in prose is display-only and offers no button, since there's no managed line to rewrite.
+Completing a repeating timestamp always advances its date to the next occurrence instead of closing or marking anything done. A repeater only earns a Complete/Done affordance when it sits on a field Bloom actually manages: SCHEDULED, DEADLINE, or the dedicated active-timestamp line. A repeater typed inline in prose is display-only and offers no button, since there's no managed line to rewrite.
 
 ## Completing a task
 

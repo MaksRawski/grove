@@ -1,6 +1,6 @@
 # Search syntax
 
-Grove's search uses Orgzly-compatible query syntax (see the [Orgzly Revived search docs](https://www.orgzlyrevived.com/docs#search)), so saved searches and habits transfer directly. A query is a sequence of space-separated tokens.
+Bloom's search uses Orgzly-compatible query syntax (see the [Orgzly Revived search docs](https://www.orgzlyrevived.com/docs#search)), so saved searches and habits transfer directly. A query is a sequence of space-separated tokens.
 
 ## Combining terms
 
@@ -44,7 +44,7 @@ An empty query matches everything.
 
 ## Dates
 
-A date token is `PREFIX.[OP.]TIME`. TIME names one day, and the timestamp's date is compared against it with OP, or one moment (`now`, `Nh`), and the timestamp's time is compared too (see below). When OP is omitted, each prefix uses Orgzly's default: **`le` for `s.`, `d.` and `cr.`; `eq` for `c.` and `e.`/`a.`**. (Orgzly's docs don't name a default for `e.`; Grove uses `eq` so `e.today` means "events today".)
+A date token is `PREFIX.[OP.]TIME`. TIME names one day, and the timestamp's date is compared against it with OP, or one moment (`now`, `Nh`), and the timestamp's time is compared too (see below). When OP is omitted, each prefix uses Orgzly's default: **`le` for `s.`, `d.` and `cr.`; `eq` for `c.` and `e.`/`a.`**. (Orgzly's docs don't name a default for `e.`; Bloom uses `eq` so `e.today` means "events today".)
 
 | OP | Meaning |
 |---|---|
@@ -60,13 +60,13 @@ A date token is `PREFIX.[OP.]TIME`. TIME names one day, and the timestamp's date
 | `Nd` / `Nw` / `Nm` / `Ny` | N days / weeks / months / years from today. N can be negative: `-2w` is two weeks ago |
 | `now` | this moment (to the minute) |
 | `Nh` | N hours from now; `-2h` is two hours ago |
-| `yyyy-mm-dd` | that date (a Grove extension, used by the Filters panel's custom range) |
+| `yyyy-mm-dd` | that date (a Bloom extension, used by the Filters panel's custom range) |
 
-Two Grove specials take no operator: `overdue` (the date is before today) and `none` (aliases `no`, `nodate`: the timestamp is absent).
+Two Bloom specials take no operator: `overdue` (the date is before today) and `none` (aliases `no`, `nodate`: the timestamp is absent).
 
 A note without the timestamp never matches a comparison. `e.`/`a.` match when any of the note's event days satisfies it.
 
-Against `now` and `Nh`, a timed entry (`<2026-10-01 Thu 09:00>`) is compared at its time, so `s.ge.now` drops this morning's 09:00 task by 10:30. An entry with an end time (`10:00-11:00`, or a timed range) counts until it ends. An untimed entry covers its **whole day**: it matches when any moment of that day does, so `e.ge.now` still shows today's all-day events and `s.le.now` today's untimed tasks. (Orgzly treats an untimed entry as midnight; Grove doesn't, so all-day items don't vanish at 00:01.)
+Against `now` and `Nh`, a timed entry (`<2026-10-01 Thu 09:00>`) is compared at its time, so `s.ge.now` drops this morning's 09:00 task by 10:30. An entry with an end time (`10:00-11:00`, or a timed range) counts until it ends. An untimed entry covers its **whole day**: it matches when any moment of that day does, so `e.ge.now` still shows today's all-day events and `s.le.now` today's untimed tasks. (Orgzly treats an untimed entry as midnight; Bloom doesn't, so all-day items don't vanish at 00:01.)
 
 | Example | Meaning |
 |---|---|
