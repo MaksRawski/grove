@@ -48,12 +48,12 @@ class CaptureWidget : GlanceAppWidget() {
                 // The mark is drawn from a vector (ic_brand_asterisk), not a "✱"
                 // text glyph: U+2731 is absent from many device system fonts, so
                 // the glyph rendered as blank or tofu on those phones.
-                val markColor = ColorProvider(Color(0xFFFFFAF2), Color(0xFF1A160D))
+                val markColor = ColorProvider(Color(0xFFFDF7F3), Color(0xFF25223A))
                 Row(
                     modifier = GlanceModifier
                         .fillMaxSize()
                         .cornerRadius(17.dp)
-                        .background(ColorProvider(Color(0xFF8A5A2B), Color(0xFFCB9D62)))
+                        .background(ColorProvider(Color(0xFFC06A6E), Color(0xFFEBA8A2)))
                         .clickable(actionStartActivity(intent))
                         .padding(horizontal = 14.dp),
                     verticalAlignment = Alignment.CenterVertically,

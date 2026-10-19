@@ -63,6 +63,7 @@ re-uploads the APKs to the existing release instead of failing.
 
 ### Changed
 - Grove is now called Bloom. Same app, same notes, same settings; nothing to migrate.
+- The default app icon, Agenda widget icon and Capture widget now use Bloom Light colors.
 
 ## [1.10.0] - 2026-10-15
 

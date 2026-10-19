@@ -27,9 +27,9 @@ class AppIconManagerTest {
 
     @Test
     fun `notification mark color follows the same toggle as the launcher alias`() {
-        // Off: always the default golden mark, whatever the theme.
+        // Off: always the default (Bloom Light) mark, whatever the theme.
         for (theme in ThemePreference.entries) {
-            assertEquals(0xFFCB9D62.toInt(), AppIconManager.markColor(enabled = false, theme = theme))
+            assertEquals(0xFFC06A6E.toInt(), AppIconManager.markColor(enabled = false, theme = theme))
         }
         // On: the fill of the matching ic_launcher_foreground_* drawable.
         assertEquals(0xFF8A5A2B.toInt(), AppIconManager.markColor(enabled = true, theme = ThemePreference.LIGHT))
@@ -40,8 +40,8 @@ class AppIconManagerTest {
     fun `every theme has a mark color so no theme silently falls back`() {
         for (theme in ThemePreference.entries) {
             val themed = AppIconManager.markColor(enabled = true, theme = theme)
-            if (theme != ThemePreference.DARK) {
-                // DARK legitimately shares the default mark; every other theme
+            if (theme != ThemePreference.BLOOMLIGHT) {
+                // BLOOMLIGHT legitimately shares the default mark; every other theme
                 // must define its own, so a missing entry can't hide here.
                 assertTrue(
                     "no distinct mark color for $theme",

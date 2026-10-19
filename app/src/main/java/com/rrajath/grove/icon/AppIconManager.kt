@@ -47,7 +47,7 @@ object AppIconManager {
     val ALL_ALIASES: List<String> = listOf(DEFAULT_ALIAS) + THEME_ALIASES.values
 
     /** Mark color of the default launcher icon (`ic_launcher_foreground.xml`). */
-    private const val DEFAULT_MARK_COLOR = 0xFFCB9D62.toInt()
+    private const val DEFAULT_MARK_COLOR = 0xFFC06A6E.toInt()
 
     // Mark colors of the per-theme `ic_launcher_foreground_*.xml` drawables.
     private val THEME_MARK_COLORS: Map<ThemePreference, Int> = mapOf(
