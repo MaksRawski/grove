@@ -57,6 +57,8 @@ re-uploads the APKs to the existing release instead of failing.
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-10-19
+
 ### Added
 - `bloom://` deep links; existing `grove://` links and pinned shortcuts keep working.
 - Bloom Light and Bloom Dark themes, each with a matching launcher icon. New installs start on Bloom Light.
