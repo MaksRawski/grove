@@ -122,4 +122,27 @@ export default defineConfig({
   // known screenshots, so optimize them at build time instead; no runtime
   // dependency needed.
   adapter: cloudflare({ imageService: 'compile' }),
+
+  vite: {
+    plugins: [
+      {
+        // Dev only. Astro serves /_image?href=<path>&w=&h= with a one-year
+        // `immutable` Cache-Control, and that URL doesn't change when a
+        // screenshot is re-shot at the same size, so the browser keeps
+        // showing the old image forever. Force revalidation instead.
+        name: 'bloom-dev-image-no-cache',
+        apply: 'serve',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (req.url?.startsWith('/_image')) {
+              const setHeader = res.setHeader.bind(res);
+              res.setHeader = (name, value) =>
+                setHeader(name, name.toLowerCase() === 'cache-control' ? 'no-cache' : value);
+            }
+            next();
+          });
+        },
+      },
+    ],
+  },
 });

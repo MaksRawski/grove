@@ -2,34 +2,34 @@
 name: Bloom Launch Site
 description: The marketing landing page and docs for Bloom, a native Android org-mode note app — the site written as an org-mode buffer.
 colors:
-  warm-paper: "#faf6ee"
-  aged-paper: "#f3ecdf"
-  toasted-paper: "#ebe2d1"
-  ink-black: "#2b2620"
-  warm-umber: "#655b4e"
-  faded-umber: "#756a5b"
-  ghost-taupe: "#9a8d7b"
-  parchment-line: "#e2d8c5"
-  org-amber: "#8f5c1c"
-  amber-wash: "#f2e0c2"
-  moss-olive: "#55752f"
-  terracotta-red: "#b04f34"
-  slate-blue: "#3c6a8c"
-  dusty-plum: "#7a5a95"
-  warm-paper-dark: "#12100e"
-  aged-paper-dark: "#1c1915"
-  toasted-paper-dark: "#262119"
-  ink-black-dark: "#f0ebe1"
-  warm-umber-dark: "#b0a89b"
-  faded-umber-dark: "#8d8376"
-  ghost-taupe-dark: "#6a6157"
-  parchment-line-dark: "#302a22"
-  org-amber-dark: "#dfae70"
-  amber-wash-dark: "#3a2f1b"
-  moss-olive-dark: "#94c06e"
-  terracotta-red-dark: "#de8a6b"
-  slate-blue-dark: "#74a5c6"
-  dusty-plum-dark: "#a98bc4"
+  warm-paper: "#f8f3ee"
+  aged-paper: "#f0e9e3"
+  toasted-paper: "#e6ddd6"
+  ink-black: "#4a4466"
+  warm-umber: "#625b7a"
+  faded-umber: "#6b647e"
+  ghost-taupe: "#9893ab"
+  parchment-line: "#ebe2db"
+  org-amber: "#98555d"
+  amber-wash: "#f1e1dd"
+  moss-olive: "#387078"
+  terracotta-red: "#96536a"
+  slate-blue: "#396d8e"
+  dusty-plum: "#725f87"
+  warm-paper-dark: "#25223a"
+  aged-paper-dark: "#2b2842"
+  toasted-paper-dark: "#3b3756"
+  ink-black-dark: "#e2dff2"
+  warm-umber-dark: "#a9a4c4"
+  faded-umber-dark: "#9c97b3"
+  ghost-taupe-dark: "#736e8f"
+  parchment-line-dark: "#34304c"
+  org-amber-dark: "#eba8a2"
+  amber-wash-dark: "#45374b"
+  moss-olive-dark: "#9fcfc4"
+  terracotta-red-dark: "#e57d99"
+  slate-blue-dark: "#a3d0da"
+  dusty-plum-dark: "#c4a9e7"
 typography:
   display:
     fontFamily: "JetBrains Mono, monospace"
@@ -115,25 +115,27 @@ Light is the default theme (friendlier to first-time visitors), even though the 
 
 A warm, paper-and-ink palette carrying a small set of muted org-syntax accent hues — never a bright, saturated "tech" palette.
 
+Values follow the app's Bloom Light / Bloom Dark ("Rosewater") themes. The role names below predate that switch and are kept as stable names; light-mode text hues are darkened along the same hue to clear AA.
+
 ### Primary
-- **Org Amber** (`#8f5c1c` / dark: `#dfae70`): links, primary buttons, the `TODO` keyword, and org keyword lines (`#+TITLE:` etc.). The single accent color the eye is meant to land on.
+- **Org Amber** (`#98555d` / dark: `#eba8a2`): links, primary buttons, the `TODO` keyword, and org keyword lines (`#+TITLE:` etc.). The single accent color the eye is meant to land on.
 
 ### Secondary (org-syntax accents)
-- **Moss Olive** (`#55752f` / dark: `#94c06e`): headline stars (`*`, `**`), `:tags:`, list bullet dashes. Reads as "structure," not emphasis.
-- **Terracotta Red** (`#b04f34` / dark: `#de8a6b`): `[#A]` priority markers, `DEADLINE:`. Reserved for org semantics the app itself uses for urgency — never a generic "danger" or error color.
-- **Slate Blue** (`#3c6a8c` / dark: `#74a5c6`): `SCHEDULED:` and timestamps.
-- **Dusty Plum** (`#7a5a95` / dark: `#a98bc4`): `%^{prompt}` template placeholders. The rarest accent — capture-template copy only.
+- **Moss Olive** (`#387078` / dark: `#9fcfc4`): headline stars (`*`, `**`), `:tags:`, list bullet dashes. Reads as "structure," not emphasis.
+- **Terracotta Red** (`#96536a` / dark: `#e57d99`): `[#A]` priority markers, `DEADLINE:`. Reserved for org semantics the app itself uses for urgency — never a generic "danger" or error color.
+- **Slate Blue** (`#396d8e` / dark: `#a3d0da`): `SCHEDULED:` and timestamps.
+- **Dusty Plum** (`#725f87` / dark: `#c4a9e7`): `%^{prompt}` template placeholders. The rarest accent — capture-template copy only.
 
 ### Neutral
-- **Warm Paper** (`#faf6ee` / dark: `#12100e`): page background.
-- **Aged Paper** (`#f3ecdf` / dark: `#1c1915`): raised panels, code blocks, the footer/CTA band.
-- **Toasted Paper** (`#ebe2d1` / dark: `#262119`): inset chips, input wells, the theme-toggle pill fill.
-- **Ink Black** (`#2b2620` / dark: `#f0ebe1`): primary text, headings.
-- **Warm Umber** (`#655b4e` / dark: `#b0a89b`): body text, secondary copy.
-- **Faded Umber** (`#756a5b` / dark: `#8d8376`): muted text, tag labels, `#` comment lines.
-- **Ghost Taupe** (`#9a8d7b` / dark: `#6a6157`): deliberately faded — see the Ghost Drawer Rule below.
-- **Parchment Line** (`#e2d8c5` / dark: `#302a22`): every border and rule in the system.
-- **Amber Wash** (`#f2e0c2` / dark: `#3a2f1b`): accent chip backgrounds only (the theme pill's amber text sits on Toasted Paper, not Amber Wash — Amber Wash is reserved for accent-tinted chips elsewhere).
+- **Warm Paper** (`#f8f3ee` / dark: `#25223a`): page background.
+- **Aged Paper** (`#f0e9e3` / dark: `#2b2842`): raised panels, code blocks, the footer/CTA band.
+- **Toasted Paper** (`#e6ddd6` / dark: `#3b3756`): inset chips, input wells, the theme-toggle pill fill.
+- **Ink Black** (`#4a4466` / dark: `#e2dff2`): primary text, headings.
+- **Warm Umber** (`#625b7a` / dark: `#a9a4c4`): body text, secondary copy.
+- **Faded Umber** (`#6b647e` / dark: `#9c97b3`): muted text, tag labels, `#` comment lines.
+- **Ghost Taupe** (`#9893ab` / dark: `#736e8f`): deliberately faded — see the Ghost Drawer Rule below.
+- **Parchment Line** (`#ebe2db` / dark: `#34304c`): every border and rule in the system.
+- **Amber Wash** (`#f1e1dd` / dark: `#45374b`): accent chip backgrounds only (the theme pill's amber text sits on Toasted Paper, not Amber Wash — Amber Wash is reserved for accent-tinted chips elsewhere).
 
 `tokens.css` also declares `--green-soft`, `--red-soft`, and `--blue-soft` (light-mode paper-tinted washes paired with Moss Olive / Terracotta Red / Slate Blue). They are reserved and not yet applied anywhere in the implemented UI — do not treat their existence as license to invent a new "soft chip" pattern without checking back here first; document the pattern here when one is added.
 
