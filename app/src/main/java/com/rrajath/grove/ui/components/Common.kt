@@ -301,6 +301,7 @@ private data class ThemeSwatch(
 private val ThemeSwatches = listOf(
     // Light
     ThemeSwatch(ThemePreference.ASHROSE, "Ash Rose", Color(0xFFFAF6F6), Color(0xFF241F21), listOf(Color(0xFF7D5560), Color(0xFF526B54), Color(0xFF4D6478))),
+    ThemeSwatch(ThemePreference.BLOOMLIGHT, "Bloom Light", Color(0xFFF8F3EE), Color(0xFF4A4466), listOf(Color(0xFFC06A6E), Color(0xFF3F8A8F), Color(0xFFB4637A))),
     ThemeSwatch(ThemePreference.CATPPUCCINLATTE, "Catppuccin Latte", Color(0xFFEFF1F5), Color(0xFF4C4F69), listOf(Color(0xFF8839EF), Color(0xFFD20F39), Color(0xFF40A02B))),
     ThemeSwatch(ThemePreference.CHALK, "Chalk", Color(0xFFFFFFFF), Color(0xFF1C1F22), listOf(Color(0xFF3F4A52), Color(0xFF4A6B56), Color(0xFF4A647D))),
     ThemeSwatch(ThemePreference.COBALT, "Cobalt", Color(0xFFFFFFFF), Color(0xFF151A21), listOf(Color(0xFF1D5AA8), Color(0xFF3F6F52), Color(0xFF8A6F2C))),
@@ -310,6 +311,7 @@ private val ThemeSwatches = listOf(
     ThemeSwatch(ThemePreference.SAGE, "Sage", Color(0xFFF6F8F4), Color(0xFF1F2622), listOf(Color(0xFF4E6B53), Color(0xFF4C6A78), Color(0xFF8A7333))),
     ThemeSwatch(ThemePreference.TOKYODAY, "Tokyo Day", Color(0xFFE1E2E7), Color(0xFF3760BF), listOf(Color(0xFF2E7DE9), Color(0xFF9854F1), Color(0xFF587539))),
     // Dark
+    ThemeSwatch(ThemePreference.BLOOMDARK, "Bloom Dark", Color(0xFF25223A), Color(0xFFE2DFF2), listOf(Color(0xFFEBA8A2), Color(0xFF9FCFC4), Color(0xFFE57D99))),
     ThemeSwatch(ThemePreference.CATPPUCCIN, "Catppuccin Mocha", Color(0xFF1E1E2E), Color(0xFFCDD6F4), listOf(Color(0xFFCBA6F7), Color(0xFFF38BA8), Color(0xFFA6E3A1))),
     ThemeSwatch(ThemePreference.DARK, "Grove Dark", Color(0xFF201C15), Color(0xFFECE4D5), listOf(Color(0xFFCB9D62), Color(0xFF8FB46A), Color(0xFF7FB0C4))),
     ThemeSwatch(ThemePreference.LANTERN, "Lantern", Color(0xFF17181A), Color(0xFFE8E6E2), listOf(Color(0xFFE0C069), Color(0xFF8FAE86), Color(0xFF8AA8BD))),

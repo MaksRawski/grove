@@ -19,6 +19,12 @@ class PreferencesTest {
     }
 
     @Test
+    fun `unset theme is Bloom Light for fresh installs and Grove Light for onboarded ones`() {
+        assertEquals(ThemePreference.BLOOMLIGHT, ThemePreference.defaultFor(onboardingDone = false))
+        assertEquals(ThemePreference.LIGHT, ThemePreference.defaultFor(onboardingDone = true))
+    }
+
+    @Test
     fun `font size round-trips and defaults to medium`() {
         for (pref in FontSizePreference.entries) {
             assertEquals(pref, FontSizePreference.fromStorage(pref.storageKey))

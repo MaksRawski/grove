@@ -68,6 +68,8 @@ fun groveColorsFor(theme: ThemePreference): GroveColors = when (theme) {
     ThemePreference.LIGHTHOUSE -> GroveLighthouseColors
     ThemePreference.MOSS -> GroveMossColors
     ThemePreference.WISTERIA -> GroveWisteriaColors
+    ThemePreference.BLOOMLIGHT -> GroveBloomLightColors
+    ThemePreference.BLOOMDARK -> GroveBloomDarkColors
 }
 
 // Built once, not per recomposition: groveTypography() doesn't depend on the

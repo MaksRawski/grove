@@ -59,6 +59,7 @@ re-uploads the APKs to the existing release instead of failing.
 
 ### Added
 - `bloom://` deep links; existing `grove://` links and pinned shortcuts keep working.
+- Bloom Light and Bloom Dark themes, each with a matching launcher icon. New installs start on Bloom Light.
 
 ### Changed
 - Grove is now called Bloom. Same app, same notes, same settings; nothing to migrate.

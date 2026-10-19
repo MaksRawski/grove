@@ -21,6 +21,8 @@ class AppIconManagerTest {
         assertEquals(".IconDark", AppIconManager.targetAlias(enabled = true, theme = ThemePreference.DARK))
         assertEquals(".IconTokyoNight", AppIconManager.targetAlias(enabled = true, theme = ThemePreference.TOKYONIGHT))
         assertEquals(".IconCatppuccin", AppIconManager.targetAlias(enabled = true, theme = ThemePreference.CATPPUCCIN))
+        assertEquals(".IconBloomLight", AppIconManager.targetAlias(enabled = true, theme = ThemePreference.BLOOMLIGHT))
+        assertEquals(".IconBloomDark", AppIconManager.targetAlias(enabled = true, theme = ThemePreference.BLOOMDARK))
     }
 
     @Test

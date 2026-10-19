@@ -52,7 +52,7 @@ data class PinnedItem(val kind: PinKind, val path: String) {
 }
 
 data class GroveSettings(
-    val theme: ThemePreference = ThemePreference.LIGHT,
+    val theme: ThemePreference = ThemePreference.BLOOMLIGHT,
     /** When true, the launcher icon and drawer logo follow [theme]; otherwise they stay the default light mark. */
     val syncAppIconWithTheme: Boolean = false,
     /**
@@ -421,7 +421,8 @@ class SettingsRepository(
      */
     override val settings: Flow<GroveSettings> = context.settingsDataStore.data.map { prefs ->
         GroveSettings(
-            theme = ThemePreference.fromStorage(prefs[Keys.theme]),
+            theme = prefs[Keys.theme]?.let(ThemePreference::fromStorage)
+                ?: ThemePreference.defaultFor(onboardingDone = prefs[Keys.onboardingDone] ?: false),
             syncAppIconWithTheme = prefs[Keys.syncAppIconWithTheme] ?: false,
             appFontSize = FontSizePreference.fromStorage(prefs[Keys.appFontSize]),
             readModeFontSize = FontSizePreference.fromStorage(
@@ -691,6 +692,9 @@ class SettingsRepository(
      */
     suspend fun setOnboardingDone(done: Boolean, seenChangelogBuild: Int? = null) {
         context.settingsDataStore.edit {
+            // Pin the fresh-install default before flipping the flag: an unset
+            // theme on an onboarded install reads as the legacy default instead.
+            if (done && it[Keys.theme] == null) it[Keys.theme] = ThemePreference.defaultFor(onboardingDone = false).storageKey
             it[Keys.onboardingDone] = done
             if (seenChangelogBuild != null) it[Keys.lastSeenChangelogBuild] = seenChangelogBuild
         }

@@ -26,5 +26,7 @@ class ThemeTest {
         assertEquals(GroveLighthouseColors, groveColorsFor(ThemePreference.LIGHTHOUSE))
         assertEquals(GroveMossColors, groveColorsFor(ThemePreference.MOSS))
         assertEquals(GroveWisteriaColors, groveColorsFor(ThemePreference.WISTERIA))
+        assertEquals(GroveBloomLightColors, groveColorsFor(ThemePreference.BLOOMLIGHT))
+        assertEquals(GroveBloomDarkColors, groveColorsFor(ThemePreference.BLOOMDARK))
     }
 }

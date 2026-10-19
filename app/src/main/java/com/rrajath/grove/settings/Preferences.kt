@@ -20,11 +20,21 @@ enum class ThemePreference(val storageKey: String) {
     LANTERN("lantern"),
     LIGHTHOUSE("lighthouse"),
     MOSS("moss"),
-    WISTERIA("wisteria");
+    WISTERIA("wisteria"),
+    BLOOMLIGHT("bloomlight"),
+    BLOOMDARK("bloomdark");
 
     companion object {
         fun fromStorage(value: String?): ThemePreference =
             entries.firstOrNull { it.storageKey == value } ?: LIGHT
+
+        /**
+         * Theme for an install that never stored one. Fresh installs start on
+         * Bloom Light; installs that finished onboarding before Bloom Light
+         * existed keep the Grove Light they have always seen.
+         */
+        fun defaultFor(onboardingDone: Boolean): ThemePreference =
+            if (onboardingDone) LIGHT else BLOOMLIGHT
     }
 }
 

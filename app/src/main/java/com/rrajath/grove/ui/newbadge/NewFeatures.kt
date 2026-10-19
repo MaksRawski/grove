@@ -35,6 +35,9 @@ object NewAnchors {
     /** The Settings hub row leading to the Look and Feel page. */
     const val SETTINGS_APPEARANCE = "settings.appearance"
 
+    /** The "Theme" picker block inside Settings § Look and Feel. */
+    const val SETTINGS_APPEARANCE_THEME = "settings.appearance.theme"
+
     /** The app-wide "Text size" block inside Settings § Look and Feel. */
     const val SETTINGS_APPEARANCE_TEXT_SIZE = "settings.appearance.textSize"
 
@@ -390,5 +393,19 @@ val NEW_FEATURES: List<NewFeature> = listOf(
             NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET,
         ),
         destination = NewAnchors.SETTINGS_WIDGET_QUICK_ADD_TARGET,
+    ),
+    NewFeature(
+        // Settings § Look and Feel's theme picker gained Bloom Light and Bloom Dark.
+        // `since` is the versionCode of the release that ships it: bump it to
+        // match `gradle.properties` versionName when cutting the release.
+        id = "bloom-themes",
+        since = 11100,
+        anchors = setOf(
+            NewAnchors.TOPBAR_MENU,
+            NewAnchors.DRAWER_SETTINGS,
+            NewAnchors.SETTINGS_APPEARANCE,
+            NewAnchors.SETTINGS_APPEARANCE_THEME,
+        ),
+        destination = NewAnchors.SETTINGS_APPEARANCE_THEME,
     ),
 )

@@ -48,14 +48,21 @@ fun SettingsAppearanceScreen(
         // Leaving this screen retires the "Text size" NEW dot from its whole
         // trail (menu glyph, drawer, Settings hub row, the block itself).
         MarkNewFeatureSeen(NewAnchors.SETTINGS_APPEARANCE_TEXT_SIZE)
+        MarkNewFeatureSeen(NewAnchors.SETTINGS_APPEARANCE_THEME)
         SettingsGroup {
             Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                Text(
-                    "Theme",
-                    fontFamily = PlexSans, fontWeight = FontWeight.Medium,
-                    fontSize = 14.5.sp, color = c.ink,
+                Row(
                     modifier = Modifier.padding(bottom = 10.dp),
-                )
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        "Theme",
+                        fontFamily = PlexSans, fontWeight = FontWeight.Medium,
+                        fontSize = 14.5.sp, color = c.ink,
+                    )
+                    NewDot(NewAnchors.SETTINGS_APPEARANCE_THEME)
+                }
                 ThemeDropdownPicker(
                     selected = settings.theme,
                     onSelect = onSetTheme,

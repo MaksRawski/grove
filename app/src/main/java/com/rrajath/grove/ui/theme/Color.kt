@@ -658,6 +658,77 @@ val GroveLighthouseColors = GroveColors(
     isDark = true,
 )
 
+// Bloom Light / Bloom Dark: the "Rosewater" pair (rosew-l / rosew-d) from
+// the Bloom App.dc.html design. `violet` maps from the design's --plum token.
+val GroveBloomLightColors = GroveColors(
+    bg = Color(0xFFF8F3EE),
+    surface = Color(0xFFFCF8F4),
+    surface2 = Color(0xFFF0E9E3),
+    surface3 = Color(0xFFE6DDD6),
+    ink = Color(0xFF4A4466),
+    ink2 = Color(0xFF6E6888),
+    ink3 = Color(0xFF9893AB),
+    line = Color(0xFFEBE2DB),
+    line2 = Color(0xFFDDD2CA),
+    accent = Color(0xFFC06A6E),
+    accentInk = Color(0xFFFDF7F3),
+    accentSoft = Color(0x21C06A6E), // 0.13
+    green = Color(0xFF3F8A8F),
+    greenSoft = Color(0x213F8A8F), // 0.13
+    amber = Color(0xFFD0913A),
+    amberSoft = Color(0x21D0913A), // 0.13
+    red = Color(0xFFB4637A),
+    redSoft = Color(0x21B4637A), // 0.13
+    blue = Color(0xFF3E7FA3),
+    blueSoft = Color(0x213E7FA3), // 0.13
+    violet = Color(0xFF907AA9),
+    violetSoft = Color(0x21907AA9), // 0.13
+    synStar = Color(0xFFC06A6E),
+    synTodo = Color(0xFFB4637A),
+    synDone = Color(0xFF3F8A8F),
+    synKw = Color(0xFF6E6888),
+    synTs = Color(0xFF3E7FA3),
+    synTag = Color(0xFF907AA9),
+    synLink = Color(0xFF3E7FA3),
+    synProp = Color(0xFF9893AB),
+    isDark = false,
+)
+
+
+val GroveBloomDarkColors = GroveColors(
+    bg = Color(0xFF25223A),
+    surface = Color(0xFF2B2842),
+    surface2 = Color(0xFF322E4B),
+    surface3 = Color(0xFF3B3756),
+    ink = Color(0xFFE2DFF2),
+    ink2 = Color(0xFFA9A4C4),
+    ink3 = Color(0xFF736E8F),
+    line = Color(0xFF34304C),
+    line2 = Color(0xFF433E5D),
+    accent = Color(0xFFEBA8A2),
+    accentInk = Color(0xFF25223A),
+    accentSoft = Color(0x29EBA8A2), // 0.16
+    green = Color(0xFF9FCFC4),
+    greenSoft = Color(0x299FCFC4), // 0.16
+    amber = Color(0xFFF2C48D),
+    amberSoft = Color(0x29F2C48D), // 0.16
+    red = Color(0xFFE57D99),
+    redSoft = Color(0x29E57D99), // 0.16
+    blue = Color(0xFFA3D0DA),
+    blueSoft = Color(0x29A3D0DA), // 0.16
+    violet = Color(0xFFC4A9E7),
+    violetSoft = Color(0x29C4A9E7), // 0.16
+    synStar = Color(0xFFEBA8A2),
+    synTodo = Color(0xFFE57D99),
+    synDone = Color(0xFF9FCFC4),
+    synKw = Color(0xFFA9A4C4),
+    synTs = Color(0xFFA3D0DA),
+    synTag = Color(0xFFC4A9E7),
+    synLink = Color(0xFFA3D0DA),
+    synProp = Color(0xFF736E8F),
+    isDark = true,
+)
+
 val LocalGroveColors = staticCompositionLocalOf { GroveLightColors }
 
 /**

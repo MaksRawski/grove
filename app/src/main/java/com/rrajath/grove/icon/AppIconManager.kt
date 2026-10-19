@@ -40,6 +40,8 @@ object AppIconManager {
         ThemePreference.LIGHTHOUSE to ".IconLighthouse",
         ThemePreference.MOSS to ".IconMoss",
         ThemePreference.WISTERIA to ".IconWisteria",
+        ThemePreference.BLOOMLIGHT to ".IconBloomLight",
+        ThemePreference.BLOOMDARK to ".IconBloomDark",
     )
 
     val ALL_ALIASES: List<String> = listOf(DEFAULT_ALIAS) + THEME_ALIASES.values
@@ -67,6 +69,8 @@ object AppIconManager {
         ThemePreference.LIGHTHOUSE to 0xFFE8C777.toInt(),
         ThemePreference.MOSS to 0xFF8FAA87.toInt(),
         ThemePreference.WISTERIA to 0xFFA99BC4.toInt(),
+        ThemePreference.BLOOMLIGHT to 0xFFC06A6E.toInt(),
+        ThemePreference.BLOOMDARK to 0xFFEBA8A2.toInt(),
     )
 
     /**
@@ -123,6 +127,8 @@ object AppIconManager {
         ThemePreference.LIGHTHOUSE to R.mipmap.ic_launcher_lighthouse,
         ThemePreference.MOSS to R.mipmap.ic_launcher_moss,
         ThemePreference.WISTERIA to R.mipmap.ic_launcher_wisteria,
+        ThemePreference.BLOOMLIGHT to R.mipmap.ic_launcher_bloomlight,
+        ThemePreference.BLOOMDARK to R.mipmap.ic_launcher_bloomdark,
     )
 
     /** Same (enabled, theme) mapping as [markColor]/[targetAlias], as the actual icon mipmap. */
