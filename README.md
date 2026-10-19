@@ -45,7 +45,7 @@ Bloom edits plain `.org` files in a folder you choose. There is no account, no p
 - **Nested vault folders**: subdirectories inside the vault are first-class. The Notebooks screen shows the whole vault as an inline tree (a folder with more than 20 files becomes a tappable drill-down instead), a notebook's identity is its vault-relative path, and `＋` / "Move to folder…" create and relocate notebooks across folders.
 - **Orgzly-compatible search**: `i.todo s.7d t.work .b.archive OR p.a`, saved searches, and an `ad.N` agenda view. Backed by a SQLite FTS5 trigram index, so substring search stays instant as the vault grows and covers full note bodies. See [docs/search-syntax.md](docs/search-syntax.md).
 - **Sync that respects your tools**: change detection by file revision, Syncthing `.sync-conflict-*` detection with a keep-local / keep-remote / keep-both picker, manual through continuous sync modes, `.orgzlyignore` support.
-- **A warm, deliberate design**: IBM Plex Sans/Serif/Mono, an earth-tone palette with full dark mode, and org syntax tokens colored the way an Emacs theme would.
+- **A calm, deliberate design**: IBM Plex Sans/Serif/Mono, 20 light and dark themes (Bloom Light by default, plus Bloom Dark, Catppuccin, Rosé Pine, Tokyo Night and more), and org syntax tokens colored the way an Emacs theme would.
 
 ## Screenshots
 

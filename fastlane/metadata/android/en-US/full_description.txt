@@ -14,7 +14,7 @@ Features:
 * Outline operations: a collapsible heading tree with body previews, expand/collapse all, move/cut/copy/paste subtrees, cycle TODO state by swipe, and narrow to a subtree.
 * Search: Orgzly-compatible search syntax, saved searches, and an agenda view, backed by a SQLite FTS5 index so substring search stays fast as the vault grows.
 * Sync that respects your tools: change detection by file revision, Syncthing conflict-file detection with a keep-local, keep-remote, or keep-both picker, manual and continuous sync modes, and .orgzlyignore support.
-* A dark-mode-first design with IBM Plex Sans/Serif/Mono and org syntax highlighting colored the way an Emacs theme would.
+* A calm, deliberate design: IBM Plex Sans/Serif/Mono, 20 light and dark themes led by Bloom Light and Bloom Dark, and org syntax highlighting colored the way an Emacs theme would.
 
 Bloom has no server-side component. Its only network request is fetching a page title when you share a link into Bloom, to use as the note heading. Sites that hide the title behind a script are loaded in a hidden WebView with JavaScript enabled. Turn this off in Settings, Sharing, Fetch link titles, and Bloom makes no network request at all; a shared link is then labeled with the title the sharing app provided, if any, or the URL.
 
