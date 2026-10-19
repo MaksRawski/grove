@@ -129,11 +129,19 @@ export default defineConfig({
         // Dev only. Astro serves /_image?href=<path>&w=&h= with a one-year
         // `immutable` Cache-Control, and that URL doesn't change when a
         // screenshot is re-shot at the same size, so the browser keeps
-        // showing the old image forever. Force revalidation instead.
+        // showing the old image forever. Force revalidation instead. Images a
+        // browser already cached under the old header are purged with
+        // Clear-Site-Data on its first page load after each server start.
         name: 'bloom-dev-image-no-cache',
         apply: 'serve',
         configureServer(server) {
+          const bootId = Date.now().toString(36);
           server.middlewares.use((req, res, next) => {
+            const isPage = req.headers.accept?.includes('text/html');
+            if (isPage && !req.headers.cookie?.includes(`bloom-dev-boot=${bootId}`)) {
+              res.setHeader('Clear-Site-Data', '"cache"');
+              res.setHeader('Set-Cookie', `bloom-dev-boot=${bootId}; Path=/; SameSite=Lax`);
+            }
             if (req.url?.startsWith('/_image')) {
               const setHeader = res.setHeader.bind(res);
               res.setHeader = (name, value) =>
