@@ -21,6 +21,14 @@
 Bloom edits plain `.org` files in a folder you choose. There is no account, no proprietary database, and no export step: the files on disk *are* your notes, byte-for-byte, and they sync to your laptop with whatever tool you already trust (Syncthing is the recommended pairing). If you stop using Bloom tomorrow, your notes are exactly where they always were.
 
 <p align="center">
+  <a href="https://f-droid.org/packages/com.rrajath.grove">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+         alt="Get it on F-Droid" height="80" />
+  </a>
+  <a href="https://play.google.com/store/apps/details?id=com.rrajath.grove">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+         alt="Get it on Google Play" height="80" />
+  </a>
   <a href="https://github.com/rrajath/bloom/releases">
     <img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png"
          alt="Get it on GitHub" height="80" />
