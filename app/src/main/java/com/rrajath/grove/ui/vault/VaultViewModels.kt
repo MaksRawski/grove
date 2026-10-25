@@ -866,7 +866,22 @@ class DocumentViewModel(
     /** Show an already-parsed [document] immediately, with no disk round-trip; a
      *  following [load] still refreshes it (and is a no-op if nothing changed). */
     fun show(fileName: String, document: OrgDocument) {
+        dropSelectionIfChanged(fileName, document)
         _state.value = DocumentUiState.Loaded(fileName, document)
+    }
+
+    /**
+     * The bulk selection is line indices into the document on screen; once the
+     * file comes back from disk with different text (sync, another app), those
+     * lines may name other headings, so clear it rather than let a command act
+     * on the wrong ones.
+     */
+    private fun dropSelectionIfChanged(fileName: String, incoming: OrgDocument) {
+        if (_selectedLines.value.isEmpty()) return
+        val current = _state.value as? DocumentUiState.Loaded ?: return
+        if (current.fileName != fileName || current.document.text == incoming.text) return
+        _selectedLines.value = emptySet()
+        showToast("Selection cleared: the file was synced or changed elsewhere")
     }
 
     fun load(fileName: String) {
@@ -886,6 +901,7 @@ class DocumentViewModel(
                     if (current is DocumentUiState.Loaded && current.fileName == fileName && current.document === spliced) {
                         current
                     } else {
+                        dropSelectionIfChanged(fileName, spliced)
                         DocumentUiState.Loaded(fileName, spliced)
                     }
                 }

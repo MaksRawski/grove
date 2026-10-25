@@ -383,6 +383,27 @@ class DocumentViewModelIntegrationTest {
     }
 
     @Test
+    fun `a reload with changed text clears the selection and says why`() = runTest {
+        val vm = loaded("projects.org")
+        val toasts = mutableListOf<OutlineToast?>()
+        backgroundScope.launch { vm.toast.toList(toasts) }
+        vm.startSelection(headline(vm, "Tag the release").lineIndex)
+
+        // Same text: the selection survives a reload.
+        vm.load("projects.org")
+        advanceUntilIdle()
+        assertFalse(vm.selectedLines.value.isEmpty())
+
+        // A sync adds a heading at the top, shifting every line.
+        store.write("projects.org", "* Synced in\n" + store.read("projects.org"))
+        vm.load("projects.org")
+        advanceUntilIdle()
+
+        assertTrue(vm.selectedLines.value.isEmpty())
+        assertTrue(toasts.any { it?.message?.startsWith("Selection cleared") == true })
+    }
+
+    @Test
     fun `bulk metadata edits every selected heading and undoes in one step`() = runTest {
         val vm = loaded("projects.org")
         val before = store.read("projects.org")
