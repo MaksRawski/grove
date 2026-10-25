@@ -65,6 +65,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.Path
@@ -1187,9 +1191,19 @@ private fun OutlineNode(
     val titleAnnotated = remember(headline.title, c) { annotateOrgInline(headline.title, c) }
 
     // Selected rows get an accentSoft fill, the same "active row" wash the
-    // dropdown pickers and the command bar above use.
+    // dropdown pickers and the command bar above use. It's drawn inset 2dp top
+    // and bottom (not padded) so adjacent selections read as separate rows and
+    // a row doesn't shift when it's selected.
     val focusModifier = if (isFocused) {
-        Modifier.clip(RoundedCornerShape(12.dp)).background(c.accentSoft)
+        Modifier.drawBehind {
+            val inset = 2.dp.toPx()
+            drawRoundRect(
+                color = c.accentSoft,
+                topLeft = Offset(0f, inset),
+                size = Size(size.width, size.height - 2 * inset),
+                cornerRadius = CornerRadius(12.dp.toPx()),
+            )
+        }
     } else {
         Modifier.clip(RoundedCornerShape(10.dp)).background(lerp(c.bg, c.accentSoft, highlight))
     }
