@@ -1520,9 +1520,13 @@ class DocumentViewModel(
         val vault = vaultFlow.value ?: return
         viewModelScope.launch {
             val settings = settingsRepository.settings.first()
-            val result = AutoArchive.applyToEach(
-                vault, settings, loaded.document, loaded.fileName, lines, keyword, LocalDateTime.now(),
-            ) ?: return@launch
+            // Re-parses the file once per selected heading and again per archived
+            // subtree: keep it off the main thread like applyStructure/editEach.
+            val result = withContext(dispatchers.default) {
+                AutoArchive.applyToEach(
+                    vault, settings, loaded.document, loaded.fileName, lines, keyword, LocalDateTime.now(),
+                )
+            } ?: return@launch
             undoSnapshot = UndoSnapshot(
                 listOf(loaded.fileName to loaded.document.text) +
                     result.destWrites.map { (file, before, _) -> file to before }
