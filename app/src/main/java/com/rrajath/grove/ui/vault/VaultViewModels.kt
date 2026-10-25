@@ -629,7 +629,16 @@ class NotebooksViewModel(
 
 sealed class DocumentUiState {
     data object Loading : DocumentUiState()
-    data class Loaded(val fileName: String, val document: OrgDocument) : DocumentUiState()
+    data class Loaded(
+        val fileName: String,
+        val document: OrgDocument,
+        /**
+         * Set by an outline edit that knows where every heading went: carries a
+         * heading line of the previous document to its line in [document] (null
+         * once deleted), so the outline's collapsed set follows the headings.
+         */
+        val lineRemap: ((Int) -> Int?)? = null,
+    ) : DocumentUiState()
     data class Error(val message: String) : DocumentUiState()
 }
 
@@ -1188,7 +1197,7 @@ class DocumentViewModel(
             }
             undoSnapshot = UndoSnapshot(listOf(loaded.fileName to loaded.document.text))
             _selectedLines.value = _selectedLines.value.mapNotNull(result.remap).toSet()
-            _state.value = DocumentUiState.Loaded(loaded.fileName, result.doc)
+            _state.value = DocumentUiState.Loaded(loaded.fileName, result.doc, result.remap)
             saveDoc(loaded.fileName, result.text, "outline edit", result.doc)
             showSnack(
                 when {
@@ -1519,7 +1528,11 @@ class DocumentViewModel(
                     result.destWrites.map { (file, before, _) -> file to before }
             )
             _selectedLines.value = _selectedLines.value.mapNotNull(result.remap).toSet()
-            _state.value = DocumentUiState.Loaded(loaded.fileName, result.sourceDoc)
+            // Once anything was archived the remap is all-null; don't let it fold
+            // the outline's collapsed set away.
+            _state.value = DocumentUiState.Loaded(
+                loaded.fileName, result.sourceDoc, result.remap.takeIf { result.archivedTo.isEmpty() },
+            )
             result.destWrites.forEach { (file, _, after) ->
                 vault.save(file, after)
                 sync.requestReindex(file, after, "state set")
@@ -1592,7 +1605,7 @@ class DocumentViewModel(
             } ?: return@launch
             undoSnapshot = UndoSnapshot(listOf(loaded.fileName to loaded.document.text))
             _selectedLines.value = _selectedLines.value.mapNotNull(result.remap).toSet()
-            _state.value = DocumentUiState.Loaded(loaded.fileName, result.doc)
+            _state.value = DocumentUiState.Loaded(loaded.fileName, result.doc, result.remap)
             saveDoc(loaded.fileName, result.text, syncReason, result.doc)
             showSnack(message(result.applied))
         }

@@ -369,6 +369,20 @@ class DocumentViewModelIntegrationTest {
     }
 
     @Test
+    fun `a move publishes a line remap that carries collapsed headings to their new lines`() = runTest {
+        val vm = loaded("projects.org")
+        val titles = listOf("Ship v2 release", "Backlog", "Dark mode polish")
+        val collapsedBefore = titles.map { headline(vm, it).lineIndex }
+
+        vm.moveDown(setOf(headline(vm, "Ship v2 release").lineIndex))
+        advanceUntilIdle()
+
+        val remap = (vm.state.value as DocumentUiState.Loaded).lineRemap
+        assertNotNull(remap)
+        assertEquals(titles.map { headline(vm, it).lineIndex }, collapsedBefore.map { remap!!(it) })
+    }
+
+    @Test
     fun `bulk metadata edits every selected heading and undoes in one step`() = runTest {
         val vm = loaded("projects.org")
         val before = store.read("projects.org")

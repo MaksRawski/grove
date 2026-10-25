@@ -3,7 +3,6 @@ package com.rrajath.grove.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
@@ -66,7 +65,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.Path
@@ -286,6 +284,16 @@ fun OutlineScreen(
                 ?.toSet()
                 ?: emptySet()
         )
+    }
+    // A move/indent/delete shifts heading lines; carry the collapsed set along in
+    // the same composition the new document arrives in, so a collapsed subtree
+    // never flashes open (or a crossed one unfolds) for a frame.
+    val loaded = state as? DocumentUiState.Loaded
+    var remappedFor by remember { mutableStateOf<DocumentUiState.Loaded?>(null) }
+    val lineRemap = loaded?.lineRemap
+    if (lineRemap != null && remappedFor !== loaded) {
+        remappedFor = loaded
+        collapsed = collapsed.mapNotNull(lineRemap).toSet()
     }
     var prefaceExpanded by rememberSaveable(notebookId) { mutableStateOf(false) }
     // Collapsed by default, like heading `:PROPERTIES:` drawers in Read mode.
@@ -1049,13 +1057,16 @@ private fun StructureCommandBar(
                 maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f),
             )
-            CommandButton(Icons.Default.KeyboardArrowUp, "Move up", c.ink) { viewModel.moveUp(selected()) }
-            CommandButton(Icons.Default.KeyboardArrowDown, "Move down", c.ink) { viewModel.moveDown(selected()) }
-            CommandButton(Icons.AutoMirrored.Filled.FormatIndentDecrease, "Promote", c.ink) { viewModel.promote(selected()) }
-            CommandButton(Icons.AutoMirrored.Filled.FormatIndentIncrease, "Demote", c.ink) { viewModel.demote(selected()) }
-            // ☰, like read mode's metadata button: state, priority, tags, dates.
-            CommandButton(Icons.Default.Menu, "Metadata", c.ink, onClick = onMetadata)
-            CommandButton(Icons.Default.Delete, "Delete", c.red) { confirmDelete = true }
+            // 6dp apart so neighbouring touch targets aren't flush.
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                CommandButton(Icons.Default.KeyboardArrowUp, "Move up", c.ink) { viewModel.moveUp(selected()) }
+                CommandButton(Icons.Default.KeyboardArrowDown, "Move down", c.ink) { viewModel.moveDown(selected()) }
+                CommandButton(Icons.AutoMirrored.Filled.FormatIndentDecrease, "Promote", c.ink) { viewModel.promote(selected()) }
+                CommandButton(Icons.AutoMirrored.Filled.FormatIndentIncrease, "Demote", c.ink) { viewModel.demote(selected()) }
+                // ☰, like read mode's metadata button: state, priority, tags, dates.
+                CommandButton(Icons.Default.Menu, "Metadata", c.ink, onClick = onMetadata)
+                CommandButton(Icons.Default.Delete, "Delete", c.red) { confirmDelete = true }
+            }
         }
         Box(Modifier.fillMaxWidth().height(1.dp).background(c.line))
     }
@@ -1095,7 +1106,6 @@ private fun StructureCommandBar(
 private fun CommandButton(icon: ImageVector, contentDescription: String, tint: Color, onClick: () -> Unit) {
     Box(
         Modifier
-            .padding(horizontal = 1.dp)
             .size(38.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.grove.surface)
@@ -1176,13 +1186,10 @@ private fun OutlineNode(
     // scroll and swipe, so keep it across recompositions.
     val titleAnnotated = remember(headline.title, c) { annotateOrgInline(headline.title, c) }
 
-    // Focused rows lift with a 2dp accent outline per the design spec.
+    // Selected rows get an accentSoft fill, the same "active row" wash the
+    // dropdown pickers and the command bar above use.
     val focusModifier = if (isFocused) {
-        Modifier
-            .shadow(6.dp, RoundedCornerShape(12.dp))
-            .clip(RoundedCornerShape(12.dp))
-            .background(c.surface)
-            .border(2.dp, c.accent, RoundedCornerShape(12.dp))
+        Modifier.clip(RoundedCornerShape(12.dp)).background(c.accentSoft)
     } else {
         Modifier.clip(RoundedCornerShape(10.dp)).background(lerp(c.bg, c.accentSoft, highlight))
     }
