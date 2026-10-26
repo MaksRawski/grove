@@ -1474,6 +1474,18 @@ class OrgMutationsTest {
     }
 
     @Test
+    fun `applyToEach never demotes a selected heading under another selected heading`() {
+        // A1 has no previous sibling, so the A1..A3 block stays put as a whole.
+        assertNull(OrgMutations.applyToEach(bulk, setOf(line("A1"), line("A2")), OrgMutations.StructureOp.DEMOTE))
+        assertNull(OrgMutations.applyToEach(bulk, setOf(line("A1"), line("A2"), line("A3")), OrgMutations.StructureOp.DEMOTE))
+        // Only the stuck block is skipped; B still demotes under the unselected A.
+        val r = OrgMutations.applyToEach(bulk, setOf(line("A1"), line("A2"), line("B")), OrgMutations.StructureOp.DEMOTE)!!
+        assertEquals(listOf("* A", "** A1", "** A2", "** A3", "** B", "* C"), outline(r.doc))
+        assertEquals(1, r.applied)
+        assertEquals(3, r.attempted)
+    }
+
+    @Test
     fun `applyToEach lets a selected descendant ride along with its selected ancestor`() {
         val r = OrgMutations.applyToEach(bulk, setOf(line("A"), line("A2")), OrgMutations.StructureOp.MOVE_DOWN)!!
         assertEquals(listOf("* B", "* A", "** A1", "** A2", "** A3", "* C"), outline(r.doc))

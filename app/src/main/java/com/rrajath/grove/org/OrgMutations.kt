@@ -610,7 +610,9 @@ object OrgMutations {
      * otherwise shift it twice). Moves go in the direction of travel (top-down
      * for up, bottom-up for down) and never swap two selected siblings with each
      * other, so a run of adjacent selected siblings moves as a block and stops
-     * as a block. Returns null when [op] applied to none of them.
+     * as a block. Demote likewise never nests a selected heading under a selected
+     * previous sibling, so a block whose first heading can't demote stays put
+     * whole. Returns null when [op] applied to none of them.
      */
     fun applyToEach(doc: OrgDocument, lines: Set<Int>, op: StructureOp): BulkEdit? {
         val roots = selectedRoots(doc, lines)
@@ -625,7 +627,13 @@ object OrgMutations {
             val h = cur.headlines.firstOrNull { it.lineIndex == line } ?: continue
             val step: Pair<String, (Int) -> Int?> = when (op) {
                 StructureOp.PROMOTE -> promoteSubtree(cur, h)?.let { it to { l: Int -> l } }
-                StructureOp.DEMOTE -> demoteSubtree(cur, h)?.let { it to { l: Int -> l } }
+                StructureOp.DEMOTE -> {
+                    val siblings = siblingsOf(cur, h)
+                    val previous = siblings.getOrNull(siblings.indexOfFirst { it.lineIndex == h.lineIndex } - 1)
+                    val selectedNow = ordered.mapNotNull(remap).toSet()
+                    if (previous != null && previous.lineIndex in selectedNow) null
+                    else demoteSubtree(cur, h)?.let { it to { l: Int -> l } }
+                }
                 StructureOp.DELETE -> {
                     val start = h.lineIndex
                     val end = cur.subtreeEndLine(h)
