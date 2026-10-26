@@ -193,10 +193,14 @@ object AutoArchive {
 
         val sources = if (!settings.autoArchiveDoneItems) emptyList() else {
             val fallback = settingsFallback(settings)
-            changedIndices.mapNotNull { index ->
-                val h = cur.headlines.getOrNull(index) ?: return@mapNotNull null
-                // As in [apply]: a repeating task keeps an active keyword, so it never archives.
-                if (h.keyword == null || !doc.keywords.isDone(h.keyword)) return@mapNotNull null
+            // As in [apply]: a repeating task keeps an active keyword, so it never archives.
+            val archiving = changedIndices.mapNotNull { index ->
+                cur.headlines.getOrNull(index)?.takeIf { h -> h.keyword != null && doc.keywords.isDone(h.keyword) }
+            }
+            // A done heading inside another archiving heading's subtree goes along
+            // with it, exactly as archiving that ancestor alone would, instead of
+            // being pulled out and archived as its sibling.
+            OrgMutations.selectedRoots(cur, archiving.map { it.lineIndex }.toSet()).mapNotNull { h ->
                 ArchiveLocation.resolve(cur, h, fallback, fileName)?.let { h.lineIndex to it }
             }
         }

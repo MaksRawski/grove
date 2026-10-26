@@ -1,6 +1,7 @@
 package com.rrajath.grove.vault
 
 import com.rrajath.grove.org.ArchiveTarget
+import com.rrajath.grove.org.OrgParser
 import com.rrajath.grove.settings.GroveSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -266,6 +267,26 @@ class AutoArchiveTest {
         assertTrue("children travel along", after.indexOf("DONE One") < after.indexOf("TODO Child"))
         // Nothing is written by applyToEach itself.
         assertEquals("* TODO One\n** TODO Child\n* TODO Keep\n* TODO Two\n", File(tmp.root, "todo.org").readText())
+    }
+
+    @Test
+    fun `applyToEach keeps a selected done child inside its selected done parent`() = runTest {
+        tmp.newFile("todo.org").writeText("* TODO Project\n** TODO Sub\n** TODO Other\n* TODO Keep\n")
+        val v = vault()
+        val doc = v.open("todo.org")!!
+        val lines = doc.headlines.filter { it.title in setOf("Project", "Sub") }.map { it.lineIndex }.toSet()
+        val settings = GroveSettings(autoArchiveDoneItems = true, autoArchiveFile = "archive.org")
+
+        val result = AutoArchive.applyToEach(v, settings, doc, "todo.org", lines, "DONE", now)!!
+
+        assertEquals(2, result.changed)
+        assertEquals("one subtree archived, not two", listOf("archive"), result.archivedTo)
+        assertEquals(listOf("Keep"), result.sourceDoc.headlines.map { it.title })
+        val archived = OrgParser.parse(result.destWrites.single().third)
+        val sub = archived.headlines.first { it.title == "Sub" }
+        assertEquals("Sub stays nested under Project", 2, sub.level)
+        assertEquals("DONE", sub.keyword)
+        assertEquals("Project", archived.parent(sub)?.title)
     }
 
     @Test
