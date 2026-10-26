@@ -920,6 +920,10 @@ fun OutlineScreen(
                                 onSetPlanningDates = { sched, dead, active ->
                                     viewModel.setPlanningEach(lines, BulkPlanningEdit.between(shown, sched, dead, active))
                                 },
+                                datesMixed = summary.datesMixed,
+                                onSetPlanningDatesBulk = { sched, dead, active, removed ->
+                                    viewModel.setPlanningEach(lines, BulkPlanningEdit.between(shown, sched, dead, active, removed))
+                                },
                                 onAddNote = { note -> viewModel.addNoteEach(lines, note) },
                                 onGenerateId = { viewModel.generateIdEach(lines) },
                                 onRefile = {

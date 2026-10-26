@@ -3,6 +3,7 @@ package com.rrajath.grove.ui.vault
 import com.rrajath.grove.org.OrgHeadline
 import com.rrajath.grove.org.OrgTimestamp
 import com.rrajath.grove.org.Planning
+import com.rrajath.grove.org.PlanningKind
 
 /**
  * What the metadata sheet shows for several headings at once: each value they
@@ -19,6 +20,11 @@ data class BulkMetadataSummary(
     val stateMixed: Boolean,
     /** The headings' priorities differ, so no priority chip is current. */
     val priorityMixed: Boolean,
+    /**
+     * Date kinds whose values differ across the headings: the sheet shows
+     * "multiple" for them and the Dates screen offers "Remove from all".
+     */
+    val datesMixed: Set<PlanningKind> = emptySet(),
 )
 
 fun bulkMetadataSummary(headlines: List<OrgHeadline>): BulkMetadataSummary? {
@@ -42,6 +48,11 @@ fun bulkMetadataSummary(headlines: List<OrgHeadline>): BulkMetadataSummary? {
         ),
         stateMixed = mixed { it.keyword },
         priorityMixed = mixed { it.priority },
+        datesMixed = buildSet {
+            if (mixed { it.planning.scheduled }) add(PlanningKind.SCHEDULED)
+            if (mixed { it.planning.deadline }) add(PlanningKind.DEADLINE)
+            if (mixed { it.dedicatedActiveTimestamps }) add(PlanningKind.ACTIVE)
+        },
     )
 }
 
@@ -49,7 +60,9 @@ fun bulkMetadataSummary(headlines: List<OrgHeadline>): BulkMetadataSummary? {
  * A Dates screen result applied to several headings: only the fields the user
  * changed from what the sheet showed ([BulkMetadataSummary.headline]) are set
  * on every heading; the rest keep each heading's own value, so setting a
- * SCHEDULED date never wipes the headings' differing DEADLINEs.
+ * SCHEDULED date never wipes the headings' differing DEADLINEs. A mixed field
+ * the sheet showed as empty can't change by value alone, so [between] also
+ * takes the kinds the user explicitly removed from all of them.
  */
 data class BulkPlanningEdit(
     val scheduled: OrgTimestamp?,
@@ -74,11 +87,12 @@ data class BulkPlanningEdit(
             scheduled: OrgTimestamp?,
             deadline: OrgTimestamp?,
             active: List<OrgTimestamp>,
+            removed: Set<PlanningKind> = emptySet(),
         ) = BulkPlanningEdit(
             scheduled, deadline, active,
-            setScheduled = scheduled != shown.planning.scheduled,
-            setDeadline = deadline != shown.planning.deadline,
-            setActive = active != shown.dedicatedActiveTimestamps,
+            setScheduled = scheduled != shown.planning.scheduled || PlanningKind.SCHEDULED in removed,
+            setDeadline = deadline != shown.planning.deadline || PlanningKind.DEADLINE in removed,
+            setActive = active != shown.dedicatedActiveTimestamps || PlanningKind.ACTIVE in removed,
         )
     }
 }

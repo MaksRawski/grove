@@ -1,6 +1,7 @@
 package com.rrajath.grove.ui.vault
 
 import com.rrajath.grove.org.OrgParser
+import com.rrajath.grove.org.PlanningKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -50,6 +51,27 @@ class BulkMetadataTest {
         val (scheduled, deadline, _) = edit.applyTo(doc.headlines[0])
         assertEquals(newScheduled, scheduled)
         assertEquals(doc.headlines[0].planning.deadline, deadline)
+    }
+
+    @Test
+    fun `summary names the date kinds that differ`() {
+        // SCHEDULED is shared, DEADLINE is only on One, neither has active stamps.
+        assertEquals(setOf(PlanningKind.DEADLINE), summary.datesMixed)
+    }
+
+    @Test
+    fun `removing a mixed kind clears it on every heading even though the sheet showed none`() {
+        val shown = summary.headline
+        val edit = BulkPlanningEdit.between(
+            shown, shown.planning.scheduled, null, shown.dedicatedActiveTimestamps,
+            removed = setOf(PlanningKind.DEADLINE),
+        )
+
+        assertTrue(edit.setDeadline)
+        assertFalse(edit.setScheduled)
+        val (scheduled, deadline, _) = edit.applyTo(doc.headlines[0])
+        assertNull(deadline)
+        assertEquals(doc.headlines[0].planning.scheduled, scheduled)
     }
 
     @Test

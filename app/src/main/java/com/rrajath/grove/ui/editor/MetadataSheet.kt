@@ -35,8 +35,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
@@ -90,6 +94,15 @@ fun MetadataSheet(
     stateMixed: Boolean = false,
     /** Several headings with differing priorities: no priority chip is current. */
     priorityMixed: Boolean = false,
+    /** Several headings: date kinds whose values differ, shown as "multiple". */
+    datesMixed: Set<PlanningKind> = emptySet(),
+    /**
+     * Several headings: replaces [onSetPlanningDates] and also gets the mixed
+     * kinds the user removed from all of them on the Dates screen.
+     */
+    onSetPlanningDatesBulk: (
+        (OrgTimestamp?, OrgTimestamp?, List<OrgTimestamp>, Set<PlanningKind>) -> Unit
+    )? = null,
 ) {
     val c = MaterialTheme.grove
     var planningOpen by remember { mutableStateOf(false) }
@@ -265,6 +278,7 @@ fun MetadataSheet(
                 scheduled = headline?.planning?.scheduled,
                 deadline = headline?.planning?.deadline,
                 active = headline?.dedicatedActiveTimestamps.orEmpty(),
+                mixed = datesMixed,
                 onPick = { planningOpen = true },
             )
 
@@ -340,6 +354,13 @@ fun MetadataSheet(
             onConfirm = { sched, dead, active ->
                 onSetPlanningDates(sched, dead, active)
                 planningOpen = false
+            },
+            mixed = datesMixed,
+            onConfirmBulk = onSetPlanningDatesBulk?.let { bulk ->
+                { sched, dead, active, removed ->
+                    bulk(sched, dead, active, removed)
+                    planningOpen = false
+                }
             },
         )
     }
@@ -455,6 +476,8 @@ private fun CombinedPlanningRow(
     deadline: OrgTimestamp?,
     active: List<OrgTimestamp>,
     onPick: () -> Unit,
+    /** Kinds that differ across several headings: a "multiple" line in place of a date. */
+    mixed: Set<PlanningKind> = emptySet(),
 ) {
     val c = MaterialTheme.grove
     Box(
@@ -465,10 +488,11 @@ private fun CombinedPlanningRow(
             .clickable(onClick = onPick)
             .padding(horizontal = 10.dp, vertical = 9.dp),
     ) {
-        if (scheduled == null && deadline == null && active.isEmpty()) {
+        if (scheduled == null && deadline == null && active.isEmpty() && mixed.isEmpty()) {
             Text("set date…", fontFamily = PlexMono, fontSize = 12.5.sp, color = c.ink3)
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                if (scheduled == null && PlanningKind.SCHEDULED in mixed) MultipleLine("SCHEDULED", c.blue)
                 scheduled?.let {
                     Text(
                         "SCHEDULED " + it.format(),
@@ -476,6 +500,7 @@ private fun CombinedPlanningRow(
                         fontSize = 12.5.sp, color = c.blue,
                     )
                 }
+                if (deadline == null && PlanningKind.DEADLINE in mixed) MultipleLine("DEADLINE", c.red)
                 deadline?.let {
                     Text(
                         "DEADLINE " + it.format(),
@@ -483,6 +508,7 @@ private fun CombinedPlanningRow(
                         fontSize = 12.5.sp, color = c.red,
                     )
                 }
+                if (active.isEmpty() && PlanningKind.ACTIVE in mixed) MultipleLine("●", c.violet)
                 active.forEach {
                     Text(
                         "● " + it.format(),
@@ -493,4 +519,17 @@ private fun CombinedPlanningRow(
             }
         }
     }
+}
+
+/** "SCHEDULED multiple": the kind keeps its colour, the word is `ink3` like "set date…". */
+@Composable
+private fun MultipleLine(label: String, color: Color) {
+    val c = MaterialTheme.grove
+    Text(
+        buildAnnotatedString {
+            withStyle(SpanStyle(color = color)) { append(label) }
+            withStyle(SpanStyle(color = c.ink3, fontWeight = FontWeight.Normal)) { append(" multiple") }
+        },
+        fontFamily = PlexMono, fontWeight = FontWeight.SemiBold, fontSize = 12.5.sp,
+    )
 }
