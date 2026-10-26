@@ -1240,8 +1240,12 @@ class DocumentViewModel(
     fun promote(lines: Set<Int>) =
         applyStructure(lines, OrgMutations.StructureOp.PROMOTE, "Promoted", "Already top level")
 
-    fun demote(lines: Set<Int>) =
-        applyStructure(lines, OrgMutations.StructureOp.DEMOTE, "Demoted", "Can't demote further")
+    fun demote(lines: Set<Int>) = applyStructure(
+        lines,
+        OrgMutations.StructureOp.DEMOTE,
+        "Demoted",
+        "Can't demote: there's no heading above ${if (lines.size > 1) "them" else "it"} to go under",
+    )
 
     fun deleteNotes(lines: Set<Int>) =
         applyStructure(lines, OrgMutations.StructureOp.DELETE, "Deleted", "", singleMessage = "Note deleted")

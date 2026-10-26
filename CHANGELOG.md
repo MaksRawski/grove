@@ -61,6 +61,9 @@ re-uploads the APKs to the existing release instead of failing.
 - Outline's Move & indent bar can act on several headings at once: tap rows to add them to the selection.
 - Its ☰ button opens the metadata sheet to change state, priority, tags, dates, notes, or org-ids on every selected heading, or refile them all at once.
 
+### Changed
+- When a heading can't be demoted in Outline, the message now explains why: there's no heading above to go under.
+
 ### Fixed
 - Moving, promoting, or demoting a heading in Outline no longer unfolds collapsed headings.
 
